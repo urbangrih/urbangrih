@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import livingRoomImage from "../assets/living-room.png";
-import kitchenImage from "../assets/kitchen.jpg";
-import masterBedroomImage from "../assets/master-bedroom.png";
-import diningRoomImage from "../assets/dining-room.png";
-import kidsRoomImage from "../assets/kids-room.png";
-import wardrobeImage from "../assets/wardrobe.jpg";
 import CtoPhoto from "../assets/cto_photo.png";
+import interiorImage1 from "../assets/interior-photos/interior-1.jpg";
+import interiorImage2 from "../assets/interior-photos/interior-2.jpg";
+import interiorImage3 from "../assets/interior-photos/interior-3.jpg";
+import interiorImage4 from "../assets/interior-photos/interior-4.jpg";
+import interiorImage5 from "../assets/interior-photos/interior-5.jpg";
+import interiorImage6 from "../assets/interior-photos/interior-7.jpg";
 
 const Home = () => {
   const [area, setArea] = useState(0);
@@ -41,14 +41,44 @@ const Home = () => {
     setTotalCost(costType * area * floors);
   };
 
+  let caraouselImages = [interiorImage1, interiorImage2, interiorImage3, interiorImage4, interiorImage5, interiorImage6];
+  caraouselImages = [
+    {
+      image: interiorImage1,
+      heading: "Modern Living Room",
+      subHeading: "Sleek and Stylish Design"
+    },
+    {
+      image: interiorImage2,
+      heading: "Cozy Bedroom",
+      subHeading: "Comfort Meets Elegance"
+    },
+    {
+      image: interiorImage3,
+      heading: "Contemporary Kitchen",
+      subHeading: "Functional and Chic"
+    },
+    {
+      image: interiorImage4,
+      heading: "Luxurious Bathroom",
+      subHeading: "Spa-like Experience"
+    },
+    {
+      image: interiorImage5,
+      heading: "Outdoor Patio",
+      subHeading: "Relax in Style"
+    },
+    {
+      image: interiorImage6,
+      heading: "Home Office",
+      subHeading: "Productivity and Comfort"
+    }
+  ]
+
   return (
     <div className="content-wrapper">
     <div className="content-1">
       <section id="home" className="hero-title">
-      {/* <p>Welcome to URBAN GRIH! Our website is your go-to destination for innovative and personalized home design solutions. We specialize in helping you bring your dream home to life by offering a wide range of architectural and interior design options. Whether you are seeking modern, contemporary, or traditional styles, we provide an extensive collection of designs to match your unique taste and preferences.</p>
-        <p>At URBAN GRIH, we understand that a home is more than just a structure; it's a reflection of your personality and lifestyle. Our team of skilled designers and architects work meticulously to create spaces that are not only aesthetically pleasing but also highly functional and comfortable. From initial concept to final execution, we are committed to delivering top-quality design services that cater to your specific needs.</p>
-        <p>Explore our diverse portfolio to find inspiration and professional tips that will help you transform your living spaces. Our user-friendly platform allows you to browse through various design ideas, gather insights, and connect with our experts for personalized advice. Join us on this exciting journey and let URBAN GRIH be your partner in crafting a beautiful, stylish, and functional home that you and your family will love for years to come.</p>
-        Add remaining text here */}
         <h3>Everything Your Home Needs<br /> — At One Place</h3>
       </section>
       <section className="hero-cta">
@@ -57,51 +87,28 @@ const Home = () => {
       </section>
     </div>
     <div className="content-2">
-      {/* <br></br>
-      <br></br>
-      <br></br>
-      <br></br> */}
-
+      <div className="content-title">
+        <h3>Featured Options</h3>
+      </div>
       <div className="wrapper">
-        <div className="design-grid">
-          <a href="/living-room" className="design-card">
-            <img src={livingRoomImage} alt="Living Room" />
-            <div className="card-info">
-              <h3>Living Room</h3>
+        {caraouselImages.map((item, index) => (
+          <div className="item" id = {`item-${index}`}>
+            <div className="item-image">
+                <img src={item.image} alt="" id = {`image-${index}`} />
             </div>
-          </a>
-          {/* Repeat similar structure for Kitchen, Master Bedroom, Dining Room, Kid's Bedroom, and Wardrobe */}          
-          <a href="/kitchen" className="design-card">
-            <img src={kitchenImage} alt="Kitchen" />
-            <div className="card-info">
-              <h3>Kitchen</h3>
+            <div className="item-detail">
+                <div className="item-desc">
+                    <div className="item-heading">
+                        <h3>{item.heading}</h3>
+                    </div>
+                    <div className="item-subHeading">
+                        <h5>{item.subHeading}</h5>
+                    </div>
+                </div>
             </div>
-          </a>
-          <a href="/master-bedroom" className="design-card">
-            <img src={masterBedroomImage} alt="Master Bedroom" />
-            <div className="card-info">
-              <h3>Master Bedroom</h3>
-            </div>
-          </a>
-          <a href="/dining-room" className="design-card">
-            <img src={diningRoomImage} alt="Dining Room" />
-            <div className="card-info">
-              <h3>Dining Room</h3>
-            </div>
-          </a>
-          <a href="/kids-room" className="design-card">
-            <img src={kidsRoomImage} alt="Kid's Bedroom" />
-            <div className="card-info">
-              <h3>Kid's Bedroom</h3>
-            </div>
-          </a>
-          <a href="/wardrobe" className="design-card">
-            <img src={wardrobeImage} alt="Wardrobe" />
-            <div className="card-info">
-              <h3>Wardrobe</h3>
-            </div>
-          </a>
-        </div>
+            <div className="overlay"></div>
+          </div>
+        ))}
       </div>
     </div>
     <div className="content-3">
@@ -214,7 +221,7 @@ const Home = () => {
       <br></br>
 
       <div className="ceo-cto-container">
-        <img src={CtoPhoto} alt="CEO & CTO Photo" className="ceo-cto-photo" />
+        <img src={CtoPhoto} alt="CEO & CTO" className="ceo-cto-photo" />
         <div className="message">
           <h3>Message from the Founder & CTO</h3>
           <p>At URBAN GRIH, we believe that great design has the power to transform lives. Our mission is to bring your vision to life by creating beautiful and functional spaces that truly reflect your unique style and needs. We are passionate about delivering exceptional design solutions and are committed to providing our clients with an outstanding experience from start to finish.</p>
@@ -223,11 +230,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
 
     </div>
 
