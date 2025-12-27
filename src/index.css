@@ -268,12 +268,10 @@ nav ul li {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  width: 99vw; /* Adjust as per your layout */
-  /* padding: 0.757002271006813vh; */
+  width: 99vw;
 }
 
 .content-1{
-  /* background-color: black; */
   width: 100%;
   height: 100vh;
   display: flex;
@@ -318,7 +316,6 @@ nav ul li {
   box-sizing: border-box;
   font-weight: bold;
   font-family: 'Times New Roman', Times, serif;
-  /* width: 40%; */
 }
 
 .content-1 .hero-cta button:nth-child(1){
@@ -442,15 +439,11 @@ section {
 }
 
 section h2 {
-  /* color: rgb(8, 105, 114); */
-  /* color: black; */
   font-size: 28px;
   margin-bottom: 10px;
 }
 
 section p {
-  /* color: rgb(8, 105, 114); */
-  /* color: black; */
   font-size: 16px;
   line-height: 1.6;
   font-weight: bold;
@@ -491,19 +484,6 @@ section p {
   line-height: 1.6;
 }
 
-/* .content-3{
-  width: 65%;
-  margin-top: 250px;
-  padding: 20px;
-} */
-
-
-/* .content-2{
-  width: 65%;
-  margin-left: 300px;
-  margin-top: 250px;
-  padding: 20px;
-} */
 
 
 .design-gallery {
@@ -582,20 +562,6 @@ section p {
   align-items: center;
 }
 
-/* .design-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-} */
-
-/* .design-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 8px rgb(8, 105, 114);
-} */
 
 .content-2{
   margin: 10%;
@@ -627,6 +593,8 @@ section p {
   position: relative;
   width: 22vw;
   height: 45vh;
+  border-radius: 15px;
+  overflow: hidden;
 }
 
 .content-2 .wrapper .item .item-image{
@@ -641,6 +609,8 @@ section p {
   width: 100%;
   object-fit: cover;
   object-position: center;
+  transition: transform 0.5s ease;
+
 }
 
 .content-2 .wrapper .item-detail{
@@ -665,11 +635,13 @@ section p {
   font-size: 1.4rem;
   font-weight: bold;
   margin: 0;
+  text-shadow: none;
+  transition: font-size 0.4s ease-in-out, text-shadow 0.4s ease-in-out;
 }
 
 .content-2 .wrapper .item-detail .item-desc .item-subHeading{
   margin-top: 6px;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .content-2 h3, h5{
@@ -685,12 +657,22 @@ section p {
   height: 100%;
   width: 100%;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 5%, rgba(0, 0, 0, 0) 40%);
-
-  /* background-color: rgba(0, 0, 0, 0.4); */
-  /* opacity: 0; */
-  /* transition: opacity 0.3s ease; */
 }
 
+@media (hover: hover) {
+  .content-2 .wrapper .item:hover .item-image img{
+    transform: scale(1.1);
+  }
+
+  .content-2 .wrapper .item:hover .item-detail .item-desc .item-heading{
+    font-size: 1.55rem;
+    text-shadow: hsla(44, 50%, 0%, 1) 0px 0px 14px;
+  }
+
+  .content-2 .wrapper .item:hover{
+    cursor: pointer;
+  }
+}
 
 
 
