@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import CtoPhoto from "../assets/cto_photo.png";
-import interiorImage1 from "../assets/interior-photos/interior-1.jpg";
-import interiorImage2 from "../assets/interior-photos/interior-2.jpg";
-import interiorImage3 from "../assets/interior-photos/interior-3.jpg";
-import interiorImage4 from "../assets/interior-photos/interior-4.jpg";
-import interiorImage5 from "../assets/interior-photos/interior-5.jpg";
-import interiorImage6 from "../assets/interior-photos/interior-7.jpg";
+import interiorImage1 from "../assets/interior-photos/living-room.png";
+import interiorImage2 from "../assets/interior-photos/kitchen.jpg";
+import interiorImage3 from "../assets/interior-photos/master-bedroom.png";
+import interiorImage4 from "../assets/interior-photos/dining-room.png";
+import interiorImage5 from "../assets/interior-photos/kids-room.png";
+import interiorImage6 from "../assets/interior-photos/wardrobe.jpg";
 
 const Home = () => {
   const [area, setArea] = useState(0);
@@ -41,37 +41,54 @@ const Home = () => {
     setTotalCost(costType * area * floors);
   };
 
-  let caraouselImages = [interiorImage1, interiorImage2, interiorImage3, interiorImage4, interiorImage5, interiorImage6];
-  caraouselImages = [
+  const caraouselImages = [
     {
       image: interiorImage1,
-      heading: "Modern Living Room",
+      heading: "Living Room",
       subHeading: "Sleek and Stylish Design"
     },
     {
       image: interiorImage2,
-      heading: "Cozy Bedroom",
+      heading: "Kitchen Space",
       subHeading: "Comfort Meets Elegance"
     },
     {
       image: interiorImage3,
-      heading: "Contemporary Kitchen",
-      subHeading: "Functional and Chic"
+      heading: "Master Bedroom",
+      subHeading: "Comfort Redefined"
     },
     {
       image: interiorImage4,
-      heading: "Luxurious Bathroom",
-      subHeading: "Spa-like Experience"
+      heading: "Dining Room",
+      subHeading: "Family Gatherings"
     },
     {
       image: interiorImage5,
-      heading: "Outdoor Patio",
-      subHeading: "Relax in Style"
+      heading: "Kid's Bedroom",
+      subHeading: "Fun and Functional"
     },
     {
       image: interiorImage6,
-      heading: "Home Office",
-      subHeading: "Productivity and Comfort"
+      heading: "Wardrobe",
+      subHeading: "Effective and Accessible"
+    }
+  ]
+
+  const featuredData = [
+    {
+      id: 1,
+      title: "Ongoing Projects",
+      count: "221568"
+    },
+    {
+      id: 2,
+      title: "Completed Projects",
+      count: "17535"
+    },
+    {
+      id: 3,
+      title: "Happy Customer",
+      count: "221548"
     }
   ]
 
@@ -85,6 +102,18 @@ const Home = () => {
         <button>Start Your Project</button>
         <button>Find Professionals</button>
       </section>
+    </div>
+    <div className="feature-container">
+      <div className="feature-strip">
+        {
+          featuredData.map((item) => (
+            <div className="feature" key={item.id}>
+              <h3 className="feature-title">{item.title + ":"}</h3>
+              <p className="feature-data">{item.count}</p>
+            </div>
+          ))
+        }
+      </div>
     </div>
     <div className="content-2">
       <div className="content-title">

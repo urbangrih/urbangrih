@@ -75,7 +75,7 @@ function Header() {
                 )}
                 <li>
                   <Link to="/login" onClick={() => setMenuOpen(false)}>
-                  <FaUserCircle size={22} color="rgb(8,105,114)" />
+                  <FaUserCircle size={22} color="rgba(62,19,44, 0.8)" />
                 </Link>
                 </li>
               </>
