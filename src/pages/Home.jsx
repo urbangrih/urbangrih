@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PieChartComp from "../components/pieChartComp";
 import CtoPhoto from "../assets/cto_photo.png";
 import interiorImage1 from "../assets/interior-photos/living-room.png";
 import interiorImage2 from "../assets/interior-photos/kitchen.jpg";
@@ -8,262 +9,366 @@ import interiorImage5 from "../assets/interior-photos/kids-room.png";
 import interiorImage6 from "../assets/interior-photos/wardrobe.jpg";
 
 const Home = () => {
-  const [area, setArea] = useState(0);
-  const [unit, setUnit] = useState("feet");
-  const [length, setLength] = useState("");
-  const [width, setWidth] = useState("");
+    const [area, setArea] = useState(0);
+    const [unit, setUnit] = useState("feet");
+    const [length, setLength] = useState("");
+    const [width, setWidth] = useState("");
 
-  const [costType, setCostType] = useState(1450);
-  const [floors, setFloors] = useState(1);
-  const [totalCost, setTotalCost] = useState(0);
+    const [costType, setCostType] = useState(1450);
+    const [floors, setFloors] = useState(1);
+    const [totalCost, setTotalCost] = useState(0);
 
-  useEffect(() => {
-    // Dynamically add the AI Chatbox script
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    script.async = true;
-    document.body.appendChild(script);
+    useEffect(() => {
+        // Dynamically add the AI Chatbox script
+        const script = document.createElement("script");
+        script.src = "https://widget.cxgenie.ai/widget.js";
+        script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+        script.dataset.lang = "en";
+        script.async = true;
+        document.body.appendChild(script);
 
-    // Cleanup script on component unmount
-    return () => {
-      document.body.removeChild(script);
+        // Cleanup script on component unmount
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    const calculateArea = () => {
+        const calculatedArea =
+            unit === "meters" ? length * width * 10.764 : length * width;
+        setArea(calculatedArea);
     };
-  }, []);
 
-  const calculateArea = () => {
-    const calculatedArea = unit === "meters" ? length * width * 10.764 : length * width;
-    setArea(calculatedArea);
-  };
+    const calculateTotalCost = () => {
+        setTotalCost(costType * area * floors);
+    };
 
-  const calculateTotalCost = () => {
-    setTotalCost(costType * area * floors);
-  };
-
-  const caraouselImages = [
-    {
-      image: interiorImage1,
-      heading: "Living Room",
-      subHeading: "Sleek and Stylish Design"
-    },
-    {
-      image: interiorImage2,
-      heading: "Kitchen Space",
-      subHeading: "Comfort Meets Elegance"
-    },
-    {
-      image: interiorImage3,
-      heading: "Master Bedroom",
-      subHeading: "Comfort Redefined"
-    },
-    {
-      image: interiorImage4,
-      heading: "Dining Room",
-      subHeading: "Family Gatherings"
-    },
-    {
-      image: interiorImage5,
-      heading: "Kid's Bedroom",
-      subHeading: "Fun and Functional"
-    },
-    {
-      image: interiorImage6,
-      heading: "Wardrobe",
-      subHeading: "Effective and Accessible"
-    }
-  ]
-
-  const featuredData = [
-    {
-      id: 1,
-      title: "Ongoing Projects",
-      count: "221568"
-    },
-    {
-      id: 2,
-      title: "Completed Projects",
-      count: "17535"
-    },
-    {
-      id: 3,
-      title: "Happy Customer",
-      count: "221548"
-    }
-  ]
-
-  return (
-    <div className="content-wrapper">
-    <div className="content-1">
-      <section id="home" className="hero-title">
-        <h3>Everything Your Home Needs<br /> — At One Place</h3>
-      </section>
-      <section className="hero-cta">
-        <button>Start Your Project</button>
-        <button>Find Professionals</button>
-      </section>
-    </div>
-    <div className="feature-container">
-      <div className="feature-strip">
+    const caraouselImages = [
         {
-          featuredData.map((item) => (
-            <div className="feature" key={item.id}>
-              <h3 className="feature-title">{item.title + ":"}</h3>
-              <p className="feature-data">{item.count}</p>
+            image: interiorImage1,
+            heading: "Living Room",
+            subHeading: "Sleek and Stylish Design",
+        },
+        {
+            image: interiorImage2,
+            heading: "Kitchen Space",
+            subHeading: "Comfort Meets Elegance",
+        },
+        {
+            image: interiorImage3,
+            heading: "Master Bedroom",
+            subHeading: "Comfort Redefined",
+        },
+        {
+            image: interiorImage4,
+            heading: "Dining Room",
+            subHeading: "Family Gatherings",
+        },
+        {
+            image: interiorImage5,
+            heading: "Kid's Bedroom",
+            subHeading: "Fun and Functional",
+        },
+        {
+            image: interiorImage6,
+            heading: "Wardrobe",
+            subHeading: "Effective and Accessible",
+        },
+    ];
+
+    // const featuredData = [
+    //     {
+    //         id: 1,
+    //         title: "Ongoing Projects",
+    //         count: "221568",
+    //     },
+    //     {
+    //         id: 2,
+    //         title: "Completed Projects",
+    //         count: "17535",
+    //     },
+    //     {
+    //         id: 3,
+    //         title: "Happy Customer",
+    //         count: "221548",
+    //     },
+    // ];
+    const featuredData = {
+        datasets: [
+            {
+                name: "Ongoing Projects",
+                value: 221568,
+                fill: "#f0a0f0",
+            },
+            {
+                name: "Completed Projects",
+                value: 175355,
+                fill: "#36A2EB",
+            },
+            {
+                name: "Happy Customers",
+                value: 221548,
+                fill: "#FFCE56",
+            },
+        ],
+        colors: ["#FFF", "#36A2EB", "#FFCE56"],
+    }
+
+    return (
+        <div className="content-wrapper">
+            <div className="content-1">
+                <section id="home" className="hero-title">
+                    <h3>
+                        Everything Your Home Needs
+                        <br /> — At One Place
+                    </h3>
+                </section>
+                <section className="hero-cta">
+                    <button>Start Your Project</button>
+                    <button>Find Professionals</button>
+                </section>
             </div>
-          ))
-        }
-      </div>
-    </div>
-    <div className="content-2">
-      <div className="content-title">
-        <h3>Featured Options</h3>
-      </div>
-      <div className="wrapper">
-        {caraouselImages.map((item, index) => (
-          <div className="item" id = {`item-${index}`}>
-            <div className="item-image">
-                <img src={item.image} alt="" id = {`image-${index}`} />
-            </div>
-            <div className="item-detail">
-                <div className="item-desc">
-                    <div className="item-heading">
-                        <h3>{item.heading}</h3>
+            <div className="feature-container">
+                <div className="feature-strip">
+                    <div className="feature-chart">
+                        <PieChartComp
+                            chartData={featuredData}
+                        />
                     </div>
-                    <div className="item-subHeading">
-                        <h5>{item.subHeading}</h5>
+                    <div className="feature-list">
+                        {featuredData.datasets.map((item) => (
+                            <div className="feature-item" key={item.name}>
+                                <div className="feature-item-container">
+                                <div className="feature-color" style={{"backgroundColor": `${item.fill}`}}></div>
+                                <h3 className="feature-title">
+                                    {item.name + ":"}
+                                </h3>
+                                <p className="feature-data">{item.value}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
-            <div className="overlay"></div>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div className="content-3">
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
+            <div className="content-2">
+                <div className="content-title">
+                    <h3>Featured Options</h3>
+                </div>
+                <div className="wrapper">
+                    {caraouselImages.map((item, index) => (
+                        <div className="item" id={`item-${index}`}>
+                            <div className="item-image">
+                                <img
+                                    src={item.image}
+                                    alt=""
+                                    id={`image-${index}`}
+                                />
+                            </div>
+                            <div className="item-detail">
+                                <div className="item-desc">
+                                    <div className="item-heading">
+                                        <h3>{item.heading}</h3>
+                                    </div>
+                                    <div className="item-subHeading">
+                                        <h5>{item.subHeading}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="overlay"></div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="content-3">
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
 
-      <div className="cal-wrapper">
-        <div className="calculator-container area-calculator">
-          <h1>Area Calculator</h1>
-          <div className="result-section">
-            <p>Result</p>
-            <p>Area: {area.toFixed(2)} sq ft</p>
-          </div>
-          <div className="unit-section">
-            <label>Select Unit:</label>
-            <input type="radio" id="meters" name="unit" value="meters" onChange={() => setUnit("meters")} />
-            <label htmlFor="meters">Meters</label>
-            <input type="radio" id="feet" name="unit" value="feet" defaultChecked onChange={() => setUnit("feet")} />
-            <label htmlFor="feet">Feet</label>
-          </div>
-          <div className="input-section">
-            <div className="input-group">
-              <label htmlFor="length">Length (l)</label>
-              <input
-                type="number"
-                id="length"
-                placeholder="Enter length"
-                value={length}
-                onChange={(e) => setLength(Number(e.target.value))}
-              />
+                <div className="cal-wrapper">
+                    <div className="calculator-container area-calculator">
+                        <h1>Area Calculator</h1>
+                        <div className="result-section">
+                            <p>Result</p>
+                            <p>Area: {area.toFixed(2)} sq ft</p>
+                        </div>
+                        <div className="unit-section">
+                            <label>Select Unit:</label>
+                            <input
+                                type="radio"
+                                id="meters"
+                                name="unit"
+                                value="meters"
+                                onChange={() => setUnit("meters")}
+                            />
+                            <label htmlFor="meters">Meters</label>
+                            <input
+                                type="radio"
+                                id="feet"
+                                name="unit"
+                                value="feet"
+                                defaultChecked
+                                onChange={() => setUnit("feet")}
+                            />
+                            <label htmlFor="feet">Feet</label>
+                        </div>
+                        <div className="input-section">
+                            <div className="input-group">
+                                <label htmlFor="length">Length (l)</label>
+                                <input
+                                    type="number"
+                                    id="length"
+                                    placeholder="Enter length"
+                                    value={length}
+                                    onChange={(e) =>
+                                        setLength(Number(e.target.value))
+                                    }
+                                />
+                            </div>
+                            <div className="input-group">
+                                <label htmlFor="width">Width (w)</label>
+                                <input
+                                    type="number"
+                                    id="width"
+                                    placeholder="Enter width"
+                                    value={width}
+                                    onChange={(e) =>
+                                        setWidth(Number(e.target.value))
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <button onClick={calculateArea}>Calculate Area</button>
+                    </div>
+
+                    <div className="calculator-container cost-calculator">
+                        <h1>Cost Calculator</h1>
+                        <div className="input-section">
+                            <div className="input-group">
+                                <label htmlFor="type">
+                                    Select Construction Type:
+                                </label>
+                                <select
+                                    id="type"
+                                    onChange={(e) =>
+                                        setCostType(Number(e.target.value))
+                                    }
+                                >
+                                    <option value="1450">Simple</option>
+                                    <option value="2800">Moderate</option>
+                                    <option value="5800">Luxury</option>
+                                </select>
+                            </div>
+                            <div className="input-group">
+                                <label htmlFor="floors">
+                                    Number of Floors:
+                                </label>
+                                <input
+                                    type="number"
+                                    id="floors"
+                                    min="1"
+                                    value={floors}
+                                    onChange={(e) =>
+                                        setFloors(Number(e.target.value))
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <div className="result-section cost-result">
+                            <h3>Total Estimated Cost: {totalCost} INR</h3>
+                        </div>
+                        <button onClick={calculateTotalCost}>
+                            Calculate Cost
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div className="input-group">
-              <label htmlFor="width">Width (w)</label>
-              <input
-                type="number"
-                id="width"
-                placeholder="Enter width"
-                value={width}
-                onChange={(e) => setWidth(Number(e.target.value))}
-              />
+            <div className="content-4">
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+
+                <div className="professional-form-section">
+                    <h2>Get Started with Your Project</h2>
+                    <form action="/submit_project_form" method="post">
+                        <label htmlFor="name">Full Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="Your Name"
+                            required
+                        />
+                        <label htmlFor="email">Email Address:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Your Email"
+                            required
+                        />
+                        <label htmlFor="phone">Phone Number:</label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="Your Phone Number"
+                            required
+                        />
+                        <label htmlFor="project-type">Type of Project:</label>
+                        <select id="project-type" required>
+                            <option value="Floor Planning">Floor Plans</option>
+                            <option value="Interior">Interior Design</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label htmlFor="details">Project Details:</label>
+                        <textarea
+                            id="details"
+                            rows="4"
+                            placeholder="Briefly describe your project requirements..."
+                        ></textarea>
+                        <button type="submit">Submit Your Requirements</button>
+                    </form>
+                </div>
+
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+
+                <div className="ceo-cto-container">
+                    <img
+                        src={CtoPhoto}
+                        alt="CEO & CTO"
+                        className="ceo-cto-photo"
+                    />
+                    <div className="message">
+                        <h3>Message from the Founder & CTO</h3>
+                        <p>
+                            At URBAN GRIH, we believe that great design has the
+                            power to transform lives. Our mission is to bring
+                            your vision to life by creating beautiful and
+                            functional spaces that truly reflect your unique
+                            style and needs. We are passionate about delivering
+                            exceptional design solutions and are committed to
+                            providing our clients with an outstanding experience
+                            from start to finish.
+                        </p>
+                        <p>
+                            Thank you for choosing URBAN GRIH. We look forward
+                            to working with you to create the home of your
+                            dreams.
+                        </p>
+                        <p>
+                            <strong>
+                                UJJWAL KULSHRESTHA
+                                <br />
+                                Founder & CTO, URBAN GRIH
+                            </strong>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-          <button onClick={calculateArea}>Calculate Area</button>
         </div>
-
-        <div className="calculator-container cost-calculator">
-          <h1>Cost Calculator</h1>
-          <div className="input-section">
-            <div className="input-group">
-              <label htmlFor="type">Select Construction Type:</label>
-              <select
-                id="type"
-                onChange={(e) => setCostType(Number(e.target.value))}
-              >
-                <option value="1450">Simple</option>
-                <option value="2800">Moderate</option>
-                <option value="5800">Luxury</option>
-              </select>
-            </div>
-            <div className="input-group">
-              <label htmlFor="floors">Number of Floors:</label>
-              <input
-                type="number"
-                id="floors"
-                min="1"
-                value={floors}
-                onChange={(e) => setFloors(Number(e.target.value))}
-              />
-            </div>
-          </div>
-          <div className="result-section cost-result">
-            <h3>Total Estimated Cost: {totalCost} INR</h3>
-          </div>
-          <button onClick={calculateTotalCost}>Calculate Cost</button>
-        </div>
-      </div>
-    </div>
-    <div className="content-4">
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <div className="professional-form-section">
-        <h2>Get Started with Your Project</h2>
-        <form action="/submit_project_form" method="post">
-          <label htmlFor="name">Full Name:</label>
-          <input type="text" id="name" placeholder="Your Name" required />
-          <label htmlFor="email">Email Address:</label>
-          <input type="email" id="email" placeholder="Your Email" required />
-          <label htmlFor="phone">Phone Number:</label>
-          <input type="tel" id="phone" placeholder="Your Phone Number" required />
-          <label htmlFor="project-type">Type of Project:</label>
-          <select id="project-type" required>
-            <option value="Floor Planning">Floor Plans</option>
-            <option value="Interior">Interior Design</option>
-            <option value="Other">Other</option>
-          </select>
-          <label htmlFor="details">Project Details:</label>
-          <textarea id="details" rows="4" placeholder="Briefly describe your project requirements..."></textarea>
-          <button type="submit">Submit Your Requirements</button>
-        </form>
-      </div>
-
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-
-      <div className="ceo-cto-container">
-        <img src={CtoPhoto} alt="CEO & CTO" className="ceo-cto-photo" />
-        <div className="message">
-          <h3>Message from the Founder & CTO</h3>
-          <p>At URBAN GRIH, we believe that great design has the power to transform lives. Our mission is to bring your vision to life by creating beautiful and functional spaces that truly reflect your unique style and needs. We are passionate about delivering exceptional design solutions and are committed to providing our clients with an outstanding experience from start to finish.</p>
-          <p>Thank you for choosing URBAN GRIH. We look forward to working with you to create the home of your dreams.</p>
-          <p><strong>UJJWAL KULSHRESTHA<br />Founder & CTO, URBAN GRIH</strong></p>
-        </div>
-      </div>
-    </div>
-
-    </div>
-
-    
-  );
+    );
 };
 
 export default Home;

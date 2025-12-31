@@ -353,14 +353,14 @@ nav ul li {
 
 .feature-container{
   width: 100%;
-  height: 80px;
+  height: auto;
   margin-top: auto;
   margin-bottom: auto;
 }
 
 .feature-strip{
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   background-color: hsla(325, 56%, 16%, 0.8);
   /* border-top: var(--border) 3px solid; */
   /* border-bottom: var(--border) 3px solid; */
@@ -373,20 +373,57 @@ nav ul li {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
+.feature-strip .feature-chart{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.feature-strip .feature{
+.feature-strip .feature-list{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.feature-strip .feature-list .feature-item{
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  width: 100%;
-  height: 100%;
-  border-right: var(--background) 2px solid;
+  /* text-align: center; */
 }
 
-.feature-strip .feature:last-child{
-  border-right: none;
+.feature-strip .feature-list .feature-item .feature-item-container{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+  width: 50%;
 }
+
+.feature-strip .feature-list .feature-item .feature-color{
+  height: 20px;
+  width: 20px;
+}
+
+.recharts-wrapper:focus:not(:focus-visible) {
+  outline: none;
+}
+
+svg:focus{
+  outline: none;
+}
+
+.recharts-sector{
+  outline: none;
+}
+
 
 
 .content-2{
@@ -1598,10 +1635,12 @@ nav ul li img.login-icon {
 
 .feature-container{
   width: 100vw;
-  height: 8vh;
+  height: auto;
   overflow: hidden;
   position: relative;
   display: flex;
+  align-items: center;
+  flex-direction: column;
   justify-content: flex-start;
 }
 
@@ -1609,27 +1648,24 @@ nav ul li img.login-icon {
   /* position: absolute; */
   left: 0;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   display: flex;
-  flex-direction: row;
-  /* flex-wrap: nowrap; */
-  /* margin: 0; */
-  /* animation: scroll-right-to-left 15s linear infinite; */
+  flex-direction: column;
 }
 
-/* @keyframes sroll-right-to-left {
-  0% {
-    transform: translateX(33%);
-  }
-  100% {
-    transform: translateX(-99%);
-  }
-} */
 
-.feature-strip .feature{
+.feature-strip .feature-list{
   /* width: 100vw; */
-  font-size: 2vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-size: 2.5vw;
   gap: 5px;
+  height: 65%;
+}
+
+.pie-chart{
+  max-width: 30vw;
 }
 
 .content-2{
