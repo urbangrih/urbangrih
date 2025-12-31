@@ -141,8 +141,9 @@ const Home = () => {
                                 <div className="feature-item-container">
                                 <div className="feature-color" style={{"backgroundColor": `${item.fill}`}}></div>
                                 <h3 className="feature-title">
-                                    {item.name + ":"}
+                                    {item.name}
                                 </h3>
+                                <span>:</span>
                                 <p className="feature-data">{item.value}</p>
                                 </div>
                             </div>
