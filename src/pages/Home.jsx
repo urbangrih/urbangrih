@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PieChartComp from "../components/pieChartComp";
+import Testimonial from "../components/testimonial";
 import CtoPhoto from "../assets/cto_photo.png";
 import interiorImage1 from "../assets/interior-photos/living-room.png";
 import interiorImage2 from "../assets/interior-photos/kitchen.jpg";
@@ -76,23 +77,6 @@ const Home = () => {
         },
     ];
 
-    // const featuredData = [
-    //     {
-    //         id: 1,
-    //         title: "Ongoing Projects",
-    //         count: "221568",
-    //     },
-    //     {
-    //         id: 2,
-    //         title: "Completed Projects",
-    //         count: "17535",
-    //     },
-    //     {
-    //         id: 3,
-    //         title: "Happy Customer",
-    //         count: "221548",
-    //     },
-    // ];
     const featuredData = {
         datasets: [
             {
@@ -112,7 +96,7 @@ const Home = () => {
             },
         ],
         colors: ["#FFF", "#36A2EB", "#FFCE56"],
-    }
+    };
 
     return (
         <div className="content-wrapper">
@@ -131,20 +115,23 @@ const Home = () => {
             <div className="feature-container">
                 <div className="feature-strip">
                     <div className="feature-chart">
-                        <PieChartComp
-                            chartData={featuredData}
-                        />
+                        <PieChartComp chartData={featuredData} />
                     </div>
                     <div className="feature-list">
                         {featuredData.datasets.map((item) => (
                             <div className="feature-item" key={item.name}>
                                 <div className="feature-item-container">
-                                <div className="feature-color" style={{"backgroundColor": `${item.fill}`}}></div>
-                                <h3 className="feature-title">
-                                    {item.name}
-                                </h3>
-                                <span>:</span>
-                                <p className="feature-data">{item.value}</p>
+                                    <div
+                                        className="feature-color"
+                                        style={{
+                                            backgroundColor: `${item.fill}`,
+                                        }}
+                                    ></div>
+                                    <h3 className="feature-title">
+                                        {item.name}
+                                    </h3>
+                                    <span>:</span>
+                                    <p className="feature-data">{item.value}</p>
                                 </div>
                             </div>
                         ))}
@@ -181,11 +168,11 @@ const Home = () => {
                 </div>
             </div>
             <div className="content-3">
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-
+                <Testimonial></Testimonial>
+                <Testimonial></Testimonial>
+                <Testimonial></Testimonial>
+            </div>
+            <div className="content-4">
                 <div className="cal-wrapper">
                     <div className="calculator-container area-calculator">
                         <h1>Area Calculator</h1>
@@ -284,7 +271,7 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            <div className="content-4">
+            <div className="content-5">
                 <br></br>
                 <br></br>
                 <br></br>
