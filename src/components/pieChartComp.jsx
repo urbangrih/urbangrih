@@ -29,7 +29,7 @@ const renderCustomizedLabel = ({
         <text
             x={x}
             y={y}
-            fill="white"
+            fill="rgba(62, 19, 44, 0.8)"
             textAnchor={x > ncx ? "start" : "end"}
             dominantBaseline="central"
             className="pie-chart-label"
@@ -45,10 +45,14 @@ const MyPie = ({ data }) => (
         dataKey="value"
         nameKey="name"
         outerRadius="80%"
-        innerRadius="40%"
-        isAnimationActive={false}
+        innerRadius="70%"
         labelLine={false}
-        label={renderCustomizedLabel}
+        stroke="none"
+        isAnimationActive={true}
+        animationDuration={1500}
+        animationEasing="ease-out"
+        animationBegin={500}
+        // label={renderCustomizedLabel}
     >
         {/* {data.map((entry, index) => (
             <Cell key={`cell-${entry.name}`} fill={entry.fill} />

@@ -82,17 +82,17 @@ const Home = () => {
             {
                 name: "Ongoing Projects",
                 value: 221568,
-                fill: "#f0a0f0",
+                fill: "#41C9E0",
             },
             {
                 name: "Completed Projects",
                 value: 175355,
-                fill: "#36A2EB",
+                fill: "#ACE041",
             },
             {
                 name: "Happy Customers",
                 value: 221548,
-                fill: "#FFCE56",
+                fill: "#E08941",
             },
         ],
         colors: ["#FFF", "#36A2EB", "#FFCE56"],
@@ -168,9 +168,14 @@ const Home = () => {
                 </div>
             </div>
             <div className="content-3">
-                <Testimonial></Testimonial>
-                <Testimonial></Testimonial>
-                <Testimonial></Testimonial>
+                <div className="content-title">
+                    <h3>Testimonials</h3>
+                </div>
+                <div className="testimonials">
+                    <Testimonial></Testimonial>
+                    <Testimonial></Testimonial>
+                    <Testimonial></Testimonial>
+                </div>
             </div>
             <div className="content-4">
                 <div className="cal-wrapper">
@@ -231,6 +236,9 @@ const Home = () => {
 
                     <div className="calculator-container cost-calculator">
                         <h1>Cost Calculator</h1>
+                        <div className="result-section cost-result">
+                            <h3>Total Estimated Cost: {totalCost} INR</h3>
+                        </div>
                         <div className="input-section">
                             <div className="input-group">
                                 <label htmlFor="type">
@@ -262,9 +270,7 @@ const Home = () => {
                                 />
                             </div>
                         </div>
-                        <div className="result-section cost-result">
-                            <h3>Total Estimated Cost: {totalCost} INR</h3>
-                        </div>
+                        
                         <button onClick={calculateTotalCost}>
                             Calculate Cost
                         </button>
@@ -314,7 +320,7 @@ const Home = () => {
                 </div>
                 </div>
             </div>
-            <div className="content-6">
+            {/* <div className="content-6">
                 <div className="ceo-cto-container">
                     <img
                         src={CtoPhoto}
@@ -347,7 +353,7 @@ const Home = () => {
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

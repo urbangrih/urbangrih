@@ -36,6 +36,10 @@ body {
     filter: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
 #root {
     width: 100%;
 }
@@ -317,20 +321,19 @@ nav ul li {
     height: auto;
     margin-top: auto;
     margin-bottom: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: hsla(325, 56%, 16%, 0.8);
+
 }
 
 .feature-strip {
-    width: 100%;
-    /* height: 100%; */
-    background-color: hsla(325, 56%, 16%, 0.8);
-    /* border-top: var(--border) 3px solid; */
-    /* border-bottom: var(--border) 3px solid; */
+    width: 70%;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    /* color: var(--subtext); */
     color: var(--text-white);
-    /* font-size: 0.5rem; */
     font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
@@ -387,7 +390,7 @@ nav ul li {
     align-items: center;
     justify-content: start;
     gap: 10px;
-    width: 50%;
+    width: 70%;
 }
 
 .feature-strip
@@ -574,16 +577,33 @@ h5 {
 
 .content-3 {
     width: 100%;
-    height: 70vh;
+    height: 90vh;
     background-color: var(--accent);
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
     margin-top: 50px;
     margin-bottom: 50px;
 }
 
-.content-3 .testimonial-card {
+.content-3 .content-title {
+    font-size: 2rem;
+    font-family: "Times New Roman", Times, serif;
+    color: var(--text-white);
+    text-align: center;
+    margin: 2% 0; 
+}
+
+.content-3 .testimonials{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.content-3 .testimonials .testimonial-card {
     width: 20vw;
     height: 80%;
     background-color: var(--background);
@@ -591,7 +611,7 @@ h5 {
     box-shadow: 0 4px 10px var(--accent);
 }
 
-.content-3 .testimonial-card .card-image {
+.content-3 .testimonials .testimonial-card .card-image {
     width: 100%;
     height: 40%;
     overflow: hidden;
@@ -599,14 +619,14 @@ h5 {
     border-top-right-radius: 15px;
 }
 
-.content-3 .testimonial-card .card-image img {
+.content-3 .testimonials .testimonial-card .card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
 }
 
-.content-3 .testimonial-card .card-data {
+.content-3 .testimonials .testimonial-card .card-data {
     width: 100%;
     height: 60%;
     position: relative;
@@ -616,14 +636,14 @@ h5 {
     align-items: center;
 }
 
-.content-3 .testimonial-card .card-data .card-profile {
+.content-3 .testimonials .testimonial-card .card-data .card-profile {
     position: absolute;
     top: 0;
     left: 0;
     transform: translateX(15px) translateY(-45px);
 }
 
-.content-3 .testimonial-card .card-data .card-profile img {
+.content-3 .testimonials .testimonial-card .card-data .card-profile img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -632,7 +652,7 @@ h5 {
     border: 3px solid var(--accent);
 }
 
-.content-3 .testimonial-card .card-data .card-detail {
+.content-3 .testimonials .testimonial-card .card-data .card-detail {
     flex: 2;
     margin-left: 10px;
     padding: 0 35px;
@@ -643,7 +663,7 @@ h5 {
     width: 100%;
 }
 
-.content-3 .testimonial-card .card-data .card-detail h3 {
+.content-3 .testimonials .testimonial-card .card-data .card-detail h3 {
     margin: 0;
     margin-top: 5%;
     font-size: 1.4vw;
@@ -651,13 +671,13 @@ h5 {
     text-wrap: balance;
 }
 
-.content-3 .testimonial-card .card-data .card-detail p {
+.content-3 .testimonials .testimonial-card .card-data .card-detail p {
     margin: 0;
     font-size: 0.9vw;
     color: var(--subtext);
 }
 
-.content-3 .testimonial-card .card-data .card-review {
+.content-3 .testimonials .testimonial-card .card-data .card-review {
     flex: 5;
     box-sizing: border-box;
     font-size: 1vw;
@@ -673,6 +693,17 @@ h5 {
     justify-content: center;
     align-items: center;
     margin: 50px 0;
+}
+
+.content-4 .cal-wrapper{
+    width: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.content-4 .cal-wrapper .calculator-container{
+    width: 30%;
 }
 
 .content-5 {
@@ -722,6 +753,40 @@ h5 {
     margin-top: 50px;
 }
 
+.area-calculator{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.area-calculator .result-section{
+    width: 100%;
+}
+
+.area-calculator .unit-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.area-calculator .input-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.cost-calculator{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .calculator-container {
     font-family: Arial, sans-serif;
     background-color: white;
@@ -729,9 +794,11 @@ h5 {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 300px;
+    height: 60vh;
     margin: auto;
     box-shadow: 0 4px 8px var(--accent);
 }
+
 
 .calculator-container h1,
 .calculator-container h2 {
@@ -747,11 +814,14 @@ h5 {
     border-radius: 5px;
     margin-bottom: 20px;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 30%;
+    width: 100%;
 }
 
-.calculator-container .input-section {
-    margin-bottom: 20px;
-}
 
 .calculator-container .input-group {
     display: flex;
@@ -761,9 +831,9 @@ h5 {
 }
 
 .calculator-container input[type="number"] {
-    width: 30%;
+    width: 60%;
     padding: 10px;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 
 .calculator-container select {
@@ -1592,13 +1662,13 @@ section p {
 
     .feature-container {
         width: 100vw;
-        height: auto;
+        height: 50vh;
         overflow: hidden;
         position: relative;
         display: flex;
         align-items: center;
         flex-direction: column;
-        justify-content: flex-start;
+        justify-content: center;
     }
 
     .feature-container .feature-strip {
@@ -1615,7 +1685,7 @@ section p {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        font-size: 2.5vw;
+        font-size: 4vw;
         gap: 5px;
         height: 65%;
     }
@@ -1638,7 +1708,7 @@ section p {
     }
 
     .pie-chart {
-        max-width: 30vw;
+        max-width: 50vw;
     }
 
     .content-2 {
@@ -1663,7 +1733,7 @@ section p {
     }
 
     .content-2 .content-title {
-        font-size: 1.25rem;
+        font-size: 8vw;
         text-align: center;
         margin-bottom: 20px;
     }
@@ -1683,36 +1753,55 @@ section p {
     }
 
     .content-3 {
-        height: 60vh;
+        height: 70vh;
         width: 300vw;
         /* flex-direction: column; */
         overflow: hidden;
     }
 
-    .content-3 .testimonial-card {
-        width: 60vw;
-        height: 50vh;
+    .content-3 .content-title {
+        flex: 1;
+        margin: 2% 0 0 0;
     }
 
-    .content-3 .testimonial-card .card-data .card-detail {
+    .content-3 .content-title h3{
+        font-size: 8vw;
+    }
+
+    .content-3 .testimonials {
+        flex: 7;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .content-3 .testimonials .testimonial-card {
+        width: 60vw;
+        height: 90%;
+    }
+
+    .content-3 .testimonials .testimonial-card .card-data .card-detail {
         padding-left: 50%;
     }
 
-    .content-3 .testimonial-card .card-data .card-detail h3 {
+    .content-3 .testimonials .testimonial-card .card-data .card-detail h3 {
         font-size: 4vw;
     }
 
-    .content-3 .testimonial-card .card-data .card-detail p {
+    .content-3 .testimonials .testimonial-card .card-data .card-detail p {
         font-size: 3vw;
     }
 
-    .content-3 .testimonial-card .card-data .card-review p {
+    .content-3 .testimonials .testimonial-card .card-data .card-review p {
         font-size: 3vw;
     }
 
     .content-4 .cal-wrapper .area-calculator,
     .content-4 .cal-wrapper .cost-calculator {
-        width: 80%;
+        width: 85%;
     }
 
     .content-4 .cal-wrapper .calculator-container {
@@ -1781,7 +1870,7 @@ section p {
         font-weight: bold;
     }
 
-    .cal-wrapper {
+    .content-4 .cal-wrapper {
         display: flex;
         justify-content: center; /* center horizontally */
         align-items: flex-start; /* align top */
@@ -1790,27 +1879,29 @@ section p {
         margin-top: 50px; /* adjust vertical spacing */
         flex-wrap: wrap; /* so they stack on mobile */
         gap: 40px;
+        width: 100%;
+
     }
 
     /* Area Calculator styles */
-    .calculator-container.area-calculator {
+    /* .calculator-container.area-calculator {
         font-family: Arial, sans-serif;
         background-color: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgb(8, 105, 114);
         width: 400px;
-    }
+    } */
 
     /* Cost Calculator styles */
-    .calculator-container.cost-calculator {
+    /* .calculator-container.cost-calculator {
         font-family: Arial, sans-serif;
         background-color: white;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgb(8, 105, 114);
         width: 400px;
-    }
+    } */
 
     .ceo-cto-container {
         display: flex;
