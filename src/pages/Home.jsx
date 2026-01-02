@@ -272,14 +272,10 @@ const Home = () => {
                 </div>
             </div>
             <div className="content-5">
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-
+                <div className="form-wrapper">
                 <div className="professional-form-section">
                     <h2>Get Started with Your Project</h2>
-                    <form action="/submit_project_form" method="post">
+                    <form className="main-form" action="/submit_project_form" method="post">
                         <label htmlFor="name">Full Name:</label>
                         <input
                             type="text"
@@ -316,12 +312,9 @@ const Home = () => {
                         <button type="submit">Submit Your Requirements</button>
                     </form>
                 </div>
-
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-
+                </div>
+            </div>
+            <div className="content-6">
                 <div className="ceo-cto-container">
                     <img
                         src={CtoPhoto}

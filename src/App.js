@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-// import Footer from './components/Footer';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Design from './pages/Design';
 import About from './pages/About';
@@ -21,7 +21,7 @@ import ScrollToTop from "./ScrollToTop";
 
 
 
-function App() {
+function App() {  
   return (
     <div>
       <Header />
@@ -45,7 +45,7 @@ function App() {
 
 
       </Routes>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

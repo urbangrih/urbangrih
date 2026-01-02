@@ -3,7 +3,7 @@ import DiningRoom from '../assets/interior-photos/dining-room.png'
 import KidsRoom from '../assets/interior-photos/kids-room.png'
 
 function Testimonial() {
-  return (
+return (
     <div className='testimonial-card'>
         <div className='card-image'>
             <img src={DiningRoom} alt="" />
@@ -21,7 +21,7 @@ function Testimonial() {
             </div>
         </div>
     </div>
-  )
+)
 }
 
 export default Testimonial
