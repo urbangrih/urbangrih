@@ -27,7 +27,7 @@ const Footer = () => {
 
         <div className="footer-section contact-us">
           <h3>Contact Us</h3>
-          <p>Email: contact@moonlooks.com</p>
+          <p>Email: urbangrih@gmail.com</p>
           <p>Address: Greater Noida, Uttar Pradesh</p>
         </div>
 

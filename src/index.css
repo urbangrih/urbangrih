@@ -1,12 +1,15 @@
 :root {
-    --accent: rgba(62, 19, 44, 0.8);
-    --accent-dark: rgba(62, 19, 44, 1);
+    --accent: hsla(325, 53%, 16%, 0.8);
+    --accent-dark: hsl(325, 53%, 16%);
     --accent-faded: hsla(325, 27%, 28%, 0.8);
-    --background: hsl(260, 6%, 86%);
+    --background: hsl(270, 6%, 86%);
     --heading: hsl(356, 5%, 25%);
     --border: hsl(0, 0%, 59%);
     --subtext: hsl(0, 0%, 29%);
     --text-white: hsl(0, 0%, 89%);
+    --swiper-theme-color: var(--text-white);
+    --swiper-navigation-color: var(--text-white);
+    --swiper-pagination-color: var(--text-white);
 }
 
 *,
@@ -116,7 +119,7 @@ nav ul {
     padding: 0;
     margin: 0;
     align-items: flex-end;
-    gap: 4vw;
+    gap: 3vw;
 }
 
 nav ul li {
@@ -143,39 +146,68 @@ nav ul li a:hover {
     color: var(--accent-dark);
 }
 
-nav ul li ul.dropdown {
+nav ul li .dropdown {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: #fff;
-    box-shadow: 0 8px 16px rgba(8, 105, 114, 0.3);
+    width: 520px;
+    padding: 28px 32px;
+
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+
+    border-radius: 14px;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12),
+        0 2px 6px rgba(0, 0, 0, 0.05);
+
     z-index: 1000;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    border-radius: 10px;
-    overflow: hidden;
-    min-width: 400px;
-    width: 100%;
+
     transition: all 0.3s ease;
 }
 
 @media (hover: hover) {
     nav ul li:hover ul.dropdown {
         display: grid;
-        grid-template-columns: 1fr 1px 1fr;
+        grid-template-columns: 1fr 1fr;
         opacity: 1;
         transform: translateX(-78%);
         align-items: center;
+        gap: 0;
+    }
+
+    nav ul li:hover .dropdown .dropdown-item {
+        width: 100%;
+        max-width: none;
+
     }
 
     nav ul li:hover ul.dropdown li h3 {
-        text-decoration: underline;
+        /* text-decoration: underline;
         margin: 0em;
         padding: 0.5em;
-        text-align: center;
+        text-align: center; */
+        font-size: 16px;
+        font-weight: 600;
+        color: #3a3a3a;
+        margin-bottom: 14px;
+        text-decoration: underline;
+        text-underline-offset: 4px;
     }
+
+    nav ul li:hover ul.dropdown li a {
+        display: block;
+        padding: 8px 0;
+
+        font-size: 15px;
+        font-weight: 500;
+        color: #0a6f75; /* teal accent */
+        text-decoration: none;
+
+        transition: color 0.2s ease, transform 0.2s ease;
+    }
+
 
     nav ul li:hover ul.dropdown .divider {
         width: 3px;
@@ -261,6 +293,11 @@ nav ul li {
     justify-content: center;
     margin: 0 auto;
     width: 100%;
+}
+
+.content{
+    color: var(--accent);
+
 }
 
 .content-1 {
@@ -595,6 +632,22 @@ h5 {
     text-align: center;
     margin: 2% 0; 
 }
+
+.content-3 .swiper {
+    width: 100%;
+    height: 100%;
+}
+
+.content-3 .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+
+    /* Center slide text vertically */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .content-3 .testimonials{
     width: 100%;
@@ -1007,6 +1060,7 @@ h5 {
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    color: var(--accent) ;
     width: 65%; /* Adjust as per your layout */
     padding: 0.757002271006813vh;
 }
@@ -1223,7 +1277,7 @@ section p {
 
 .team-section {
     padding: 80px;
-    background-color: #ffffff;
+    background-color: var(--background);
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
@@ -1290,14 +1344,14 @@ section p {
 
 .team-member-info h3 {
     font-size: 1.5rem;
-    color: #083d50;
+    color: var(--accent-dark);
     margin-bottom: 10px;
     font-weight: 600;
 }
 
 .team-member-info .position {
     font-size: 1rem;
-    color: #08a1b3;
+    color: var(--accent);
     font-weight: 500;
     margin-bottom: 15px;
 }
@@ -1764,7 +1818,7 @@ section p {
 
     .content-3 {
         height: 70vh;
-        width: 300vw;
+        width: 100vw;
         /* flex-direction: column; */
         overflow: hidden;
     }

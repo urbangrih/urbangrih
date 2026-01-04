@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { FaUserCircle } from "react-icons/fa";
@@ -8,14 +8,26 @@ function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const isLoggedIn = Boolean(localStorage.getItem('token'));
+  const menuRef = useRef(); 
+
 
   // Detect screen size
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
     };
+
+    const handler = (e) => {
+        if (!menuRef.current.contains(e.target)) {
+            setMenuOpen(false);
+            console.log("clicked outside");
+        }
+    }
+    window.addEventListener("mousedown", handler)
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousedown", handler);
+    };
   }, []);
 
   return (
@@ -35,8 +47,8 @@ function Header() {
           ☰
         </button>
 
-        <nav className={menuOpen ? 'active' : ''}>
-          <ul>
+        <nav  className={menuOpen ? 'active' : ''}>
+          <ul ref = {menuRef}>
             {/* Main nav links */}
             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li>
@@ -52,7 +64,6 @@ function Header() {
                     <li><Link to="/architechture-3" onClick={() => setMenuOpen(false)}>Architechture 3</Link></li>
                   </ul>
                 </li>
-                <li className='divider'><div className="divider-line"></div></li>
                 <li className='dropdown-item'>
                   <h3>Interior Design</h3>
                   <ul className='item-list'>
@@ -63,7 +74,47 @@ function Header() {
                 </li>
               </ul>
             </li>
-            <li><Link to="/about" onClick={() => setMenuOpen(false)}>About Us</Link></li>
+            <li>
+              <Link to="/about" onClick={() => setMenuOpen(false)}>Experts</Link>
+              <ul className="dropdown">
+                <li className='dropdown-item'>
+                  <Link to="/interior-designers" onClick={() => setMenuOpen(false)}>Interior Designers</Link>
+                </li>
+                <li className='dropdown-item'>
+                  <Link to="/architects" onClick={() => setMenuOpen(false)}>Architects</Link>
+                </li>
+                <li className='dropdown-item'>
+                  <Link to="/vastu-consultants" onClick={() => setMenuOpen(false)}>Vastu Consultants</Link>
+                </li>
+                <li className='dropdown-item'>
+                  <Link to="/contractors" onClick={() => setMenuOpen(false)}>Contractors</Link>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <Link to="/about" onClick={() => setMenuOpen(false)}>Material</Link>
+              <ul className="dropdown">
+                <li>
+                <Link to="/furniture" onClick={() => setMenuOpen(false)}>Furniture</Link>
+                </li>
+                <li>
+                <Link to="/modular-kitchen" onClick={() => setMenuOpen(false)}>Modular Kitchen</Link>
+                </li>
+                <li>
+                <Link to="/ligthing" onClick={() => setMenuOpen(false)}>Ligthing</Link>
+                </li>
+                <li>
+                <Link to="/tiles-flooring" onClick={() => setMenuOpen(false)}>Tiles and Flooring</Link>
+                </li>
+                <li>
+                <Link to="/paint-decor" onClick={() => setMenuOpen(false)}>Paint & Decor</Link>
+                </li>
+                <li>
+                <Link to="/hardware" onClick={() => setMenuOpen(false)}>Hardware</Link>
+                </li>
+              </ul>
+            </li>
+            {/* <li><Link to="/about" onClick={() => setMenuOpen(false)}>About Us</Link></li> */}
             <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
 
             {/* Extra links ONLY in mobile hamburger */}

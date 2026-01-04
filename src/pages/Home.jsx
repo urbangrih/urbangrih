@@ -9,6 +9,13 @@ import interiorImage4 from "../assets/interior-photos/dining-room.png";
 import interiorImage5 from "../assets/interior-photos/kids-room.png";
 import interiorImage6 from "../assets/interior-photos/wardrobe.jpg";
 
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Autoplay, Pagination, Navigation } from "swiper/modules";
+
 const Home = () => {
     const [area, setArea] = useState(0);
     const [unit, setUnit] = useState("feet");
@@ -18,6 +25,8 @@ const Home = () => {
     const [costType, setCostType] = useState(1450);
     const [floors, setFloors] = useState(1);
     const [totalCost, setTotalCost] = useState(0);
+
+    // const swiper = new Swiper(...);
 
     useEffect(() => {
         // Dynamically add the AI Chatbox script
@@ -172,9 +181,64 @@ const Home = () => {
                     <h3>Testimonials</h3>
                 </div>
                 <div className="testimonials">
+                    <Swiper
+                        slidesPerView={1}
+                        spaceBetween={30}
+                        loop={true}
+                        autoplay={{
+                            delay: 2500,
+                            disableOnInteraction: false,
+                        }}
+                        breakpoints={{
+                            768: { slidesPerView: 3, autoplay: { delay: 1000  }  },
+                        }}
+                        pagination={{
+                            clickable: true,
+                        }}
+                        navigation={true}
+                        modules={[Autoplay, Pagination, Navigation]}
+                        className="mySwiper"
+                    >
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <Testimonial></Testimonial>
+                        </SwiperSlide>
+                        {/* <SwiperSlide>Slide 4</SwiperSlide>
+                        <SwiperSlide>Slide 5</SwiperSlide>
+                        <SwiperSlide>Slide 6</SwiperSlide>
+                        <SwiperSlide>Slide 7</SwiperSlide>
+                        <SwiperSlide>Slide 8</SwiperSlide>
+                        <SwiperSlide>Slide 9</SwiperSlide> */}
+                    </Swiper>
+                    {/* <Testimonial></Testimonial>
                     <Testimonial></Testimonial>
-                    <Testimonial></Testimonial>
-                    <Testimonial></Testimonial>
+                    <Testimonial></Testimonial> */}
                 </div>
             </div>
             <div className="content-4">
@@ -270,7 +334,7 @@ const Home = () => {
                                 />
                             </div>
                         </div>
-                        
+
                         <button onClick={calculateTotalCost}>
                             Calculate Cost
                         </button>
@@ -279,45 +343,57 @@ const Home = () => {
             </div>
             <div className="content-5">
                 <div className="form-wrapper">
-                <div className="professional-form-section">
-                    <h2>Get Started with Your Project</h2>
-                    <form className="main-form" action="/submit_project_form" method="post">
-                        <label htmlFor="name">Full Name:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            placeholder="Your Name"
-                            required
-                        />
-                        <label htmlFor="email">Email Address:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            placeholder="Your Email"
-                            required
-                        />
-                        <label htmlFor="phone">Phone Number:</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            placeholder="Your Phone Number"
-                            required
-                        />
-                        <label htmlFor="project-type">Type of Project:</label>
-                        <select id="project-type" required>
-                            <option value="Floor Planning">Floor Plans</option>
-                            <option value="Interior">Interior Design</option>
-                            <option value="Other">Other</option>
-                        </select>
-                        <label htmlFor="details">Project Details:</label>
-                        <textarea
-                            id="details"
-                            rows="4"
-                            placeholder="Briefly describe your project requirements..."
-                        ></textarea>
-                        <button type="submit">Submit Your Requirements</button>
-                    </form>
-                </div>
+                    <div className="professional-form-section">
+                        <h2>Get Started with Your Project</h2>
+                        <form
+                            className="main-form"
+                            action="/submit_project_form"
+                            method="post"
+                        >
+                            <label htmlFor="name">Full Name:</label>
+                            <input
+                                type="text"
+                                id="name"
+                                placeholder="Your Name"
+                                required
+                            />
+                            <label htmlFor="email">Email Address:</label>
+                            <input
+                                type="email"
+                                id="email"
+                                placeholder="Your Email"
+                                required
+                            />
+                            <label htmlFor="phone">Phone Number:</label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                placeholder="Your Phone Number"
+                                required
+                            />
+                            <label htmlFor="project-type">
+                                Type of Project:
+                            </label>
+                            <select id="project-type" required>
+                                <option value="Floor Planning">
+                                    Floor Plans
+                                </option>
+                                <option value="Interior">
+                                    Interior Design
+                                </option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label htmlFor="details">Project Details:</label>
+                            <textarea
+                                id="details"
+                                rows="4"
+                                placeholder="Briefly describe your project requirements..."
+                            ></textarea>
+                            <button type="submit">
+                                Submit Your Requirements
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
             {/* <div className="content-6">

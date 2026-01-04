@@ -98,6 +98,78 @@ function Team() {
             </div>
           </div>
 
+          <div className="team-member">
+            <div className="team-member-photo">
+            <img
+                  src={require("../assets/intern_photo.jpg")}
+                  alt="CTO Photo"
+                />
+            </div>
+            <div className="team-member-info">
+              <h3>Aman Maurya</h3>
+              <p className="position">Web Developer Intern</p>
+              <div className="social-links">
+                <a
+                  href="https://www.linkedin.com/in/amanmaurya211/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                  src={require("../assets/linkedin.png")}
+                  alt="LinkedIn"
+                />
+                </a>
+                <a href="mailto:amankashipur1234@gmail.com">
+                <img
+                  src={require("../assets/gmail.png")}
+                  alt="Gmail"
+                />
+                </a>
+              </div>
+              <p className="bio">
+              Aman Maurya, currently pursuing a B.Tech in Information Technology from the Indian Institute of Information Technology, Una, is working as a Web Developer Intern.
+Alongside his internship role, Aman has a strong passion for learning new technologies and continuously expanding his technical skill set.
+He enjoys implementing his knowledge through real-world projects, focusing on building practical, efficient, and user-centric web solutions that reflect both his curiosity and commitment to growth.
+              </p>
+            </div>
+          </div>
+
+          <div className="team-member">
+            <div className="team-member-photo">
+            <img
+                  src={require("../assets/cto_photo.png")}
+                  alt="CTO Photo"
+                />
+            </div>
+            <div className="team-member-info">
+              <h3>Ujjwal Kulshrestha</h3>
+              <p className="position">Founder & CTO</p>
+              <div className="social-links">
+                <a
+                  href="https://www.linkedin.com/in/ujjwal-kulshrestha/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <img
+                  src={require("../assets/linkedin.png")}
+                  alt="LinkedIn"
+                />
+                </a>
+                <a href="mailto:ujjwalkul7@gmail.com">
+                <img
+                  src={require("../assets/gmail.png")}
+                  alt="Gmail"
+                />
+                </a>
+              </div>
+              <p className="bio">
+                Ujjwal Kulshrestha, currently pursuing a B.Tech in Information Technology from the Indian Institute of Information Technology, Una, is the Chief Technology Officer at URBAN GRIH. 
+                Alongside his leadership role, Ujjwal has a strong passion for designing floor plans, combining his technical expertise with his creative vision. 
+                His ability to integrate innovative technology solutions with architectural design helps URBAN GRIH deliver cutting-edge digital platforms for clients.
+              </p>
+            </div>
+          </div>
+
         </div>
       </section>
     </div>
