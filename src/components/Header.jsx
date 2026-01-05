@@ -48,12 +48,12 @@ function Header() {
         </button>
 
         <nav  className={menuOpen ? 'active' : ''}>
-          <ul ref = {menuRef}>
+          <ul ref = {menuRef} className = "header-links">
             {/* Main nav links */}
             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li>
               <Link to="/design" onClick={() => setMenuOpen(false)} className='design-button'>Design</Link>
-              <ul className="dropdown">
+              <ul className="two-col-dropdown">
                 {/* <li><Link to="/villas-floor-plans" onClick={() => setMenuOpen(false)}>Villas Floor Plans</Link></li> */}
                 {/* <li><Link to="/flats-floor-plans" onClick={() => setMenuOpen(false)}>Flats Floor Plans</Link></li> */}
                 <li className='dropdown-item'>
@@ -94,22 +94,22 @@ function Header() {
             <li>
               <Link to="/about" onClick={() => setMenuOpen(false)}>Material</Link>
               <ul className="dropdown">
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/furniture" onClick={() => setMenuOpen(false)}>Furniture</Link>
                 </li>
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/modular-kitchen" onClick={() => setMenuOpen(false)}>Modular Kitchen</Link>
                 </li>
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/ligthing" onClick={() => setMenuOpen(false)}>Ligthing</Link>
                 </li>
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/tiles-flooring" onClick={() => setMenuOpen(false)}>Tiles and Flooring</Link>
                 </li>
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/paint-decor" onClick={() => setMenuOpen(false)}>Paint & Decor</Link>
                 </li>
-                <li>
+                <li className='dropdown-item'>
                 <Link to="/hardware" onClick={() => setMenuOpen(false)}>Hardware</Link>
                 </li>
               </ul>
