@@ -1,29 +1,20 @@
-import React from 'react';
-import '../index.css';
+import React from 'react'
 
-const Design = () => {
-
+function Materials() {
   const closePopup = () => {
     document.getElementById('popup').style.display = 'none';
   };
-
   return (
     <div className="content-2 mobile-nav-option-content">
       <section id="architectDesigns" className='mobile-nav-option-section'>
         <h3>Architect Design</h3>
         <ul className="mobile-nav-options">
-            <li>Architechture 1</li>
-            <li>Architechture 2</li>
-            <li>Architechture 3</li>
-        </ul>
-      </section>
-
-      <section id="interiorDesigns" className='mobile-nav-option-section'>
-        <h3>Interior Design</h3>
-        <ul className='mobile-nav-options'>
-          <li>Interior 1</li>
-          <li>Interior 2</li>
-          <li>Interior 3</li>
+            <li>Furniture</li>
+            <li>Modular Kitchen</li>
+            <li>Lighting</li>
+            <li>Tiles and Flooring</li>
+            <li>Paint & Decor</li>
+            <li>Hardware</li>
         </ul>
       </section>
 
@@ -39,7 +30,7 @@ const Design = () => {
         data-lang="en"
       ></script>
     </div>
-  );
-};
+  )
+}
 
-export default Design;
+export default Materials

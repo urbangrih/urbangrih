@@ -18,9 +18,13 @@ function Header() {
     };
 
     const handler = (e) => {
-        if (!menuRef.current.contains(e.target)) {
+        // Ignore clicks on hamburger button
+        if (e.target.closest('.hamburger')) {
+          return;
+        }
+        if (menuRef.current && !menuRef.current.contains(e.target)) {
             setMenuOpen(false);
-            console.log("clicked outside");
+            // console.log("clicked outside");
         }
     }
     window.addEventListener("mousedown", handler)
@@ -41,7 +45,7 @@ function Header() {
         {/* Hamburger (mobile only via CSS) */}
         <button
           className={`hamburger ${menuOpen ? 'open' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={() => {setMenuOpen(!menuOpen)}}
           aria-label="Toggle menu"
         >
           ☰
@@ -52,7 +56,7 @@ function Header() {
             {/* Main nav links */}
             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li>
-              <Link to="/design" onClick={() => setMenuOpen(false)} className='design-button'>Design</Link>
+              <Link to="/design" onClick={() => setMenuOpen(false)} className='nav-button'>Design</Link>
               <ul className="two-col-dropdown">
                 {/* <li><Link to="/villas-floor-plans" onClick={() => setMenuOpen(false)}>Villas Floor Plans</Link></li> */}
                 {/* <li><Link to="/flats-floor-plans" onClick={() => setMenuOpen(false)}>Flats Floor Plans</Link></li> */}
@@ -75,7 +79,7 @@ function Header() {
               </ul>
             </li>
             <li>
-              <Link to="/about" onClick={() => setMenuOpen(false)}>Experts</Link>
+              <Link to="/experts" onClick={() => setMenuOpen(false)} className = 'nav-button'>Experts</Link>
               <ul className="dropdown">
                 <li className='dropdown-item'>
                   <Link to="/interior-designers" onClick={() => setMenuOpen(false)}>Interior Designers</Link>
@@ -92,7 +96,7 @@ function Header() {
               </ul>
             </li>
             <li>
-              <Link to="/about" onClick={() => setMenuOpen(false)}>Material</Link>
+              <Link to="/materials" onClick={() => setMenuOpen(false)} className='nav-button'>Material</Link>
               <ul className="dropdown">
                 <li className='dropdown-item'>
                 <Link to="/furniture" onClick={() => setMenuOpen(false)}>Furniture</Link>

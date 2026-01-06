@@ -138,7 +138,7 @@ nav .header-links > li > a {
     padding: 1.0598031794095382vh 0.625vw;
 }
 
-nav .header-links > li > a.design-button {
+nav .header-links > li > a.nav-button {
     pointer-events: none;
 }
 
@@ -1553,8 +1553,12 @@ section p {
         transform: scale(0.9);
     }
 
+    nav {
+        display: none;
+    }
+
     nav.active {
-        display: relative;
+        display: block;
     }
 
     /* Nav menu hidden by default (with animation prep) */
@@ -1618,7 +1622,7 @@ section p {
         align-items: center;
     }
 
-    nav ul li a {
+    nav.active > ul > li > a, nav.active > ul > li > a.nav-button {
         pointer-events: auto;
         right: 400px;
         font-size: 1rem;
@@ -1627,19 +1631,12 @@ section p {
         transition: background 0.3s ease, color 0.3s ease;
     }
 
-    nav ul li a:hover {
-        color: white;
-        background: black;
-        padding: 8px 12px;
-        border-radius: 4px;
-    }
-
     /* Hide sub-nav-bar in mobile if not needed */
     .sub-nav-bar {
         display: none;
     }
 
-    nav ul li img.login-icon {
+    nav.active ul li img.login-icon {
         width: 22px;
         height: 22px;
         display: inline-block;
@@ -1975,31 +1972,31 @@ section p {
         line-height: 1.6;
     }
 
-    .design-content {
+    .mobile-nav-option-content {
         margin-top: 100px;
         margin-left: 0;
-        width: 92%;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
-    .design-section {
+    .mobile-nav-option-section {
         text-align: center;
         margin-bottom: 50px;
         width: 80%;
-        box-shadow: #086972 0px 4px 8px;
+        box-shadow: var(--accent) 0px 4px 8px;
         border-radius: 10px;
-        color: rgb(8, 105, 114);
+        color: var(--accent);
     }
 
-    .design-section h3 {
+    .mobile-nav-option-section h3 {
         text-decoration: underline;
         margin-bottom: 0.5em;
     }
 
-    .design-options {
+    .mobile-nav-options {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -2008,7 +2005,7 @@ section p {
         padding-left: 0;
     }
 
-    .design-options li {
+    .mobile-nav-options li {
         list-style: none;
     }
 
