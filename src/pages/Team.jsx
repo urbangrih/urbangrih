@@ -22,7 +22,7 @@ function Team() {
             </div>
             <div className="team-member-info">
               <h3>Ujjwal Kulshrestha</h3>
-              <p className="position">Founder & CTO</p>
+              <p className="position">Founder</p>
               <div className="social-links">
                 <a
                   href="https://www.linkedin.com/in/ujjwal-kulshrestha/"
@@ -71,7 +71,7 @@ function Team() {
             </div>
             <div className="team-member-info">
               <h3>Swati Chauhan</h3>
-              <p className="position">Designing and Marketing Head</p>
+              <p className="position">Co-Founder</p>
               <div className="social-links">
                 <a
                   href="https://www.linkedin.com/in/swatidigital/"
