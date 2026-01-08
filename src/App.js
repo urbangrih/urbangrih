@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
+import Menu_options from './pages/Menu_options';
 import Design from './pages/Design';
 import Experts from './pages/Experts';
 import Materials from './pages/Materials';
@@ -30,9 +31,10 @@ function App() {
        <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/design" element={<Design />} />
-        <Route path="/experts" element={<Experts />} />
-        <Route path="/materials" element={<Materials />} />
+        {/* <Route path="/design" element={<Menu_options />} />
+        <Route path="/experts" element={<Menu_options />} />
+        <Route path="/materials" element={<Menu_options />} /> */}
+        <Route path="/:section" element={<Menu_options />} />
         <Route path="/villas-floor-plans" element={<VillasFloorPlans/>}/>
         <Route path="/flats-floor-plans" element={<FlatsFloorPlans/>}/>
         <Route path="/about" element={<About />} />

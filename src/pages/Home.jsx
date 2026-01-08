@@ -236,9 +236,6 @@ const Home = () => {
                         <SwiperSlide>Slide 8</SwiperSlide>
                         <SwiperSlide>Slide 9</SwiperSlide> */}
                     </Swiper>
-                    {/* <Testimonial></Testimonial>
-                    <Testimonial></Testimonial>
-                    <Testimonial></Testimonial> */}
                 </div>
             </div>
             <div className="content-4">
@@ -246,28 +243,30 @@ const Home = () => {
                     <div className="calculator-container area-calculator">
                         <h1>Area Calculator</h1>
                         <div className="result-section">
-                            <p>Result</p>
-                            <p>Area: {area.toFixed(2)} sq ft</p>
+                            <h3>Result</h3>
+                            <h3>Area: {area.toFixed(2)} sq ft</h3>
                         </div>
                         <div className="unit-section">
                             <label>Select Unit:</label>
-                            <input
-                                type="radio"
-                                id="meters"
-                                name="unit"
-                                value="meters"
-                                onChange={() => setUnit("meters")}
-                            />
-                            <label htmlFor="meters">Meters</label>
-                            <input
-                                type="radio"
-                                id="feet"
-                                name="unit"
-                                value="feet"
-                                defaultChecked
-                                onChange={() => setUnit("feet")}
-                            />
-                            <label htmlFor="feet">Feet</label>
+                            <div className="unit-options">
+                                <input
+                                    type="radio"
+                                    id="meters"
+                                    name="unit"
+                                    value="meters"
+                                    onChange={() => setUnit("meters")}
+                                />
+                                <label htmlFor="meters">Meters</label>
+                                <input
+                                    type="radio"
+                                    id="feet"
+                                    name="unit"
+                                    value="feet"
+                                    defaultChecked
+                                    onChange={() => setUnit("feet")}
+                                />
+                                <label htmlFor="feet">Feet</label>
+                            </div>
                         </div>
                         <div className="input-section">
                             <div className="input-group">

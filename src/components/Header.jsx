@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { FaUserCircle } from "react-icons/fa";
+import Dropdown  from './Dropdown';
+import { NAV_DATA } from '../data/navigationData';
 
 
 function Header() {
@@ -57,9 +59,7 @@ function Header() {
             <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
             <li>
               <Link to="/design" onClick={() => setMenuOpen(false)} className='nav-button'>Design</Link>
-              <ul className="two-col-dropdown">
-                {/* <li><Link to="/villas-floor-plans" onClick={() => setMenuOpen(false)}>Villas Floor Plans</Link></li> */}
-                {/* <li><Link to="/flats-floor-plans" onClick={() => setMenuOpen(false)}>Flats Floor Plans</Link></li> */}
+              {/* <ul className="two-col-dropdown">
                 <li className='dropdown-item'>
                   <h3>Architect Design</h3>
                   <ul className='item-list'>
@@ -76,11 +76,15 @@ function Header() {
                     <li><Link to="/interior-3" onClick={() => setMenuOpen(false)}>Interior 3</Link></li>
                   </ul>
                 </li>
-              </ul>
+              </ul> */}
+              <Dropdown 
+                section = {NAV_DATA.design}
+                setMenuOpen={setMenuOpen}
+              />
             </li>
             <li>
               <Link to="/experts" onClick={() => setMenuOpen(false)} className = 'nav-button'>Experts</Link>
-              <ul className="dropdown">
+              {/* <ul className="dropdown">
                 <li className='dropdown-item'>
                   <Link to="/interior-designers" onClick={() => setMenuOpen(false)}>Interior Designers</Link>
                 </li>
@@ -93,11 +97,15 @@ function Header() {
                 <li className='dropdown-item'>
                   <Link to="/contractors" onClick={() => setMenuOpen(false)}>Contractors</Link>
                 </li>
-              </ul>
+              </ul> */}
+              <Dropdown 
+                section = {NAV_DATA.experts}
+                setMenuOpen={setMenuOpen}
+              />
             </li>
             <li>
               <Link to="/materials" onClick={() => setMenuOpen(false)} className='nav-button'>Material</Link>
-              <ul className="dropdown">
+              {/* <ul className="dropdown">
                 <li className='dropdown-item'>
                 <Link to="/furniture" onClick={() => setMenuOpen(false)}>Furniture</Link>
                 </li>
@@ -116,7 +124,11 @@ function Header() {
                 <li className='dropdown-item'>
                 <Link to="/hardware" onClick={() => setMenuOpen(false)}>Hardware</Link>
                 </li>
-              </ul>
+              </ul> */}
+              <Dropdown 
+                section={NAV_DATA.materials}
+                setMenuOpen={setMenuOpen}
+              />
             </li>
             {/* <li><Link to="/about" onClick={() => setMenuOpen(false)}>About Us</Link></li> */}
             <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>

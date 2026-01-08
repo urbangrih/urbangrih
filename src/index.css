@@ -588,7 +588,7 @@ h5 {
 
 .content-3 {
     width: 100%;
-    height: 90vh;
+    height: 90svh;
     background-color: var(--accent);
     display: flex;
     flex-direction: column;
@@ -599,11 +599,12 @@ h5 {
 }
 
 .content-3 .content-title {
+    /* flex: 0 0 auto; */
     font-size: 2rem;
     font-family: "Times New Roman", Times, serif;
     color: var(--text-white);
     text-align: center;
-    margin: 2% 0; 
+    margin: 1rem 0; 
 }
 
 .content-3 .swiper {
@@ -632,7 +633,8 @@ h5 {
 
 .content-3 .testimonials .testimonial-card {
     width: 20vw;
-    height: 80%;
+    height: auto;
+    min-height: 420px;
     background-color: var(--background);
     border-radius: 15px;
     box-shadow: 0 4px 10px var(--accent);
@@ -640,7 +642,8 @@ h5 {
 
 .content-3 .testimonials .testimonial-card .card-image {
     width: 100%;
-    height: 40%;
+    height: clamp(100px, 30%, 150px);
+    max-height: 150px;
     overflow: hidden;
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
@@ -723,15 +726,116 @@ h5 {
 }
 
 .content-4 .cal-wrapper{
-    width: 70%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 3rem;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1100px;
+}
+
+.calculator-container {
+    container-type: inline-size;
+    background-color: white;
+    color: var(--accent);
+    padding: clamp(0.9rem, 2.5cqw, 1.3rem);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    min-height: 400px;
+    box-shadow: 0 4px 8px var(--accent);
+}
+
+.calculator-container > h1{
+    font-size: clamp(1.5rem, 4cqw, 2rem);
+}
+
+.calculator-container .result-section {
+    background-color: var(--accent);
+    color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    text-align: center;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /* height: 30%; */
+    min-height: clamp(90px, 20cqw, 130px);
+    width: 100%;
+}
+
+.calculator-container label, .calculator-container p {
+    font-size: clamp(0.9rem, 2.5cqw, 1rem);
+}
+
+.area-calculator, .cost-calculator{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
     align-items: center;
 }
 
-.content-4 .cal-wrapper .calculator-container{
-    width: 30%;
+.area-calculator .unit-section {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
+
+.area-calculator .unit-options {
+    display: flex;
+    gap: 1rem;
+}
+
+.area-calculator .input-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+
+.calculator-container .input-group {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.calculator-container input[type="number"] {
+    width: 100%;
+    min-width: 0;
+    /* padding: 10px; */
+    /* margin-right: 10px; */
+}
+
+.calculator-container select {
+    width: 100%;
+    min-width: 0;
+    /* padding: 10px; */
+}
+
+.calculator-container button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--accent);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.calculator-container button:active {
+    transform: scale(0.98);
+}
+
 
 .content-5 {
     margin: 50px 0;
@@ -766,6 +870,7 @@ h5 {
     width: 100%;
 }
 
+
 .card-info {
     padding: 15px;
 }
@@ -782,116 +887,6 @@ h5 {
     color: #777;
 }
 
-.cal-wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 50px;
-}
-
-.area-calculator{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.area-calculator .result-section{
-    width: 100%;
-}
-
-.area-calculator .unit-section {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-
-.area-calculator .input-section {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 5px;
-}
-
-.cost-calculator{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.calculator-container {
-    font-family: Arial, sans-serif;
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    height: 60vh;
-    margin: auto;
-    box-shadow: 0 4px 8px var(--accent);
-}
-
-
-.calculator-container h1,
-.calculator-container h2 {
-    color: var(--accent);
-    margin: 0 0 10px;
-    text-align: center;
-}
-
-.calculator-container .result-section {
-    background-color: var(--accent);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 30%;
-    width: 100%;
-}
-
-
-.calculator-container .input-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.calculator-container input[type="number"] {
-    width: 60%;
-    padding: 10px;
-    /* margin-right: 10px; */
-}
-
-.calculator-container select {
-    width: 35%;
-    padding: 10px;
-}
-
-.calculator-container button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 5px;
-    background-color: var(--accent);
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.calculator-container button:active {
-    transform: scale(0.98);
-}
 
 /* Adjusted container selector */
 .professional-form-section-container {
@@ -1787,15 +1782,14 @@ section p {
     }
 
     .content-3 {
-        height: 70vh;
+        height: 70svh;
         width: 100vw;
-        /* flex-direction: column; */
         overflow: hidden;
     }
 
     .content-3 .content-title {
-        flex: 1;
-        margin: 2% 0 0 0;
+        flex: 0 0 auto;
+        margin: 1rem 0;
     }
 
     .content-3 .content-title h3{
@@ -1803,9 +1797,9 @@ section p {
     }
 
     .content-3 .testimonials {
-        flex: 7;
+        flex: 1;
         width: 100%;
-        height: 100%;
+        height: auto;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
@@ -1814,11 +1808,15 @@ section p {
 
     .content-3 .testimonials .testimonial-card {
         width: 60vw;
-        height: 90%;
+        min-height: 350px;
     }
 
     .content-3 .testimonials .testimonial-card .card-data .card-detail {
-        padding-left: 50%;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
     }
 
     .content-3 .testimonials .testimonial-card .card-data .card-detail h3 {

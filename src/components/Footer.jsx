@@ -17,9 +17,6 @@ const Footer = () => {
           <h3>Quick Links</h3>
           <ul>
             <li><a href="/home">Home</a></li>
-            <li><a href="/designs">Designs</a></li>
-            <li><a href="/villas-floor-plans">Villas Floor Plans</a></li>
-            <li><a href="/flats-floor-plans">Flats Floor Plans</a></li>
             <li><a href="/about">About Us</a></li>
             <li><a href="/contact">Contact Us</a></li>
           </ul>
