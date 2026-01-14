@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PieChartComp from "../components/pieChartComp";
-import Testimonial from "../components/testimonial";
+import ProfileCard from "../components/ProfileCard.jsx";
 import CtoPhoto from "../assets/cto_photo.png";
 import interiorImage1 from "../assets/interior-photos/living-room.png";
 import interiorImage2 from "../assets/interior-photos/kitchen.jpg";
@@ -200,41 +200,35 @@ const Home = () => {
                         className="mySwiper"
                     >
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
                         <SwiperSlide>
-                            <Testimonial></Testimonial>
+                            <ProfileCard></ProfileCard>
                         </SwiperSlide>
-                        {/* <SwiperSlide>Slide 4</SwiperSlide>
-                        <SwiperSlide>Slide 5</SwiperSlide>
-                        <SwiperSlide>Slide 6</SwiperSlide>
-                        <SwiperSlide>Slide 7</SwiperSlide>
-                        <SwiperSlide>Slide 8</SwiperSlide>
-                        <SwiperSlide>Slide 9</SwiperSlide> */}
                     </Swiper>
                 </div>
             </div>

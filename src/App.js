@@ -3,10 +3,11 @@ import { Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
-import Menu_options from './pages/Menu_options';
-import Design from './pages/Design';
-import Experts from './pages/Experts';
-import Materials from './pages/Materials';
+// import Menu_options from './pages/Menu_options';
+import SectionRouter from './components/SectionRouter';
+// import Design from './pages/Design';
+// import Experts from './pages/Experts';
+// import Materials from './pages/Materials';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Team from './pages/Team';
@@ -28,13 +29,13 @@ function App() {
   return (
     <div>
       <Header />
-       <ScrollToTop />
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/design" element={<Menu_options />} />
-        <Route path="/experts" element={<Menu_options />} />
-        <Route path="/materials" element={<Menu_options />} /> */}
-        <Route path="/:section" element={<Menu_options />} />
+        {/* <Route path="/design" element={<Design />} />
+        <Route path="/experts" element={<Experts />} />
+        <Route path="/materials" element={<Materials />} /> */}
+        <Route path="/:section" element={<SectionRouter />} />
         <Route path="/villas-floor-plans" element={<VillasFloorPlans/>}/>
         <Route path="/flats-floor-plans" element={<FlatsFloorPlans/>}/>
         <Route path="/about" element={<About />} />
@@ -48,8 +49,6 @@ function App() {
         <Route path="/dining-room" element={<DiningRoom/>} />
         <Route path="/kids-room" element={<KidsBedroom/>} />
         <Route path="wordrobe" element={<Wardrobe/>} />
-
-
       </Routes>
       <Footer />
     </div>

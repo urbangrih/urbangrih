@@ -1,5 +1,5 @@
 :root {
-    --accent: hsla(325, 53%, 16%, 0.8);
+    --accent: #3e132ccc;
     --accent-dark: hsl(325, 53%, 16%);
     --accent-faded: hsla(325, 27%, 28%, 0.8);
     --background: hsl(270, 6%, 86%);
@@ -285,12 +285,6 @@ nav .header-links li {
     background-position: center;
     box-sizing: border-box;
 }
-
-/* .content-4, .content-5{
-  width: 65%;
-  margin-top: 250px;
-  padding: 20px;
-} */
 
 .content-1 .hero-title {
     font-size: 40px;
@@ -631,7 +625,7 @@ h5 {
     align-items: center;
 }
 
-.content-3 .testimonials .testimonial-card {
+.profile-card {
     width: 20vw;
     height: auto;
     min-height: 420px;
@@ -640,7 +634,7 @@ h5 {
     box-shadow: 0 4px 10px var(--accent);
 }
 
-.content-3 .testimonials .testimonial-card .card-image {
+.profile-card .profile-card-image {
     width: 100%;
     height: clamp(100px, 30%, 150px);
     max-height: 150px;
@@ -649,14 +643,14 @@ h5 {
     border-top-right-radius: 15px;
 }
 
-.content-3 .testimonials .testimonial-card .card-image img {
+.profile-card .profile-card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
 }
 
-.content-3 .testimonials .testimonial-card .card-data {
+.profile-card .profile-card-data {
     width: 100%;
     height: 60%;
     position: relative;
@@ -666,14 +660,14 @@ h5 {
     align-items: center;
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-profile {
+.profile-card .profile-card-data .profile-card-profile {
     position: absolute;
     top: 0;
     left: 0;
     transform: translateX(15px) translateY(-45px);
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-profile img {
+.profile-card .profile-card-data .profile-card-profile img {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -682,7 +676,7 @@ h5 {
     border: 3px solid var(--accent);
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-detail {
+.profile-card .profile-card-data .profile-card-detail {
     flex: 2;
     margin-left: 10px;
     padding: 0 35px;
@@ -693,7 +687,7 @@ h5 {
     width: 100%;
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-detail h3 {
+.profile-card .profile-card-data .profile-card-detail h3 {
     margin: 0;
     margin-top: 5%;
     font-size: 1.4vw;
@@ -701,13 +695,13 @@ h5 {
     text-wrap: balance;
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-detail p {
+.profile-card .profile-card-data .profile-card-detail p {
     margin: 0;
     font-size: 0.9vw;
     color: var(--subtext);
 }
 
-.content-3 .testimonials .testimonial-card .card-data .card-review {
+.profile-card .profile-card-data .profile-card-desc {
     flex: 5;
     box-sizing: border-box;
     font-size: 1vw;
@@ -1806,12 +1800,12 @@ section p {
         gap: 20px;
     }
 
-    .content-3 .testimonials .testimonial-card {
+    .content-3 .testimonials .profile-card {
         width: 60vw;
         min-height: 350px;
     }
 
-    .content-3 .testimonials .testimonial-card .card-data .card-detail {
+    .content-3 .testimonials .profile-card .profile-card-data .profile-card-detail {
         padding-left: 0;
         display: flex;
         flex-direction: column;
@@ -1819,15 +1813,15 @@ section p {
         align-items: end;
     }
 
-    .content-3 .testimonials .testimonial-card .card-data .card-detail h3 {
+    .content-3 .testimonials .profile-card .profile-card-data .profile-card-detail h3 {
         font-size: 4vw;
     }
 
-    .content-3 .testimonials .testimonial-card .card-data .card-detail p {
+    .content-3 .testimonials .profile-card .profile-card-data .profile-card-detail p {
         font-size: 3vw;
     }
 
-    .content-3 .testimonials .testimonial-card .card-data .card-review p {
+    .content-3 .testimonials .profile-card .profile-card-data .profile-card-desc p {
         font-size: 3vw;
     }
 
