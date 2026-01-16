@@ -22,6 +22,7 @@ import DiningRoom from './pages/Dining_room';
 import KidsBedroom from './pages/Kids_bedroom';
 import Wardrobe from './pages/Wordrobe';
 import ScrollToTop from "./ScrollToTop";
+import FeatureRouter from './components/FeatureRouter';
 
 
 
@@ -32,10 +33,8 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/design" element={<Design />} />
-        <Route path="/experts" element={<Experts />} />
-        <Route path="/materials" element={<Materials />} /> */}
         <Route path="/:section" element={<SectionRouter />} />
+        <Route path="/feature/:feature" element={<FeatureRouter />} />
         <Route path="/villas-floor-plans" element={<VillasFloorPlans/>}/>
         <Route path="/flats-floor-plans" element={<FlatsFloorPlans/>}/>
         <Route path="/about" element={<About />} />
@@ -43,12 +42,6 @@ function App() {
         <Route path="/team" element={<Team />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/living-room" element={<LivingRoomDesigns/>} />
-        <Route path="/kitchen" element={<KitchenDesigns/>} />
-        <Route path="/master-bedroom" element={<MasterBedroom/>} />
-        <Route path="/dining-room" element={<DiningRoom/>} />
-        <Route path="/kids-room" element={<KidsBedroom/>} />
-        <Route path="wordrobe" element={<Wardrobe/>} />
       </Routes>
       <Footer />
     </div>

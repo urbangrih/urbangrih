@@ -8,6 +8,7 @@ import interiorImage3 from "../assets/interior-photos/master-bedroom.png";
 import interiorImage4 from "../assets/interior-photos/dining-room.png";
 import interiorImage5 from "../assets/interior-photos/kids-room.png";
 import interiorImage6 from "../assets/interior-photos/wardrobe.jpg";
+import { Link } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -79,31 +80,37 @@ const Home = () => {
             image: interiorImage1,
             heading: "Living Room",
             subHeading: "Sleek and Stylish Design",
+            path: "livingRoom"
         },
         {
             image: interiorImage2,
             heading: "Kitchen Space",
             subHeading: "Comfort Meets Elegance",
+            path: "kitchen"
         },
         {
             image: interiorImage3,
             heading: "Master Bedroom",
             subHeading: "Comfort Redefined",
+            path: "master-bedroom"
         },
         {
             image: interiorImage4,
             heading: "Dining Room",
             subHeading: "Family Gatherings",
+            path: "diningRoom"
         },
         {
             image: interiorImage5,
             heading: "Kid's Bedroom",
             subHeading: "Fun and Functional",
+            path: "kidsRoom"
         },
         {
             image: interiorImage6,
             heading: "Wardrobe",
             subHeading: "Effective and Accessible",
+            path: "wardrobe"
         },
     ];
 
@@ -174,7 +181,7 @@ const Home = () => {
                 </div>
                 <div className="wrapper">
                     {caraouselImages.map((item, index) => (
-                        <div className="item" id={`item-${index}`}>
+                        <Link to={`/feature/${item.path}`} className="item" id={`item-${index}`}>
                             <div className="item-image">
                                 <img
                                     src={item.image}
@@ -192,8 +199,10 @@ const Home = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="overlay"></div>
-                        </div>
+                            <div className="overlay">
+                                        
+                            </div>
+                        </Link>
                     ))}
                 </div>
             </div>
