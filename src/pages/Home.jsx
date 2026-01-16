@@ -16,6 +16,8 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 const Home = () => {
     const [area, setArea] = useState(0);
     const [unit, setUnit] = useState("feet");
@@ -25,6 +27,14 @@ const Home = () => {
     const [costType, setCostType] = useState(1450);
     const [floors, setFloors] = useState(1);
     const [totalCost, setTotalCost] = useState(0);
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        project_type: "Floor",
+        details: "",
+      });
 
     // const swiper = new Swiper(...);
 
@@ -42,6 +52,17 @@ const Home = () => {
             document.body.removeChild(script);
         };
     }, []);
+
+    const handleContactSubmit = async (e) => {
+        e.preventDefault();
+
+        const res = await fetch(`${BACKEND_URL}/form/contact`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData),
+        });
+        console.log(res);
+    };
 
     const calculateArea = () => {
         const calculatedArea =
@@ -186,11 +207,14 @@ const Home = () => {
                         spaceBetween={30}
                         loop={true}
                         autoplay={{
-                            delay: 2500,
+                            delay: 8500,
                             disableOnInteraction: false,
                         }}
                         breakpoints={{
-                            768: { slidesPerView: 3, autoplay: { delay: 1000  }  },
+                            768: {
+                                slidesPerView: 3,
+                                autoplay: { delay: 2000 },
+                            },
                         }}
                         pagination={{
                             clickable: true,
@@ -340,35 +364,53 @@ const Home = () => {
                         <h2>Get Started with Your Project</h2>
                         <form
                             className="main-form"
-                            action="/submit_project_form"
-                            method="post"
+                            onSubmit={handleContactSubmit}
                         >
                             <label htmlFor="name">Full Name:</label>
                             <input
                                 type="text"
                                 id="name"
                                 placeholder="Your Name"
+                                value={formData.name}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, name: e.target.value })
+                                }
                                 required
-                            />
+                                />
                             <label htmlFor="email">Email Address:</label>
                             <input
                                 type="email"
                                 id="email"
                                 placeholder="Your Email"
+                                value={formData.email}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, email: e.target.value })
+                                }
                                 required
-                            />
+                                />
                             <label htmlFor="phone">Phone Number:</label>
                             <input
                                 type="tel"
                                 id="phone"
                                 placeholder="Your Phone Number"
+                                value={formData.phone}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, phone: e.target.value })
+                                }
                                 required
-                            />
+                                />
                             <label htmlFor="project-type">
                                 Type of Project:
                             </label>
-                            <select id="project-type" required>
-                                <option value="Floor Planning">
+                            <select 
+                                id="project-type"
+                                value={formData.project_type}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, project_type: e.target.value })
+                                }
+                                required
+                            >
+                                <option value="Floor">
                                     Floor Plans
                                 </option>
                                 <option value="Interior">
@@ -381,6 +423,10 @@ const Home = () => {
                                 id="details"
                                 rows="4"
                                 placeholder="Briefly describe your project requirements..."
+                                value={formData.details}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, details: e.target.value })
+                                }
                             ></textarea>
                             <button type="submit">
                                 Submit Your Requirements

@@ -137,16 +137,16 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
           <div className="team-member">
             <div className="team-member-photo">
             <img
-                  src={require("../assets/cto_photo.png")}
-                  alt="CTO Photo"
+                  src={require("../assets/hr.jpeg")}
+                  alt="HR Photo"
                 />
             </div>
             <div className="team-member-info">
-              <h3>Ujjwal Kulshrestha</h3>
-              <p className="position">Founder & CTO</p>
+              <h3>Disha</h3>
+              <p className="position">HR</p>
               <div className="social-links">
                 <a
-                  href="https://www.linkedin.com/in/ujjwal-kulshrestha/"
+                  href="https://www.linkedin.com/in/disha-697641287?"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -155,7 +155,7 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
                   alt="LinkedIn"
                 />
                 </a>
-                <a href="mailto:ujjwalkul7@gmail.com">
+                <a href="mailto:chdisha702ch@gmail.com">
                 <img
                   src={require("../assets/gmail.png")}
                   alt="Gmail"
@@ -163,9 +163,7 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
                 </a>
               </div>
               <p className="bio">
-                Ujjwal Kulshrestha, currently pursuing a B.Tech in Information Technology from the Indian Institute of Information Technology, Una, is the Chief Technology Officer at URBAN GRIH. 
-                Alongside his leadership role, Ujjwal has a strong passion for designing floor plans, combining his technical expertise with his creative vision. 
-                His ability to integrate innovative technology solutions with architectural design helps URBAN GRIH deliver cutting-edge digital platforms for clients.
+              I am a BBA student at Galgotias University with a strong interest in people, communication, and organizational development. As an HR Intern at Urban Grih, I support recruitment, team coordination, and documentation while gaining hands-on experience in a growing startup environment.
               </p>
             </div>
           </div>
