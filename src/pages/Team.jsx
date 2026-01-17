@@ -143,7 +143,7 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
             </div>
             <div className="team-member-info">
               <h3>Disha</h3>
-              <p className="position">HR Intern</p>
+              <p className="position">Marketing Intern</p>
               <div className="social-links">
                 <a
                   href="https://www.linkedin.com/in/disha-697641287?"
@@ -163,7 +163,7 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
                 </a>
               </div>
               <p className="bio">
-                I am a BBA student at Galgotias University with a strong interest in people, communication, and organizational development. As an HR Intern at Urban Grih, I support recruitment, team coordination, and documentation while gaining hands-on experience in a growing startup environment.
+              I am a Bachelor of Business Administration (BBA) student currently working as a Marketing Intern at Urban Grih. In this role, I support marketing initiatives focused on brand building and audience engagement while gaining hands-on experience through real-world projects.
               </p>
             </div>
           </div>
