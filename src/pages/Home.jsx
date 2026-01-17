@@ -92,7 +92,7 @@ const Home = () => {
             image: interiorImage3,
             heading: "Master Bedroom",
             subHeading: "Comfort Redefined",
-            path: "master-bedroom"
+            path: "bedroom"
         },
         {
             image: interiorImage4,

@@ -5,4 +5,62 @@
     align-items: center;
     flex-direction: column;
     gap: 5%;
+    margin-top: 100px;
+}
+
+.content > h2{
+    margin-bottom: 20px;
+}
+
+.content > .wrapper{
+    width: fit-content;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.content > .wrapper > .item {
+    position: relative;
+    width: 25vw;
+    height: 36vh;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-right: 15px;
+}
+
+.content > .wrapper > .item:nth-child(3n) {
+    margin-right: 0;
+}
+
+.content > .wrapper > .item > .item-image {
+    position: absolute;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.content > .wrapper img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s ease;
+}
+
+
+@media (max-width: 768px) {
+    .content{
+        margin-top: 130px;
+    }
+
+    .content > .wrapper{
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .content > .wrapper > .item{
+        width: 75vw;
+        height: 30vh;
+        margin-right: 0;
+    }
 }
