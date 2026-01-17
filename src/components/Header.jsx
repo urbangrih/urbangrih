@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/logo2.png';
+import logo from '../assets/logo_without_text-removebg-preview.png';
 import { FaUserCircle } from "react-icons/fa";
 import Dropdown  from './Dropdown';
 import { NAV_DATA } from '../data/navigationData';

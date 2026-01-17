@@ -20,7 +20,7 @@ function Materials() {
 
       {/* HD Popup Image */}
       <div id="popup" className="popup" onClick={closePopup}>
-        <img id="popup-img" src="" alt="HD View" />
+        {/* <img id="popup-img" src="" alt="HD View" /> */}
       </div>
 
       {/* AI Chatbox (optional) */}

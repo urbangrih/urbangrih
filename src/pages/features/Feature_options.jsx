@@ -8,7 +8,7 @@ function Feature_options() {
     let items = FEATURE_DATA[feature] || [];
     console.log(feature, items);
     return (
-      <div className='content-2'>
+      <div className='content'>
         <h2>Options for {feature}</h2>
         <div className='wrapper'>
             {

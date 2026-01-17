@@ -1,7 +1,7 @@
 :root {
     --accent: #3e132ccc;
     --accent-dark: hsl(325, 53%, 16%);
-    --accent-faded: hsla(325, 27%, 28%, 0.8);
+    --accent-faded: #5b344bcc;
     --background: hsl(270, 6%, 86%);
     --heading: hsl(356, 5%, 25%);
     --border: hsl(0, 0%, 59%);
@@ -1034,11 +1034,11 @@ footer-section {
 
 .qr-container {
     position: relative;
-    margin-left: 0.78125vw;
+    /* margin-left: 0.78125vw; */
 }
 
 .qr-code {
-    height: 7.57002271006813vh;
+    height: 9.57002271006813vh;
     transition: opacity 0.3s ease;
 }
 
@@ -1050,7 +1050,7 @@ footer-section {
     position: absolute;
     top: calc(100%);
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(-50%) translateY(-80%);
     font-size: 1.0598031794095382vh;
     color: rgb(8, 105, 114);
 }
@@ -1083,12 +1083,12 @@ footer-section {
 
 .qr-container {
     text-align: center;
-    margin-right: 5px;
+    /* margin-right: 5px; */
 }
 
 .qr-code {
-    width: 100px;
-    height: 100px;
+    width: 130px;
+    height: 130px;
 }
 
 .qr-label {

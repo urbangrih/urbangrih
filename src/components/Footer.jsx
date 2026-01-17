@@ -55,7 +55,7 @@ const Footer = () => {
                 title="Click to View"
               >
                 <img
-                  src={require("../assets/instagram_qr.png")}
+                  src={require("../assets/insta-qr.png")}
                   alt="Instagram QR Code"
                   className="qr-code"
                 />
