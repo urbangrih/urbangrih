@@ -9,7 +9,7 @@ function Feature_options() {
     console.log(feature, items);
     return (
       <div className='content'>
-        <h2>Options for {feature}</h2>
+        {/* <h2>Options for {feature}</h2> */}
         <div className='wrapper'>
             {
                 items.images.map((item, index) => {

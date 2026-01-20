@@ -261,7 +261,7 @@ nav .header-links li {
     border: none;
     font-size: 26px;
     cursor: pointer;
-    color: rgb(8, 105, 114);
+    color: var(--accent);
 }
 
 .content-wrapper {
@@ -622,6 +622,8 @@ h5 {
 }
 
 
+
+
 .content-3 .testimonials{
     width: 100%;
     height: 90%;
@@ -714,6 +716,12 @@ h5 {
     height: 100%;
     margin: 10px 20px;
     border-top: var(--border) 1px solid;
+    display: -webkit-box;
+    line-clamp: 8;
+    text-align: justify;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .content-4 {
@@ -906,7 +914,7 @@ h5 {
 }
 
 .professional-form-section p {
-    color: #4d6b7a;
+    color: var(--accent);
     font-size: 14px;
     margin-bottom: 20px;
 }
@@ -915,7 +923,7 @@ h5 {
     display: block;
     margin-top: 10px;
     font-size: 14px;
-    color: #2a4d5f;
+    color: var(--accent);
     text-align: left;
 }
 
@@ -1055,9 +1063,9 @@ footer-section {
     position: absolute;
     top: calc(100%);
     left: 50%;
-    transform: translateX(-50%) translateY(-80%);
+    transform: translateX(-50%);
     font-size: 1.0598031794095382vh;
-    color: rgb(8, 105, 114);
+    color: var(--text-white);
 }
 
 .qr-hover-text {
@@ -1084,6 +1092,7 @@ footer-section {
 .qr-code-wrapper {
     display: flex;
     justify-content: flex-start;
+    gap: 1rem;
 }
 
 .qr-container {
@@ -1236,9 +1245,9 @@ section p {
     align-items: center;
 }
 
-.content {
+.content-wrapper .content {
     width: 65%;
-    margin-top: 250px;
+    margin-top: 100px;
     padding: 20px;
 }
 
@@ -1365,7 +1374,7 @@ section p {
 }
 
 .form-box button:hover {
-    background-color: rgb(6, 84, 92);
+    background-color: var(--accent-dark);
 }
 
 .form-link {
@@ -1817,6 +1826,12 @@ section p {
 
     .content-3 .testimonials .profile-card .profile-card-data .profile-card-detail h3 {
         font-size: 4vw;
+        /* display: -webkit-box;
+        line-clamp: 8;
+        -webkit-line-clamp: 8;
+        -webkit-box-orient: vertical;
+        overflow: hidden; */
+        text-wrap: wrap;
     }
 
     .content-3 .testimonials .profile-card .profile-card-data .profile-card-detail p {
@@ -1886,13 +1901,13 @@ section p {
     }
 
     section h2 {
-        color: rgb(8, 105, 114);
+        color: var(--accent);
         font-size: 28px;
         margin-bottom: 10px;
     }
 
     section p {
-        color: rgb(8, 105, 114);
+        color: var(--accent);
         font-size: 16px;
         line-height: 1.6;
         font-weight: bold;
@@ -1939,7 +1954,7 @@ section p {
         margin: 20px auto;
         background-color: rgba(255, 255, 255, 0.8);
         padding: 20px;
-        box-shadow: 0 4px 8px rgb(8, 105, 114);
+        box-shadow: 0 4px 8px var(--accent);
     }
 
     .ceo-cto-photo {
@@ -1955,13 +1970,13 @@ section p {
     }
 
     .message h3 {
-        color: rgb(8, 105, 114);
+        color: var(--accent);
         font-size: 24px;
         margin-bottom: 10px;
     }
 
     .message p {
-        color: rgb(8, 105, 114);
+        color: var(--accent);
         font-size: 16px;
         line-height: 1.6;
     }

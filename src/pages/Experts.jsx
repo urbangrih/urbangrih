@@ -10,7 +10,7 @@ function Experts() {
                 id="architectDesigns"
                 className="mobile-nav-option-section"
             >
-                <h3>Architect Design</h3>
+                <h3>Experts</h3>
                 <ul className="mobile-nav-options">
                     <li>Interior Designers</li>
                     <li>Architects</li>

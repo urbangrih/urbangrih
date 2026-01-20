@@ -7,7 +7,7 @@ function Materials() {
   return (
     <div className="content-2 mobile-nav-option-content">
       <section id="architectDesigns" className='mobile-nav-option-section'>
-        <h3>Architect Design</h3>
+        <h3>Materials</h3>
         <ul className="mobile-nav-options">
             <li>Furniture</li>
             <li>Modular Kitchen</li>

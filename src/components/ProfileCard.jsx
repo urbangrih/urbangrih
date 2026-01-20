@@ -5,9 +5,13 @@ import KidsRoom from '../assets/interior-photos/kids-room.png'
 function ProfileCard({
     userImg = KidsRoom,
     bgImg = DiningRoom,
-    name = "John Doe",
+    name = "Divyansh",
     role = "Homeowner",
-    desc = `"Urban Grih transformed my living space into a modern masterpiece. Their attention to detail and innovative designs exceeded my expectations. Highly recommend!"`
+    desc = `"Urban Grih is an amazing home map design and interior company. They designed my home map, and the whole experience was super smooth and affordable. The management was always on top of things, but what I loved the most was their communication they were available whenever I needed them and made changes exactly as I requested, without any hassle.
+
+A special thanks to Mr. Ujjwal kulshrestha for the wonderful home map design. I had asked for a home map within 1100 sq. ft. including a garden, which honestly felt impossible  getting both a luxurious home and a garden in that space. But his skills made it completely possible.
+
+Really happy with the final result and would definitely recommend Urban Grih to anyone looking for smart, well-planned home designs."`
 }) {
 return (
     <div className='profile-card'>
