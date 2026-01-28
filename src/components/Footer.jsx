@@ -40,7 +40,7 @@ const Footer = () => {
                     <div className="qr-code-wrapper">
                         <div className="qr-container">
                             <a
-                                href="https://www.instagram.com/moon.looks_?igsh=MTRuZDFtM2hrcTg3Zg=="
+                                href="https://www.linkedin.com/company/urbangrih/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Click to View"
@@ -58,7 +58,7 @@ const Footer = () => {
                         </div>
                         <div className="qr-container">
                             <a
-                                href="https://www.instagram.com/moon.looks_?igsh=MTRuZDFtM2hrcTg3Zg=="
+                                href="https://www.instagram.com/urbangrih?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Click to View"
