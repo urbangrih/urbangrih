@@ -145,8 +145,12 @@ const Home = () => {
                     </h3>
                 </section>
                 <section className="hero-cta">
-                    <button>Start Your Project</button>
-                    <button>Find Professionals</button>
+                    <Link to="/projects">
+                        Start Your Project                    
+                    </Link>
+                    <Link to="/experts">
+                        Find Professionals
+                    </Link>
                 </section>
             </div>
             <div className="feature-container">

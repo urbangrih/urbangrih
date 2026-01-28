@@ -1,5 +1,9 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+
+import BlankLayout from "./components/BlankLayout.jsx";
+import MainLayout from "./components/MainLayout.jsx";
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -23,27 +27,32 @@ import KidsBedroom from './pages/Kids_bedroom';
 import Wardrobe from './pages/Wordrobe';
 import ScrollToTop from "./ScrollToTop";
 import FeatureRouter from './components/FeatureRouter';
+import Project from './pages/projectCanvas/Project';
 
 
 
 function App() {  
   return (
     <div>
-      <Header />
-      <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:section" element={<SectionRouter />} />
-        <Route path="/feature/:feature" element={<FeatureRouter />} />
-        <Route path="/villas-floor-plans" element={<VillasFloorPlans/>}/>
-        <Route path="/flats-floor-plans" element={<FlatsFloorPlans/>}/>
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/team" element={<Team />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/:section" element={<SectionRouter />} />
+          <Route path="/feature/:feature" element={<FeatureRouter />} />
+          <Route path="/villas-floor-plans" element={<VillasFloorPlans/>}/>
+          <Route path="/flats-floor-plans" element={<FlatsFloorPlans/>}/>
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/team" element={<Team />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+
+        <Route element={<BlankLayout />}>
+          <Route path="/projects" element={<Project />} />
+        </Route>
+
       </Routes>
-      <Footer />
     </div>
   );
 }
