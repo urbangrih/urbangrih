@@ -1,5 +1,5 @@
 import React from "react";
-import { Cell, Pie, PieChart, PieLabelRenderProps } from "recharts";
+import { Pie, PieChart } from "recharts";
 
 const RADIAN = Math.PI / 180;
 

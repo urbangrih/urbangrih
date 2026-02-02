@@ -1,4 +1,6 @@
 import React from "react";
+import LinkedIn_qr from "../assets/LinkedIn_QR.png";
+import instagram_qr from "../assets/instagram_qr.png";
 
 const Footer = () => {
     return (
@@ -46,7 +48,7 @@ const Footer = () => {
                                 title="Click to View"
                             >
                                 <img
-                                    src={require("../assets/instagram_qr.png")}
+                                    src={instagram_qr}
                                     alt="Instagram QR Code"
                                     className="qr-code"
                                 />
@@ -64,7 +66,7 @@ const Footer = () => {
                                 title="Click to View"
                             >
                                 <img
-                                    src={require("../assets/LinkedIn_QR.png")}
+                                    src={LinkedIn_qr}
                                     alt="Instagram QR Code"
                                     className="qr-code"
                                 />

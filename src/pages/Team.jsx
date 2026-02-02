@@ -1,4 +1,10 @@
 import React from "react";
+import linkedin from "../assets/linkedin.png";
+import cto_photo from "../assets/cto_photo.png";
+import gmail from "../assets/gmail.png";
+import swati from "../assets/swati.jpg";
+import intern_photo from "../assets/intern_photo.jpg";
+import hr from "../assets/hr.jpeg";
 
 function Team() {
   return (
@@ -16,7 +22,7 @@ function Team() {
           <div className="team-member">
             <div className="team-member-photo">
             <img
-                  src={require("../assets/cto_photo.png")}
+                  src={cto_photo}
                   alt="CTO Photo"
                 />
             </div>
@@ -30,13 +36,13 @@ function Team() {
                   rel="noopener noreferrer"
                 >
                   <img
-                  src={require("../assets/linkedin.png")}
+                  src={linkedin}
                   alt="LinkedIn"
                 />
                 </a>
                 <a href="mailto:ujjwalkul7@gmail.com">
                 <img
-                  src={require("../assets/gmail.png")}
+                  src={gmail}
                   alt="Gmail"
                 />
                 </a>
@@ -49,23 +55,11 @@ function Team() {
             </div>
           </div>
 
-          {/* Team Member 2
-          <div className="team-member">
-            <div className="team-member-photo">
-              <img src="/assets/member1.jpg" alt="" />
-            </div>
-            <div className="team-member-info">
-              <h3>Member Name</h3>
-              <p className="position">Chief Executive Officer</p>
-              <p className="bio">Brief bio about the team member.</p>
-            </div>
-          </div> */}
-
-          {/* Team Member 3 */}
+          {/* Team Member 2 */}
           <div className="team-member">
             <div className="team-member-photo">
             <img
-                  src={require("../assets/swati.jpg")}
+                  src={swati}
                   alt="Swati Chauhan"
                 />
             </div>
@@ -79,13 +73,13 @@ function Team() {
                   rel="noopener noreferrer"
                 >
                   <img
-                  src={require("../assets/linkedin.png")}
+                  src={linkedin}
                   alt="LinkedIn"
                 />
                 </a>
                 <a href="mailto:swati.chauhan15@gmail.com">
                 <img
-                  src={require("../assets/gmail.png")}
+                  src={gmail}
                   alt="Gmail"
                 />
                 </a>
@@ -101,7 +95,7 @@ function Team() {
           <div className="team-member">
             <div className="team-member-photo">
             <img
-                  src={require("../assets/intern_photo.jpg")}
+                  src={intern_photo}
                   alt="CTO Photo"
                 />
             </div>
@@ -115,13 +109,13 @@ function Team() {
                   rel="noopener noreferrer"
                 >
                   <img
-                  src={require("../assets/linkedin.png")}
+                  src={linkedin}
                   alt="LinkedIn"
                 />
                 </a>
                 <a href="mailto:amankashipur1234@gmail.com">
                 <img
-                  src={require("../assets/gmail.png")}
+                  src={gmail}
                   alt="Gmail"
                 />
                 </a>
@@ -137,7 +131,7 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
           <div className="team-member">
             <div className="team-member-photo">
             <img
-                  src={require("../assets/hr.jpeg")}
+                  src={hr}
                   alt="HR Photo"
                 />
             </div>
@@ -151,13 +145,13 @@ He enjoys implementing his knowledge through real-world projects, focusing on bu
                   rel="noopener noreferrer"
                 >
                   <img
-                  src={require("../assets/linkedin.png")}
+                  src={linkedin}
                   alt="LinkedIn"
                 />
                 </a>
                 <a href="mailto:chdisha702ch@gmail.com">
                 <img
-                  src={require("../assets/gmail.png")}
+                  src={gmail}
                   alt="Gmail"
                 />
                 </a>

@@ -17,7 +17,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 const Home = () => {
     const [area, setArea] = useState(0);
@@ -185,7 +185,7 @@ const Home = () => {
                 </div>
                 <div className="wrapper">
                     {caraouselImages.map((item, index) => (
-                        <Link to={`/feature/${item.path}`} className="item" id={`item-${index}`}>
+                        <Link to={`/feature/${item.path}`} className="item" id={`item-${index}`} key={`item-${index}`}>
                             <div className="item-image">
                                 <img
                                     src={item.image}
