@@ -1,0 +1,46 @@
+import React from "react";
+
+function Experts() {
+    const closePopup = () => {
+        document.getElementById('popup').style.display = 'none';
+    };
+    return (
+        <div className="content-2 mobile-nav-option-content">
+            <section
+                id="architectDesigns"
+                className="mobile-nav-option-section"
+            >
+                <h3>Experts</h3>
+                <ul className="mobile-nav-options">
+                    <li>Interior Designers</li>
+                    <li>Architects</li>
+                    <li>Vastu Consultants</li>
+                    <li>Contractors</li>
+                </ul>
+            </section>
+
+            {/* <section id="interiorDesigns" className="mobile-nav-option-section">
+                <h3>Interior Design</h3>
+                <ul className="mobile-nav-options">
+                    <li>Interior 1</li>
+                    <li>Interior 2</li>
+                    <li>Interior 3</li>
+                </ul>
+            </section> */}
+
+            {/* HD Popup Image */}
+            <div id="popup" className="popup" onClick={closePopup}>
+                <img id="popup-img" src="" alt="HD View" />
+            </div>
+
+            {/* AI Chatbox (optional) */}
+            <script
+                src="https://widget.cxgenie.ai/widget.js"
+                data-aid="bac054ad-1035-4a6e-94af-dfe12376fb0c"
+                data-lang="en"
+            ></script>
+        </div>
+    );
+}
+
+export default Experts;
