@@ -19,6 +19,7 @@
     color: white;
     height: 100%;
     width: 10vw;
+    z-index: 1;
 }
 
 .left-panel > .left-pane{
@@ -42,7 +43,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background-color: hsl(80, 80%, 50%);
+    background: hsl(80, 80%, 50%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -62,4 +63,5 @@
     color: white;
     height: 100%;
     width: 10vw;
+    z-index: 1;
 }

@@ -1,10 +1,29 @@
 import React from "react";
 
 export function LeftPanel() {
+    const SHAPES = [
+        { type: "rect", label: "Rectangle" },
+        { type: "circle", label: "Circle" },
+    ];
+    const onDragStart = (e, item) => {
+        e.dataTransfer.setData(
+            "application/x-editor-item",
+            JSON.stringify(item)
+        );
+        e.dataTransfer.effectAllowed = "copy";
+    };
     return (
         <div className="left-pane">
-            <div className="shape-rect">Rectangle</div>
-            <div className="shape-circle">Circle</div>
+            {SHAPES.map((item, index) => (
+                <div
+                    key={item.type}
+                    className={`shape-${item.type}`}
+                    draggable
+                    onDragStart={(e) => onDragStart(e, item)}
+                >
+                    {item.label}
+                </div>
+            ))}
         </div>
     );
 }
