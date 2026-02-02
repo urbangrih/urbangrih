@@ -1,26 +1,23 @@
 import React from "react";
 import "./project.css";
-import { Stage, Layer, Circle } from "react-konva";
+import KonvaCanvas from "./editor/canvas/konva-canvas";
+import { LeftPanel } from "./editor/panels/left/LeftPanel.jsx";
+import { RightPanel } from "./editor/panels/right/RightPanel.jsx";
 
 export default function Project() {
-    const shapeRef = React.useRef(null);
-    React.useEffect(() => {
-        // it will log `Konva.Circle` instance
-        console.log(shapeRef.current);
-    });
     return (
-        <div className="container">
-            <Stage width={window.innerWidth} height={window.innerHeight}>
-                <Layer>
-                    <Circle
-                        ref={shapeRef}
-                        x={window.innerWidth / 2}
-                        y={window.innerHeight / 2}
-                        radius={50}
-                        fill="red"
-                    ></Circle>
-                </Layer>
-            </Stage>
-        </div>
+        <main className="editor" aria-label="Project editor">
+            <aside className="left-panel" aria-label="Editor tools">
+                <LeftPanel />
+            </aside>
+
+            <section className="canvas" aria-label="Canvas workspace">
+                <KonvaCanvas />
+            </section>
+
+            <aside className="right-panel" aria-label="Properties and shapes">
+                <RightPanel />
+            </aside>
+        </main>
     );
 }
