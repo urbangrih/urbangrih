@@ -18,13 +18,13 @@ export default function LivingRoomDesigns() {
     liv6, liv7, liv8, liv9, liv10
   ];
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    document.body.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   const script = document.createElement("script");
+  //   script.src = "https://widget.cxgenie.ai/widget.js";
+  //   script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+  //   script.dataset.lang = "en";
+  //   document.body.appendChild(script);
+  // }, []);
 
   return (
     <div className="content">

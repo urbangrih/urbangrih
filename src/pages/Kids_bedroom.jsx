@@ -20,14 +20,14 @@ export default function KidsBedroom() {
     kid7, kid8, kid9, kid10, kid11, kid12
   ];
 
-  useEffect(() => {
-    // Load AI Chatbox Script dynamically
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    document.body.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   // Load AI Chatbox Script dynamically
+  //   const script = document.createElement("script");
+  //   script.src = "https://widget.cxgenie.ai/widget.js";
+  //   script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+  //   script.dataset.lang = "en";
+  //   document.body.appendChild(script);
+  // }, []);
 
   return (
     <div className="content">

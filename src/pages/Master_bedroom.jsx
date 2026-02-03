@@ -18,14 +18,14 @@ export default function MasterBedroom() {
     bed6, bed7, bed8, bed9, bed10
   ];
 
-  useEffect(() => {
-    // Load AI Chatbox Script dynamically
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    document.body.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   // Load AI Chatbox Script dynamically
+  //   const script = document.createElement("script");
+  //   script.src = "https://widget.cxgenie.ai/widget.js";
+  //   script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+  //   script.dataset.lang = "en";
+  //   document.body.appendChild(script);
+  // }, []);
 
   return (
     <div className="content">

@@ -18,14 +18,14 @@ export default function KitchenDesigns() {
     kit6, kit7, kit8, kit9, kit10
   ];
 
-  useEffect(() => {
-    // Load AI Chatbox Script dynamically
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    document.body.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   // Load AI Chatbox Script dynamically
+  //   const script = document.createElement("script");
+  //   script.src = "https://widget.cxgenie.ai/widget.js";
+  //   script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+  //   script.dataset.lang = "en";
+  //   document.body.appendChild(script);
+  // }, []);
 
   return (
     <div className="content">

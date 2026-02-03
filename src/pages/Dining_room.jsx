@@ -18,14 +18,14 @@ export default function DiningRoom() {
     din6, din7, din8, din9, din10
   ];
 
-  useEffect(() => {
-    // Inject AI Chatbox script
-    const script = document.createElement("script");
-    script.src = "https://widget.cxgenie.ai/widget.js";
-    script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-    script.dataset.lang = "en";
-    document.body.appendChild(script);
-  }, []);
+  // useEffect(() => {
+  //   // Inject AI Chatbox script
+  //   const script = document.createElement("script");
+  //   script.src = "https://widget.cxgenie.ai/widget.js";
+  //   script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+  //   script.dataset.lang = "en";
+  //   document.body.appendChild(script);
+  // }, []);
 
   return (
     <div className="content">

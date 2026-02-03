@@ -33,7 +33,7 @@
 .left-pane > .shape-rect {
     width: 80px;
     height: 80px;
-    background: hsl(40, 70%, 50%);
+    background: #d99d26;
     display: flex;
     justify-content: center;
     align-items: center;    
@@ -43,7 +43,7 @@
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    background: hsl(80, 80%, 50%);
+    background: #a2e619;
     display: flex;
     justify-content: center;
     align-items: center;

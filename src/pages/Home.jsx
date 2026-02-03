@@ -39,20 +39,20 @@ const Home = () => {
 
     // const swiper = new Swiper(...);
 
-    useEffect(() => {
-        // Dynamically add the AI Chatbox script
-        const script = document.createElement("script");
-        script.src = "https://widget.cxgenie.ai/widget.js";
-        script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
-        script.dataset.lang = "en";
-        script.async = true;
-        document.body.appendChild(script);
+    // useEffect(() => {
+    //     // Dynamically add the AI Chatbox script
+    //     // const script = document.createElement("script");
+    //     // script.src = "https://widget.cxgenie.ai/widget.js";
+    //     // script.dataset.aid = "bac054ad-1035-4a6e-94af-dfe12376fb0c";
+    //     // script.dataset.lang = "en";
+    //     // script.async = true;
+    //     // document.body.appendChild(script);
 
-        // Cleanup script on component unmount
-        return () => {
-            document.body.removeChild(script);
-        };
-    }, []);
+    //     // Cleanup script on component unmount
+    //     return () => {
+    //         document.body.removeChild(script);
+    //     };
+    // }, []);
 
     const handleContactSubmit = async (e) => {
         e.preventDefault();

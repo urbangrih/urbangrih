@@ -24,11 +24,11 @@ function Materials() {
       </div>
 
       {/* AI Chatbox (optional) */}
-      <script
+      {/* <script
         src="https://widget.cxgenie.ai/widget.js"
         data-aid="bac054ad-1035-4a6e-94af-dfe12376fb0c"
         data-lang="en"
-      ></script>
+      ></script> */}
     </div>
   )
 }
