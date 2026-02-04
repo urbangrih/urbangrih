@@ -7,19 +7,20 @@ import { useEditorStore } from "../state/editorStore";
 export default function TransformerLayer({ nodesRef }) {
     const transformerRef = useRef();
     // const objects = useEditorStore((s) => s.objects);
-    const selectedId = useEditorStore((s) => s.selectedId);
+    const selectedIds = useEditorStore((s) => s.selectedIds);
     const updateObject = useEditorStore((s) => s.updateObject);
 
     useEffect(() => {
         if (!transformerRef.current) return;
 
-        if (selectedId) {
-            const node = nodesRef.current.get(selectedId);
-            transformerRef.current.nodes(node ? [node] : []);
+        if (selectedIds) {
+            const nodes = selectedIds.map(id => nodesRef.current.get(id))
+            console.log(nodes);
+            transformerRef.current.nodes(nodes ? nodes : []);
         } else {
             transformerRef.current.nodes([]);
         }
-    }, [selectedId, nodesRef]);
+    }, [selectedIds, nodesRef]);
 
     const handleTransformEnd = (e) => {
             const id = e.target.id();
@@ -36,7 +37,7 @@ export default function TransformerLayer({ nodesRef }) {
                 y: node.y(),
                 width: Math.max(5, node.width() * scaleX),
                 height: Math.max(5, node.height() * scaleY),
-                rotation: ndoe.rotation(),
+                rotation: node.rotation(),
             });
     }
 
