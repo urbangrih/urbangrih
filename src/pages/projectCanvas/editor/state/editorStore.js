@@ -2,9 +2,23 @@ import { create } from "zustand";
 
 export const useEditorStore = create((set) => ({
     objects: [],
-    selectedId: null,
+    selectedIds: [],
+    isSelecting: false,
 
-    selectObject: (id) => set({selectedId: id}),
+    selectObject: (id) => {
+        const { selectedIds } = useEditorStore.getState();
+        if (selectedIds.includes(id)) return; // no-op
+        set({ selectedIds: [...selectedIds, id] });
+    },
+
+    clearSelection: () => {
+        set({ selectedIds: [] });
+    },
+
+    removeSelection: (id) => {
+        const { selectedIds } = useEditorStore.getState();
+        set({selectedIds: selectedIds.filter((sid) => sid !== id) });
+    },
 
     updateObject: (id, attrs) =>
         set((state) => ({
