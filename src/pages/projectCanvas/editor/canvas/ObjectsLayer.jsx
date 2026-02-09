@@ -8,6 +8,7 @@ const RENDERERS = {
             ref={setNodeRef}
             key={obj.id}
             id={obj.id}
+            dataType={obj.type}
             points={[obj.x1, obj.y1, obj.x2, obj.y2]}
             stroke={obj.stroke ?? "black"}
             strokeWidth={obj.thickness ?? 20}
@@ -21,6 +22,7 @@ const RENDERERS = {
             ref={setNodeRef}
             key={obj.id}
             id={obj.id}
+            dataType={obj.type}
             x={obj.x}
             y={obj.y}
             width={obj.width}
@@ -40,6 +42,7 @@ const RENDERERS = {
             ref={setNodeRef}
             key={obj.id}
             id={obj.id}
+            dataType={obj.type}
             x={obj.x}
             y={obj.y}
             radius={obj.radius}
@@ -56,6 +59,7 @@ const RENDERERS = {
             ref={setNodeRef}
             key={obj.id}
             id={obj.id}
+            dataType={obj.type}
             x={obj.x}
             y={obj.y}
             width={obj.width}
@@ -68,17 +72,10 @@ const RENDERERS = {
 };
 
 export default function ObjectsLayer({ objects, getRefSetter, events }) {
-    const selectObject = useEditorStore((s) => s.selectObject);
 
     return objects.map((obj) => {
         const render = RENDERERS[obj.type];
         if (!render) return null;
-        // const events = {
-        //     onClick : (e) => {
-        //         e.cancelBubble = true;
-        //         selectObject(objects.id);
-        //     }
-        // };
         return render(obj, getRefSetter(obj.id), events);
     });
 }

@@ -31,6 +31,19 @@ export default function TransformerLayer({ nodesRef }) {
     
             node.scaleX(1);
             node.scaleY(1);
+
+            const type = node.getAttr("dataType") || node.attrs?.dataType;
+
+            if (type === "circle"){
+                const radius = Math.max(5, node.radius() * Math.max(scaleX, scaleY));
+                updateObject(id, {
+                    x: node.x(),
+                    y: node.y(),
+                    radius: radius,
+                    rotation: node.rotation(),
+                });
+                return;
+            }
     
             updateObject(id, {
                 x: node.x(),

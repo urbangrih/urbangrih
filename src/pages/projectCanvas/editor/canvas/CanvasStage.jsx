@@ -9,7 +9,7 @@ import TransformerLayer from "./TransformerLayer";
 // import GridLayer from "./GridLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
-import { useEditorStore } from "../state/editorStore";
+import { useEditorStore, GRID_SIZE } from "../state/editorStore";
 
 import {useStageDnd} from "./hooks/useStageDnd";
 
@@ -41,10 +41,12 @@ export default function CanvasStage() {
 
 
     const handleStageMouseClick = (e) => {
-        e.cancleBubble = true;
+        e.cancelBubble = true;
 
-        const selWidth = Math.abs(selectionRect.x2 - selectionRect.x1);
-        const selHeight = Math.abs(selectionRect.y2 - selectionRect.y1);
+        // const selWidth = Math.abs(selectionRect.x2 - selectionRect.x1);
+        // const selHeight = Math.abs(selectionRect.y2 - selectionRect.y1);
+        const selWidth = selectionRect.width;
+        const selHeight = selectionRect.height;
         if (selectionRect.visible && selWidth > 0 && selHeight > 0) {
             console.log("click not detected and treated as a rectangle");
             return;
@@ -119,16 +121,21 @@ export default function CanvasStage() {
         if (box.width < 2 || box.height < 2){
             clearSelection();
         } else{
-            let foundId = null;
+            let foundId = [];
             for (const [id, node] of nodesRef.current) {
                 const nodeBox = node.getClientRect();
                 if (Konva.Util.haveIntersection(box, nodeBox)) {
-                    foundId = id;
-                    break;
+                    foundId.push(id);
+                    // break;
                 }
             }
 
-            if (foundId) selectObject(foundId);
+            if (foundId.length > 0) {
+                clearSelection();
+                for (const id of foundId){
+                    selectObject(id);
+                }
+            }
             else clearSelection();
         }
 
@@ -136,7 +143,16 @@ export default function CanvasStage() {
     }
 
     const handleStageDragEnd = (e) => {
+        if (selectionRect.visible) return;
         
+        const id = e.target.id();
+        const node = e.target;
+
+        const x = Math.round(node.x() / GRID_SIZE) * GRID_SIZE;
+        const y = Math.round(node.y() / GRID_SIZE) * GRID_SIZE;
+        node.x(x);
+        node.y(y);
+        updateObject(id, { x, y });
     }
 
     const events = {
@@ -158,16 +174,23 @@ export default function CanvasStage() {
             onMouseUp={handleStageMouseUp}
         >
             <Layer listening={false}>
-                {selectionRect.visible && (
-                    <Rect 
-                        x = {selectionRect.x}
-                        y = {selectionRect.y}
-                        width = {selectionRect.width}
-                        height = {selectionRect.height}
-                        fill = "rgba(0, 161, 255, 0.1)"
-                        stroke = "rgba(0, 161, 255, 0.6)"
-                    />
-                )}
+                {selectionRect.visible && (() => {
+                    const x = Math.min(selectionRect.x, selectionRect.x + selectionRect.width);
+                    const y = Math.min(selectionRect.y, selectionRect.y + selectionRect.height);
+                    const width = Math.abs(selectionRect.width);
+                    const height = Math.abs(selectionRect.height);
+
+                    return (
+                        <Rect
+                            x={x}
+                            y={y}
+                            width={width}
+                            height={height}
+                            fill="rgba(0, 161, 255, 0.1)"
+                            stroke="rgba(0, 161, 255, 0.6)"
+                        />
+                    );
+                })()}
             </Layer>
 
             <Layer>
