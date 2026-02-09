@@ -6,7 +6,7 @@ import { useRef, useState, useEffect } from "react";
 // import { createObject } from "../services/objectFactory";
 import ObjectsLayer from "./ObjectsLayer";
 import TransformerLayer from "./TransformerLayer";
-// import GridLayer from "./GridLayer";
+import GridLayer from "./GridLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
 import { useEditorStore, GRID_SIZE } from "../state/editorStore";
@@ -193,8 +193,8 @@ export default function CanvasStage() {
                 })()}
             </Layer>
 
+            <GridLayer width={window.innerWidth} height={window.innerHeight} />
             <Layer>
-                {/* <GridLayer /> */}
                 <ObjectsLayer objects={objects} getRefSetter={getRefSetter} events={events}/>
                 <TransformerLayer nodesRef={nodesRef} />
             </Layer>
