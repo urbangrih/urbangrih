@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { snapPointToGrid } from "../utils/snap";
 
-export const GRID_SIZE = 50; // cm, inches, or logical units
+export const GRID_SIZE = 20; // cm, inches, or logical units
 
 export const useEditorStore = create((set) => ({
     objects: [],

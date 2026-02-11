@@ -1,7 +1,6 @@
 import { useRef, useEffect } from "react";
 import { Transformer } from "react-konva";
-import { useEditorStore, GRID_SIZE } from "../state/editorStore";
-import { snapPointToGrid } from "../utils/snap";
+import { useEditorStore } from "../state/editorStore";
 
 // import { useNodeRegistry } from './hooks/useNodeRegistry';
 
@@ -37,25 +36,20 @@ export default function TransformerLayer({ nodesRef }) {
 
             if (type === "circle"){
                 const radius = Math.max(5, node.radius() * Math.max(scaleX, scaleY));
-                const snapped_radius = snapPointToGrid({ x: radius, y: radius }, GRID_SIZE).x;
                 updateObject(id, {
                     x: node.x(),
                     y: node.y(),
-                    radius: snapped_radius,
+                    radius: radius,
                     rotation: node.rotation(),
                 });
                 return;
             }
-            const width = Math.max(5, node.width() * scaleX);
-            const height = Math.max(5, node.height() * scaleY);
-            const snappedWidth = snapPointToGrid({ x: width, y: height }, GRID_SIZE).x;
-            const snappedHeight = snapPointToGrid({ x: width, y: height }, GRID_SIZE).y;
     
             updateObject(id, {
                 x: node.x(),
                 y: node.y(),
-                width: snappedWidth,
-                height: snappedHeight,
+                width: Math.max(5, node.width() * scaleX),
+                height: Math.max(5, node.height() * scaleY),
                 rotation: node.rotation(),
             });
     }
