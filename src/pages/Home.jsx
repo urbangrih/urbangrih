@@ -145,7 +145,7 @@ const Home = () => {
                     </h3>
                 </section>
                 <section className="hero-cta">
-                    <Link to="/projects">
+                    <Link to="/#">
                         Start Your Project                    
                     </Link>
                     <Link to="/experts">
