@@ -48,7 +48,7 @@ function Team() {
                 </a>
               </div>
               <p className="bio">
-                Ujjwal Kulshrestha, currently pursuing a B.Tech in Information Technology from the Indian Institute of Information Technology, Una, is the Chief Technology Officer at URBAN GRIH. 
+                Ujjwal Kulshrestha, currently pursuing a B.Tech in Information Technology from the Indian Institute of Information Technology, Una, is the Founder of URBAN GRIH. 
                 Alongside his leadership role, Ujjwal has a strong passion for designing floor plans, combining his technical expertise with his creative vision. 
                 His ability to integrate innovative technology solutions with architectural design helps URBAN GRIH deliver cutting-edge digital platforms for clients.
               </p>
