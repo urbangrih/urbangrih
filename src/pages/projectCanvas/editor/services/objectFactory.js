@@ -56,3 +56,33 @@ export function createObject({ type, x, y }) {
             return null;
     }
 }
+
+export function createCorner(x, y) {
+    const id = crypto.randomUUID();
+    return {
+        id,
+        type: "corner",
+        x,
+        y,
+        radius: 5,
+        fill: "#0f0",
+        draggable: true,
+    }
+}
+
+export function createWall(c1, c2, thickness=20){
+    const id = crypto.randomUUID();
+    return {
+        id,
+        type: "wall",
+        x1: c1.x,
+        y1: c1.y,
+        x2: c2.x,
+        y2: c2.y,
+        thickness,
+        fill: "#f00",
+        draggable: true,
+        stroke: "#000",
+        strokeWidth: 1,
+    }
+}

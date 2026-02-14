@@ -7,6 +7,23 @@ export const useEditorStore = create((set) => ({
     objects: [],
     selectedIds: [],
     isSelecting: false,
+    corners: [],
+    walls: [],
+
+    addCorner: (x, y) => {
+        const id = crypto.randomUUID();
+        set((state) => ({
+            corners: [...state.corners, { id, x, y }],
+        }));
+        return id;
+    },
+
+    // addWall: (wall) => {
+    //     set((state) => ({
+    //         walls: [...state.walls, wall],
+    //     }))
+    //     return id;  
+    // },
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();

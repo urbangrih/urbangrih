@@ -4,6 +4,7 @@ export function LeftPanel() {
     const SHAPES = [
         { type: "rect", label: "Rectangle" },
         { type: "circle", label: "Circle" },
+        { type: "wall", label: "Wall" },
     ];
     const onDragStart = (e, item) => {
         e.dataTransfer.setData(

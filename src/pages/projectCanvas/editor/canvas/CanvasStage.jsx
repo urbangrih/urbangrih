@@ -10,6 +10,7 @@ import TransformerLayer from "./TransformerLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
 import { useEditorStore } from "../state/editorStore";
+import { createWall, createCorner } from "../services/objectFactory";
 
 import { useStageDnd } from "./hooks/useStageDnd";
 import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
@@ -24,31 +25,42 @@ export default function CanvasStage() {
     const selectedIds = useEditorStore((s) => s.selectedIds);
     const removeSelection = useEditorStore((s) => s.removeSelection);
     const clearSelection = useEditorStore((s) => s.clearSelection);
+    const addCorner = useEditorStore((s) => s.addCorner);
+    const addWall = useEditorStore((s) => s.addWall);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
-    const [selectionRect, setSelectionRect] = useState({
-        visible: false,
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-    });
+    // const [selectionRect, setSelectionRect] = useState({
+    //     visible: false,
+    //     x: 0,
+    //     y: 0,
+    //     width: 0,
+    //     height: 0,
+    // });
 
     //temporary
     useEffect(() => {
         console.log(selectedIds);
     }, [selectedIds]);
 
+    useEffect(() => {
+        const c1 = createCorner(500,100);
+        const c2 = createCorner(500,200);
+        const w1 = createWall(c1, c2);
+        addObject(c1);
+        addObject(c2);
+        addObject(w1);
+    },[])
+
     const handleStageMouseClick = (e) => {
         e.cancelBubble = true;
 
-        const selWidth = selectionRect.width;
-        const selHeight = selectionRect.height;
-        if (selectionRect.visible && selWidth > 0 && selHeight > 0) {
-            console.log("click not detected and treated as a rectangle");
-            return;
-        }
+        // const selWidth = selectionRect.width;
+        // const selHeight = selectionRect.height;
+        // if (selectionRect.visible && selWidth > 0 && selHeight > 0) {
+        //     console.log("click not detected and treated as a rectangle");
+        //     return;
+        // }
 
         if (e.target === e.target.getStage()) {
             console.log("clicked on stage");
@@ -114,7 +126,7 @@ export default function CanvasStage() {
     };
 
     const handleStageDragEnd = (e) => {
-        if (selectionRect.visible) return;
+        // if (selectionRect.visible) return;
 
         const node = e.target;
 

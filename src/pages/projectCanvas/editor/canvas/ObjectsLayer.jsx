@@ -3,6 +3,22 @@ import { Line, Rect, Circle } from "react-konva";
 import { useEditorStore } from "../state/editorStore";
 
 const RENDERERS = {
+    corner: (obj, setNodeRef, events) => (
+        <Circle
+            ref={setNodeRef}
+            key={obj.id}
+            name="object"
+            id={obj.id}
+            dataType={obj.type}
+            x={obj.x}
+            y={obj.y}
+            radius={obj.radius}
+            fill={obj.fill}
+            draggable={obj.draggable}
+            {...events}
+        />
+    ),
+
     wall: (obj, setNodeRef, events) => (
         <Line
             ref={setNodeRef}
@@ -11,9 +27,11 @@ const RENDERERS = {
             name="object"
             dataType={obj.type}
             points={[obj.x1, obj.y1, obj.x2, obj.y2]}
+            fill={obj.fill ?? "red"}
             stroke={obj.stroke ?? "black"}
             strokeWidth={obj.thickness ?? 20}
-            lineCap="round"
+            draggable={obj.draggable}
+            // lineCap="round"
             {...events}
         />
     ),
