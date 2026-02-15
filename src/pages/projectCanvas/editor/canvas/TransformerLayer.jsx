@@ -16,6 +16,7 @@ export default function TransformerLayer({ nodesRef }) {
         if (selectedIds) {
             const nodes = selectedIds.map(id => nodesRef.current.get(id))
             console.log(nodes);
+            
             transformerRef.current.nodes(nodes ? nodes : []);
         } else {
             transformerRef.current.nodes([]);
@@ -44,6 +45,11 @@ export default function TransformerLayer({ nodesRef }) {
                 });
                 return;
             }
+
+            // if (type === "wall"){
+            //     console.log("Updating wall", node);
+            //     return;
+            // }
     
             updateObject(id, {
                 x: node.x(),

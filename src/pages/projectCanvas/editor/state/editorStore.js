@@ -10,20 +10,27 @@ export const useEditorStore = create((set) => ({
     corners: [],
     walls: [],
 
-    addCorner: (x, y) => {
-        const id = crypto.randomUUID();
+    addCorner: (corner) => {
         set((state) => ({
-            corners: [...state.corners, { id, x, y }],
+            corners: [...state.corners, corner],
         }));
-        return id;
+        // return corner.id;
     },
 
-    // addWall: (wall) => {
-    //     set((state) => ({
-    //         walls: [...state.walls, wall],
-    //     }))
-    //     return id;  
-    // },
+    moveCorner: (id, x, y) => {
+        set((state) => {
+            return {
+                corners: [...state.corners.map((corner) => corner.id === id ? { ...corner, x, y } : corner)]
+            }
+        })
+    },
+
+    addWall: (wall) => {
+        set((state) => ({
+            walls: [...state.walls, wall],
+        }))
+        // return id;  
+    },
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();

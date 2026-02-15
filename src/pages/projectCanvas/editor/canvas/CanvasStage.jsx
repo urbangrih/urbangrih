@@ -5,6 +5,7 @@ import Konva from "konva";
 import { useRef, useState, useEffect } from "react";
 // import { createObject } from "../services/objectFactory";
 import ObjectsLayer from "./ObjectsLayer";
+import StructureLayer from "./StructureLayer";
 import TransformerLayer from "./TransformerLayer";
 // import GridLayer from "./GridLayer";
 
@@ -19,6 +20,8 @@ export default function CanvasStage() {
     const stageRef = useRef(null);
     const objectLayerRef = useRef(null);
     const objects = useEditorStore((s) => s.objects);
+    const corners = useEditorStore((s) => s.corners);
+    const walls = useEditorStore((s) => s.walls);
     const selectObject = useEditorStore((s) => s.selectObject);
     const addObject = useEditorStore((s) => s.addObject);
     const updateObject = useEditorStore((s) => s.updateObject);
@@ -26,6 +29,7 @@ export default function CanvasStage() {
     const removeSelection = useEditorStore((s) => s.removeSelection);
     const clearSelection = useEditorStore((s) => s.clearSelection);
     const addCorner = useEditorStore((s) => s.addCorner);
+    const moveCorner = useEditorStore((s) => s.moveCorner);
     const addWall = useEditorStore((s) => s.addWall);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
@@ -46,10 +50,10 @@ export default function CanvasStage() {
     useEffect(() => {
         const c1 = createCorner(500,100);
         const c2 = createCorner(500,200);
-        const w1 = createWall(c1, c2);
-        addObject(c1);
-        addObject(c2);
-        addObject(w1);
+        addCorner(c1);
+        addCorner(c2);
+        const w1 = createWall(c1.id, c2.id);
+        addWall(w1);
     },[])
 
     const handleStageMouseClick = (e) => {
@@ -136,11 +140,25 @@ export default function CanvasStage() {
 
     };
 
+    const handleCornerDragMove = (e) => {
+        const node = e.target;
+
+        console.log("Corner drag move", node);
+        const newX = node.attrs.x;
+        const newY = node.attrs.y;
+        moveCorner(node.attrs.id, newX, newY);
+
+    }
+
     const events = {
         onClick: handleStageMouseClick,
         onDragMove: handleObjectDragMove,
         onDragEnd: handleStageDragEnd,
     };
+
+    const cornerEvents = {
+        onDragMove: handleCornerDragMove,
+    }
 
     useStageDnd(stageRef);
 
@@ -161,7 +179,12 @@ export default function CanvasStage() {
                     getRefSetter={getRefSetter}
                     events={events}
                 />
-                <TransformerLayer nodesRef={nodesRef} />
+                <StructureLayer
+                    corners={corners}
+                    walls={walls}
+                    cornerEvents={cornerEvents}
+                />
+                {/* <TransformerLayer nodesRef={nodesRef} /> */}
             </Layer>
         </Stage>
     );
