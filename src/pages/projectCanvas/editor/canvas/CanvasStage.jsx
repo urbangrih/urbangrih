@@ -7,6 +7,7 @@ import { useRef, useState, useEffect } from "react";
 import ObjectsLayer from "./ObjectsLayer";
 import StructureLayer from "./StructureLayer";
 import TransformerLayer from "./TransformerLayer";
+import GuidesLayer from "./GuidesLayer";
 // import GridLayer from "./GridLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
@@ -14,11 +15,14 @@ import { useEditorStore } from "../state/editorStore";
 import { createWall, createCorner } from "../services/objectFactory";
 
 import { useStageDnd } from "./hooks/useStageDnd";
+import { getSnappedCornerPosition } from "../services/snapEngine";
 import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
 
 export default function CanvasStage() {
     const stageRef = useRef(null);
     const objectLayerRef = useRef(null);
+    const guideLayerRef = useRef(null);
+
     const objects = useEditorStore((s) => s.objects);
     const corners = useEditorStore((s) => s.corners);
     const walls = useEditorStore((s) => s.walls);
@@ -31,6 +35,9 @@ export default function CanvasStage() {
     const addCorner = useEditorStore((s) => s.addCorner);
     const moveCorner = useEditorStore((s) => s.moveCorner);
     const addWall = useEditorStore((s) => s.addWall);
+    const guides = useEditorStore((s) => s.guides);
+    const setGuides = useEditorStore((s) => s.setGuides);
+    const clearGuides = useEditorStore((s) => s.clearGuides);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
@@ -146,8 +153,20 @@ export default function CanvasStage() {
         console.log("Corner drag move", node);
         const newX = node.attrs.x;
         const newY = node.attrs.y;
-        moveCorner(node.attrs.id, newX, newY);
+        console.log(newX, newY);
+        const {x, y, guides} = getSnappedCornerPosition(node.attrs.id, {x: newX, y: newY}, corners);
+        console.log("Snapped position", x, y, guides);
+        e.target.position({ x, y });
+        moveCorner(e.target.attrs.id, e.target.x(), e.target.y());
 
+
+
+        setGuides(guides);
+
+    }
+
+    const handleCornerDragEnd = (e) => {
+        clearGuides();
     }
 
     const events = {
@@ -158,6 +177,7 @@ export default function CanvasStage() {
 
     const cornerEvents = {
         onDragMove: handleCornerDragMove,
+        onDragEnd: handleCornerDragEnd,
     }
 
     useStageDnd(stageRef);
@@ -179,13 +199,17 @@ export default function CanvasStage() {
                     getRefSetter={getRefSetter}
                     events={events}
                 />
-                <StructureLayer
-                    corners={corners}
-                    walls={walls}
-                    cornerEvents={cornerEvents}
-                />
                 {/* <TransformerLayer nodesRef={nodesRef} /> */}
             </Layer>
+            <StructureLayer
+                corners={corners}
+                walls={walls}
+                cornerEvents={cornerEvents}
+            />
+            <GuidesLayer
+                guideLayerRef={guideLayerRef}
+                guides={guides} // we will pass guides here later
+            />
         </Stage>
     );
 }

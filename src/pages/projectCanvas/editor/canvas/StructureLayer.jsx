@@ -1,6 +1,6 @@
 import React from 'react'
-import { Line, Rect, Circle } from "react-konva";
-import { useEditorStore } from "../state/editorStore";
+import { Layer, Line, Rect, Circle } from "react-konva";
+// import { useEditorStore } from "../state/editorStore";
 
 
 const RENDERERS = {
@@ -20,15 +20,16 @@ const RENDERERS = {
         />
     ),
 
-    wall: (obj, events) => {
-        const corners = useEditorStore((s) => s.corners);
-        // const walls
+    wall: (obj, corners, events) => {
         const startCornerId = obj.startCornerId;
         const endCornerId = obj.endCornerId;
 
+        // const corners = useEditorStore((s) => s.corners);
+        console.log("corners in wall renderer", corners);
+        
         const startCorner = corners.find(c => c.id === startCornerId);
         const endCorner = corners.find(c => c.id === endCornerId);
-
+        
         if (!startCorner || !endCorner) {
             console.warn("Could not find corners for wall", obj);
             return null;
@@ -55,12 +56,12 @@ const RENDERERS = {
 
 export default function StructureLayer({walls, corners, cornerEvents={}, events={} }) {
     console.log("Rendering structure layer", { walls, corners });
-    const wallElements = walls.map((wall) => RENDERERS.wall(wall, events));
+    const wallElements = walls.map((wall) => RENDERERS.wall(wall, corners, events));
     const cornerElements = corners.map((corner) => RENDERERS.corner(corner, cornerEvents))
     return (
-        <>
+        <Layer>
             {wallElements}
             {cornerElements}
-        </>
+        </Layer>
     )
 }

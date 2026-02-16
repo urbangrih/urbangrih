@@ -2,9 +2,12 @@
 import { useEffect } from "react";
 import { createObject } from "../../services/objectFactory";
 import { useEditorStore } from "../../state/editorStore";
+import { createWall, createCorner } from "../../services/objectFactory";
 
 export function useStageDnd(stageRef) {
   const addObject = useEditorStore((s) => s.addObject);
+  const addCorner = useEditorStore((s) => s.addCorner);
+  const addWall = useEditorStore((s) => s.addWall);
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -28,10 +31,22 @@ export function useStageDnd(stageRef) {
         console.log("couldn't parse the data transferred in canvasStage.");
         return;
       }
+    // console.log("Dropped item on stage", item);
+
 
       stage.setPointersPositions(e);
       const pos = stage.getPointerPosition();
       if (!pos) return;
+
+      if (item.type === "wall") {
+        const c1 = createCorner(pos.x, pos.y);
+        const c2 = createCorner(pos.x + 120, pos.y);
+        addCorner(c1);
+        addCorner(c2);
+        const wall = createWall(c1.id, c2.id);
+        addWall(wall);
+        return;
+      }
 
       const obj = createObject({ type: item.type, x: pos.x, y: pos.y });
       if (obj) addObject(obj);
