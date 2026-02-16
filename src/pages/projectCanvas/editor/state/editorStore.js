@@ -11,7 +11,6 @@ export const useEditorStore = create((set) => ({
     walls: [],
     guides: [],
 
-    
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();
         if (selectedIds.includes(id)) return; // no-op
@@ -24,7 +23,7 @@ export const useEditorStore = create((set) => ({
 
     removeSelection: (id) => {
         const { selectedIds } = useEditorStore.getState();
-        set({selectedIds: selectedIds.filter((sid) => sid !== id) });
+        set({ selectedIds: selectedIds.filter((sid) => sid !== id) });
     },
 
     updateObject: (id, attrs) =>
@@ -36,9 +35,9 @@ export const useEditorStore = create((set) => ({
             // attrs.y = snapped.y;
             return {
                 objects: state.objects.map((obj) =>
-                    obj.id === id ? { ...obj, ...attrs } : obj
+                    obj.id === id ? { ...obj, ...attrs } : obj,
                 ),
-            }
+            };
         }),
 
     addObject: (obj) =>
@@ -50,27 +49,82 @@ export const useEditorStore = create((set) => ({
         set((state) => ({
             corners: [...state.corners, corner],
         }));
-        // return corner.id;
     },
 
     moveCorner: (id, x, y) => {
         set((state) => {
             return {
-                corners: [...state.corners.map((corner) => corner.id === id ? { ...corner, x, y } : corner)]
-            }
-        })
+                corners: [
+                    ...state.corners.map((corner) =>
+                        corner.id === id ? { ...corner, x, y } : corner,
+                    ),
+                ],
+            };
+        });
     },
 
-    addWall: (wall) => {
+    mergeCorners: (targetId, sourceId) =>
+        set((state) => {
+            const updatedWalls = state.walls.map((wall) => {
+                if (wall.startCornerId === sourceId) {
+                    return { ...wall, startCornerId: targetId };
+                }
+                if (wall.endCornerId === sourceId) {
+                    return { ...wall, endCornerId: targetId };
+                }
+                return wall;
+            });
+            state.cleanupWalls();
+            return {
+                ...state,
+                walls: updatedWalls,
+                corners: state.corners.filter(
+                    (corner) => corner.id !== sourceId,
+                ),
+            };
+        }),
+
+    cleanupWalls: () =>
+        set((state) => {
+            const uniqueWalls = new Set();
+            let updatedWalls = state.walls;
+            for (let wall of state.walls) {
+                if (wall.startCornerId === wall.endCornerId) {
+                    console.warn(
+                        "Removing wall with identical start and end corners",
+                        wall,
+                    );
+                    updatedWalls = updatedWalls.filter((w) => w.id !== wall.id);
+                    continue;
+                }
+                const wallKey = state.normalizeWall(wall);
+                if (uniqueWalls.has(wallKey)) {
+                    console.warn("Removing duplicate wall", wall);
+                    updatedWalls = updatedWalls.filter((w) => w.id !== wall.id);
+                } else {
+                    uniqueWalls.add(wallKey);
+                }
+            }
+            return {
+                ...state,
+                walls: updatedWalls,
+            };
+        }),
+
+    normalizeWall: (wall) => {
+        if (wall.startCornerId < wall.endCornerId) {
+            return wall.startCornerId + "-" + wall.endCornerId;
+        } else {
+            return wall.endCornerId + "-" + wall.startCornerId;
+        }
+    },
+
+    addWall: (wall) =>
         set((state) => ({
             walls: [...state.walls, wall],
-        }))
-        // return id;  
-    },
+        })),
 
-    setGuides: (guides) => {
-        set({ guides });
-    },
+    setGuides: (guides) => set({ guides }),
 
     clearGuides: () => set({ guides: [] }),
 }));

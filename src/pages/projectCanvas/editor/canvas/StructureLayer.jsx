@@ -25,7 +25,7 @@ const RENDERERS = {
         const endCornerId = obj.endCornerId;
 
         // const corners = useEditorStore((s) => s.corners);
-        console.log("corners in wall renderer", corners);
+        // console.log("corners in wall renderer", corners);
         
         const startCorner = corners.find(c => c.id === startCornerId);
         const endCorner = corners.find(c => c.id === endCornerId);
@@ -55,7 +55,7 @@ const RENDERERS = {
 
 
 export default function StructureLayer({walls, corners, cornerEvents={}, events={} }) {
-    console.log("Rendering structure layer", { walls, corners });
+    // console.log("Rendering structure layer", { walls, corners });
     const wallElements = walls.map((wall) => RENDERERS.wall(wall, corners, events));
     const cornerElements = corners.map((corner) => RENDERERS.corner(corner, cornerEvents))
     return (

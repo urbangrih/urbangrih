@@ -15,7 +15,7 @@ import { useEditorStore } from "../state/editorStore";
 import { createWall, createCorner } from "../services/objectFactory";
 
 import { useStageDnd } from "./hooks/useStageDnd";
-import { getSnappedCornerPosition } from "../services/snapEngine";
+import { getSnappedCornerPosition, detectOverlappingCorners } from "../services/snapEngine";
 import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
 
 export default function CanvasStage() {
@@ -26,15 +26,21 @@ export default function CanvasStage() {
     const objects = useEditorStore((s) => s.objects);
     const corners = useEditorStore((s) => s.corners);
     const walls = useEditorStore((s) => s.walls);
+    
     const selectObject = useEditorStore((s) => s.selectObject);
     const addObject = useEditorStore((s) => s.addObject);
     const updateObject = useEditorStore((s) => s.updateObject);
+    
     const selectedIds = useEditorStore((s) => s.selectedIds);
     const removeSelection = useEditorStore((s) => s.removeSelection);
     const clearSelection = useEditorStore((s) => s.clearSelection);
+    
     const addCorner = useEditorStore((s) => s.addCorner);
     const moveCorner = useEditorStore((s) => s.moveCorner);
+    const mergeCorners = useEditorStore((s) => s.mergeCorners);
+    
     const addWall = useEditorStore((s) => s.addWall);
+    
     const guides = useEditorStore((s) => s.guides);
     const setGuides = useEditorStore((s) => s.setGuides);
     const clearGuides = useEditorStore((s) => s.clearGuides);
@@ -50,9 +56,9 @@ export default function CanvasStage() {
     // });
 
     //temporary
-    useEffect(() => {
-        console.log(selectedIds);
-    }, [selectedIds]);
+    // useEffect(() => {
+    //     console.log(selectedIds);
+    // }, [selectedIds]);
 
     useEffect(() => {
         const c1 = createCorner(500,100);
@@ -150,12 +156,12 @@ export default function CanvasStage() {
     const handleCornerDragMove = (e) => {
         const node = e.target;
 
-        console.log("Corner drag move", node);
+        // console.log("Corner drag move", node);
         const newX = node.attrs.x;
         const newY = node.attrs.y;
-        console.log(newX, newY);
+        // console.log(newX, newY);
         const {x, y, guides} = getSnappedCornerPosition(node.attrs.id, {x: newX, y: newY}, corners);
-        console.log("Snapped position", x, y, guides);
+        // console.log("Snapped position", x, y, guides);
         e.target.position({ x, y });
         moveCorner(e.target.attrs.id, e.target.x(), e.target.y());
 
@@ -167,6 +173,11 @@ export default function CanvasStage() {
 
     const handleCornerDragEnd = (e) => {
         clearGuides();
+        const node = e.target;
+        const overlappingNodeId = detectOverlappingCorners(node.attrs.id, {x: node.x(), y: node.y()}, corners);
+        if (overlappingNodeId){
+            mergeCorners(overlappingNodeId, node.attrs.id);
+        }
     }
 
     const events = {

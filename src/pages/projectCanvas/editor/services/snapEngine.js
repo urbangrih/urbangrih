@@ -41,3 +41,17 @@ export function getSnappedCornerPosition(cornerId, rawPosition, corners){
     }
 
 }
+
+export function detectOverlappingCorners(cornerId, position, corners ){
+    for (let corner of corners){
+        if (corner.id === cornerId) continue;
+
+        const dx = corner.x - position.x;
+        const dy = corner.y - position.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < SNAP_THRESHOLD) {
+            return corner.id;
+        }
+    }
+}
