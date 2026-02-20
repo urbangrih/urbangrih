@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { createObject } from "../../services/objectFactory";
 import { useEditorStore } from "../../state/editorStore";
 import { createWall, createCorner } from "../../services/objectFactory";
+import { isPlacementValid } from "../../services/wallValidation";
 
 export function useStageDnd(stageRef) {
   const addObject = useEditorStore((s) => s.addObject);
@@ -35,15 +36,42 @@ export function useStageDnd(stageRef) {
 
 
       stage.setPointersPositions(e);
-      const pos = stage.getPointerPosition();
-      if (!pos) return;
+      const pointerPos = stage.getPointerPosition();
+      if (!pointerPos) return;
+      const transform = stage.getAbsoluteTransform().copy();
+      transform.invert();
+      const pos = transform.point(pointerPos);
 
       if (item.type === "wall") {
+        const LENGTH = 120;
+
+        const state = useEditorStore.getState();
         const c1 = createCorner(pos.x, pos.y);
-        const c2 = createCorner(pos.x + 120, pos.y);
+        const c2 = createCorner(pos.x + LENGTH, pos.y);
+        const wall = createWall(c1.id, c2.id);
+
+        const tempCorners = [...state.corners, c1, c2];
+        const validPlacement = isPlacementValid(
+          wall,
+          state.walls,
+          tempCorners
+        );
+
+        console.log("Wall drop candidate", {
+          label: "origin",
+          x: pos.x,
+          y: pos.y,
+          validPlacement,
+        });
+
+        if (!validPlacement) {
+          console.warn("Wall drop failed: invalid placement");
+          return;
+        }
+
+        console.log("Wall placed", { label: "origin", x: pos.x, y: pos.y });
         addCorner(c1);
         addCorner(c2);
-        const wall = createWall(c1.id, c2.id);
         addWall(wall);
         return;
       }
@@ -59,5 +87,5 @@ export function useStageDnd(stageRef) {
       container.removeEventListener("dragover", handleDragOver);
       container.removeEventListener("drop", handleDrop);
     };
-  }, [stageRef, addObject]);
+  }, [stageRef, addObject, addCorner, addWall]);
 }

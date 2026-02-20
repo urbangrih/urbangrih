@@ -20,15 +20,15 @@ const RENDERERS = {
         />
     ),
 
-    wall: (obj, corners, events) => {
+    wall: (obj, corners, draggingCorner, events) => {
         const startCornerId = obj.startCornerId;
         const endCornerId = obj.endCornerId;
 
         // const corners = useEditorStore((s) => s.corners);
         // console.log("corners in wall renderer", corners);
         
-        const startCorner = corners.find(c => c.id === startCornerId);
-        const endCorner = corners.find(c => c.id === endCornerId);
+        const startCorner = getCornerPosition(startCornerId, draggingCorner, corners);
+        const endCorner = getCornerPosition(endCornerId, draggingCorner, corners);
         
         if (!startCorner || !endCorner) {
             console.warn("Could not find corners for wall", obj);
@@ -53,11 +53,20 @@ const RENDERERS = {
     },
 }
 
+function getCornerPosition(cornerId, draggingCorner, corners) {
+    const dragging = draggingCorner && draggingCorner.id === cornerId ? draggingCorner : null;
+    if (dragging) {
+        return { x: dragging.x, y: dragging.y };
+    }
+    const corner = corners.find(c => c.id === cornerId);
+    return { x: corner.x, y: corner.y };
+}
 
-export default function StructureLayer({walls, corners, cornerEvents={}, events={} }) {
+
+export default function StructureLayer({walls, corners, draggingCorner=null, cornerEvents={}, events={} }) {
     // console.log("Rendering structure layer", { walls, corners });
-    const wallElements = walls.map((wall) => RENDERERS.wall(wall, corners, events));
-    const cornerElements = corners.map((corner) => RENDERERS.corner(corner, cornerEvents))
+    const wallElements = walls.map((wall) => RENDERERS.wall(wall, corners, draggingCorner, events));
+    const cornerElements = corners.map((corner) => RENDERERS.corner(corner, {...cornerEvents}));
     return (
         <Layer>
             {wallElements}

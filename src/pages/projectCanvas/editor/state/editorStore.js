@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { isPlacementValid } from "../services/wallValidation";
 // import { snapPointToGrid } from "../utils/snap";
 
 // export const GRID_SIZE = 20; // cm, inches, or logical units
@@ -84,6 +85,20 @@ export const useEditorStore = create((set) => ({
             };
         }),
 
+    addWall: (wall) =>
+        set((state) => {
+            const validPlacement = isPlacementValid(wall, state.walls, state.corners);
+            console.log("Validating wall placement", validPlacement);
+            if (!validPlacement) {
+                console.warn("Invalid wall placement", wall);
+                return state; // no change
+            }
+            return {
+                ...state,
+                walls: [...state.walls, wall]
+            };
+        }),
+
     cleanupWalls: () =>
         set((state) => {
             const uniqueWalls = new Set();
@@ -118,11 +133,6 @@ export const useEditorStore = create((set) => ({
             return wall.endCornerId + "-" + wall.startCornerId;
         }
     },
-
-    addWall: (wall) =>
-        set((state) => ({
-            walls: [...state.walls, wall],
-        })),
 
     setGuides: (guides) => set({ guides }),
 

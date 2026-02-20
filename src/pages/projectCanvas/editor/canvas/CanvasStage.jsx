@@ -17,6 +17,7 @@ import { createWall, createCorner } from "../services/objectFactory";
 import { useStageDnd } from "./hooks/useStageDnd";
 import { getSnappedCornerPosition, detectOverlappingCorners } from "../services/snapEngine";
 import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
+import { isPlacementValid } from "../services/wallValidation";
 
 export default function CanvasStage() {
     const stageRef = useRef(null);
@@ -46,6 +47,8 @@ export default function CanvasStage() {
     const clearGuides = useEditorStore((s) => s.clearGuides);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
+
+    const [draggingCorner, setDraggingCorner] = useState(null);
 
     // const [selectionRect, setSelectionRect] = useState({
     //     visible: false,
@@ -153,6 +156,15 @@ export default function CanvasStage() {
 
     };
 
+    const handleCornerDragStart = (e) => {
+        const node = e.target;
+        setDraggingCorner({
+            id: node.attrs.id,
+            x: node.x(),
+            y: node.y(),
+        });
+    }
+
     const handleCornerDragMove = (e) => {
         const node = e.target;
 
@@ -163,9 +175,30 @@ export default function CanvasStage() {
         const {x, y, guides} = getSnappedCornerPosition(node.attrs.id, {x: newX, y: newY}, corners);
         // console.log("Snapped position", x, y, guides);
         e.target.position({ x, y });
-        moveCorner(e.target.attrs.id, e.target.x(), e.target.y());
 
+        setDraggingCorner((prev) =>
+            prev && prev.id === node.attrs.id ? { ...prev, x, y } : prev
+        );
 
+        const tempCorners = corners.map((corner) =>
+            corner.id === node.attrs.id ? { ...corner, x, y } : corner
+        );
+
+        const wallsWithMovedCorner = walls.filter(
+            (w) => w.startCornerId === node.attrs.id || w.endCornerId === node.attrs.id
+        );
+
+        let validPlacement = true;
+        for (let wall of wallsWithMovedCorner) {
+            validPlacement = isPlacementValid(
+                wall,
+                walls.filter((w) => w.id !== wall.id),
+                tempCorners
+            );
+            if (!validPlacement) {
+                break;
+            }
+        }
 
         setGuides(guides);
 
@@ -174,10 +207,39 @@ export default function CanvasStage() {
     const handleCornerDragEnd = (e) => {
         clearGuides();
         const node = e.target;
-        const overlappingNodeId = detectOverlappingCorners(node.attrs.id, {x: node.x(), y: node.y()}, corners);
+        const tempCorners = corners.map((corner) =>
+            corner.id === node.attrs.id ? { ...corner, x: node.x(), y: node.y() } : corner
+        );
+
+        const wallsWithMovedCorner = walls.filter(
+            (w) => w.startCornerId === node.attrs.id || w.endCornerId === node.attrs.id
+        );
+
+        let validPlacement = true;
+        for (let wall of wallsWithMovedCorner) {
+            validPlacement = isPlacementValid(
+                wall,
+                walls.filter((w) => w.id !== wall.id),
+                tempCorners
+            );
+            if (!validPlacement) {
+                break;
+            }
+        }
+
+        if (!validPlacement && draggingCorner && draggingCorner.id === node.attrs.id) {
+            const originalCornerPosition = corners.find(c => c.id === node.attrs.id);
+            node.position({ x: originalCornerPosition.x, y: originalCornerPosition.y });
+            setDraggingCorner(null);
+            return;
+        }
+
+        moveCorner(node.attrs.id, node.x(), node.y());
+        const overlappingNodeId = detectOverlappingCorners(node.attrs.id, {x: node.x(), y: node.y()}, tempCorners);
         if (overlappingNodeId){
             mergeCorners(overlappingNodeId, node.attrs.id);
         }
+        setDraggingCorner(null);
     }
 
     const events = {
@@ -187,6 +249,7 @@ export default function CanvasStage() {
     };
 
     const cornerEvents = {
+        onDragStart: handleCornerDragStart,
         onDragMove: handleCornerDragMove,
         onDragEnd: handleCornerDragEnd,
     }
@@ -215,6 +278,7 @@ export default function CanvasStage() {
             <StructureLayer
                 corners={corners}
                 walls={walls}
+                draggingCorner={draggingCorner}
                 cornerEvents={cornerEvents}
             />
             <GuidesLayer
