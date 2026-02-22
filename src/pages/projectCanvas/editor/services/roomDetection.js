@@ -1,0 +1,123 @@
+import { computeSignedArea } from "./geometry";
+
+function edgeKey(edge) {
+	return `${edge.from}->${edge.to}`;
+}
+
+function buildCornerMap(corners) {
+	const cornerById = new Map();
+	for (const corner of corners || []) {
+		cornerById.set(corner.id, corner);
+	}
+	return cornerById;
+}
+
+function getNextEdge(currentEdge, directedGraph) {
+	const outgoing = directedGraph.get(currentEdge.to) || [];
+	if (outgoing.length === 0) {
+		return null;
+	}
+
+	const reverseIndex = outgoing.findIndex(
+		(edge) => edge.to === currentEdge.from
+	);
+
+	if (reverseIndex === -1) {
+		return null;
+	}
+
+	const nextIndex =
+		(reverseIndex - 1 + outgoing.length) % outgoing.length;
+	return outgoing[nextIndex] || null;
+}
+
+export function computeFaceArea(face, corners) {
+	const cornerById = buildCornerMap(corners);
+	const cornerIds = Array.isArray(face) ? face : face.cornerIds;
+	if (!cornerIds || cornerIds.length < 3) {
+		return 0;
+	}
+
+	const points = cornerIds
+		.map((cornerId) => cornerById.get(cornerId))
+		.filter(Boolean);
+
+	if (points.length < 3) {
+		return 0;
+	}
+
+	return Math.abs(computeSignedArea(points));
+}
+
+export function detectFaces(directedGraph, corners) {
+	const visited = new Set();
+	const faces = [];
+
+	for (const edges of directedGraph.values()) {
+		for (const startEdge of edges) {
+			const startKey = edgeKey(startEdge);
+			if (visited.has(startKey)) {
+				continue;
+			}
+
+			const cornerIds = [];
+			let edge = startEdge;
+			let guard = 0;
+			const maxSteps = directedGraph.size * 10 + 10;
+
+			while (edge && guard < maxSteps) {
+				const key = edgeKey(edge);
+				if (visited.has(key)) {
+					break;
+				}
+				visited.add(key);
+
+				if (cornerIds.length === 0) {
+					cornerIds.push(edge.from);
+				}
+				cornerIds.push(edge.to);
+
+				edge = getNextEdge(edge, directedGraph);
+				if (!edge) {
+					break;
+				}
+				if (edge.from === startEdge.from && edge.to === startEdge.to) {
+					break;
+				}
+				guard += 1;
+			}
+
+			if (cornerIds.length >= 4 && cornerIds[0] === cornerIds.at(-1)) {
+				cornerIds.pop();
+			}
+
+			if (cornerIds.length >= 3) {
+				const area = computeFaceArea({ cornerIds }, corners);
+				if (area > 0) {
+					faces.push({ cornerIds, area });
+				}
+			}
+		}
+	}
+
+	return faces;
+}
+
+export function removeOuterFace(faces) {
+	if (!faces || faces.length === 0) {
+		return [];
+	}
+
+	let maxIndex = 0;
+	let maxArea = faces[0].area ?? 0;
+
+	for (let i = 1; i < faces.length; i += 1) {
+		const area = faces[i].area ?? 0;
+		if (area > maxArea) {
+			maxArea = area;
+			maxIndex = i;
+		}
+	}
+
+	return faces.filter((_, index) => index !== maxIndex);
+}
