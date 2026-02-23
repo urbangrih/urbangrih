@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { isPlacementValid } from "../services/wallValidation";
+import { buildDirectedGraph } from "../services/halfEdgeBuilder";
+import { detectFaces, removeOuterFace } from "../services/roomDetection";
 // import { snapPointToGrid } from "../utils/snap";
 
 // export const GRID_SIZE = 20; // cm, inches, or logical units
@@ -11,6 +13,7 @@ export const useEditorStore = create((set) => ({
     corners: [],
     walls: [],
     guides: [],
+    rooms: [],
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();
@@ -137,4 +140,17 @@ export const useEditorStore = create((set) => ({
     setGuides: (guides) => set({ guides }),
 
     clearGuides: () => set({ guides: [] }),
+
+    recomputeRooms: (rooms) => {
+        const directedGraph = buildDirectedGraph(useEditorStore.getState().corners, useEditorStore.getState().walls);
+        const detectedFaces = detectFaces(directedGraph, useEditorStore.getState().corners);
+        const validRooms = removeOuterFace(detectedFaces);
+        if (validRooms.length === 0) {
+            console.warn("No valid rooms detected");
+        }
+        else{
+            console.log("Detected rooms", validRooms);
+        }
+        set({ rooms: validRooms });
+    }
 }));

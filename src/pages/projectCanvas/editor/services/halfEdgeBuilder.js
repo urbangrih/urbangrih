@@ -40,16 +40,20 @@ export function buildDirectedGraph(corners, walls) {
 
 export function sortOutgoingEdgesByAngle(directedGraph) {
 	const sorted = new Map();
+	const fullTurn = Math.PI * 2;
 
 	for (const [cornerId, edges] of directedGraph.entries()) {
 		const ordered = [...edges].sort((a, b) => {
-			if (a.angle === b.angle) {
+			const angleA = (fullTurn - a.angle) % fullTurn;
+			const angleB = (fullTurn - b.angle) % fullTurn;
+
+			if (angleA === angleB) {
 				if (a.to === b.to) {
 					return 0;
 				}
 				return String(a.to).localeCompare(String(b.to));
 			}
-			return a.angle - b.angle;
+			return angleA - angleB;
 		});
 		sorted.set(cornerId, ordered);
 	}

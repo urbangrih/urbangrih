@@ -5,6 +5,7 @@ import Konva from "konva";
 import { useRef, useState, useEffect } from "react";
 // import { createObject } from "../services/objectFactory";
 import ObjectsLayer from "./ObjectsLayer";
+import RoomLayer from "./RoomLayer";
 import StructureLayer from "./StructureLayer";
 import TransformerLayer from "./TransformerLayer";
 import GuidesLayer from "./GuidesLayer";
@@ -45,6 +46,9 @@ export default function CanvasStage() {
     const guides = useEditorStore((s) => s.guides);
     const setGuides = useEditorStore((s) => s.setGuides);
     const clearGuides = useEditorStore((s) => s.clearGuides);
+
+    const rooms = useEditorStore((s) => s.rooms);
+    const recomputeRooms = useEditorStore((s) => s.recomputeRooms);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
@@ -230,16 +234,18 @@ export default function CanvasStage() {
         if (!validPlacement && draggingCorner && draggingCorner.id === node.attrs.id) {
             const originalCornerPosition = corners.find(c => c.id === node.attrs.id);
             node.position({ x: originalCornerPosition.x, y: originalCornerPosition.y });
-            setDraggingCorner(null);
-            return;
+            // setDraggingCorner(null);
         }
 
         moveCorner(node.attrs.id, node.x(), node.y());
         const overlappingNodeId = detectOverlappingCorners(node.attrs.id, {x: node.x(), y: node.y()}, tempCorners);
         if (overlappingNodeId){
             mergeCorners(overlappingNodeId, node.attrs.id);
+            console.log("Merged corners", overlappingNodeId, node.attrs.id);
         }
         setDraggingCorner(null);
+        recomputeRooms();
+
     }
 
     const events = {
@@ -264,6 +270,21 @@ export default function CanvasStage() {
             onClick={handleStageMouseClick}
             draggable
         >
+            <GuidesLayer
+                guideLayerRef={guideLayerRef}
+                guides={guides} // we will pass guides here later
+            />
+            <RoomLayer 
+                rooms={rooms}
+                corners={corners} 
+            />
+            <StructureLayer
+                corners={corners}
+                walls={walls}
+                draggingCorner={draggingCorner}
+                cornerEvents={cornerEvents}
+                rooms={rooms}
+            />
             <Layer
                 ref={objectLayerRef}
             >
@@ -275,16 +296,6 @@ export default function CanvasStage() {
                 />
                 {/* <TransformerLayer nodesRef={nodesRef} /> */}
             </Layer>
-            <StructureLayer
-                corners={corners}
-                walls={walls}
-                draggingCorner={draggingCorner}
-                cornerEvents={cornerEvents}
-            />
-            <GuidesLayer
-                guideLayerRef={guideLayerRef}
-                guides={guides} // we will pass guides here later
-            />
         </Stage>
     );
 }

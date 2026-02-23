@@ -1,4 +1,5 @@
 import { computeSignedArea } from "./geometry";
+import { sortOutgoingEdgesByAngle } from "./halfEdgeBuilder";
 
 function edgeKey(edge) {
 	return `${edge.from}->${edge.to}`;
@@ -10,6 +11,45 @@ function buildCornerMap(corners) {
 		cornerById.set(corner.id, corner);
 	}
 	return cornerById;
+}
+
+export function computeRoomCentroid(face, corners) {
+	const cornerById = buildCornerMap(corners);
+	const cornerIds = Array.isArray(face) ? face : face.cornerIds;
+	if (!cornerIds || cornerIds.length < 3) {
+		return null;
+	}
+
+	const points = cornerIds
+		.map((cornerId) => cornerById.get(cornerId))
+		.filter(Boolean);
+
+	if (points.length < 3) {
+		return null;
+	}
+
+	let areaAccumulator = 0;
+	let centroidX = 0;
+	let centroidY = 0;
+
+	for (let i = 0; i < points.length; i += 1) {
+		const current = points[i];
+		const next = points[(i + 1) % points.length];
+		const cross = current.x * next.y - next.x * current.y;
+		areaAccumulator += cross;
+		centroidX += (current.x + next.x) * cross;
+		centroidY += (current.y + next.y) * cross;
+	}
+
+	const area = areaAccumulator / 2;
+	if (area === 0) {
+		return null;
+	}
+
+	return {
+		x: centroidX / (6 * area),
+		y: centroidY / (6 * area),
+	};
 }
 
 function getNextEdge(currentEdge, directedGraph) {
@@ -50,10 +90,11 @@ export function computeFaceArea(face, corners) {
 }
 
 export function detectFaces(directedGraph, corners) {
+	const orderedGraph = sortOutgoingEdgesByAngle(directedGraph);
 	const visited = new Set();
 	const faces = [];
 
-	for (const edges of directedGraph.values()) {
+	for (const edges of orderedGraph.values()) {
 		for (const startEdge of edges) {
 			const startKey = edgeKey(startEdge);
 			if (visited.has(startKey)) {
@@ -63,7 +104,7 @@ export function detectFaces(directedGraph, corners) {
 			const cornerIds = [];
 			let edge = startEdge;
 			let guard = 0;
-			const maxSteps = directedGraph.size * 10 + 10;
+			const maxSteps = orderedGraph.size * 10 + 10;
 
 			while (edge && guard < maxSteps) {
 				const key = edgeKey(edge);
@@ -77,7 +118,7 @@ export function detectFaces(directedGraph, corners) {
 				}
 				cornerIds.push(edge.to);
 
-				edge = getNextEdge(edge, directedGraph);
+				edge = getNextEdge(edge, orderedGraph);
 				if (!edge) {
 					break;
 				}
@@ -94,7 +135,16 @@ export function detectFaces(directedGraph, corners) {
 			if (cornerIds.length >= 3) {
 				const area = computeFaceArea({ cornerIds }, corners);
 				if (area > 0) {
-					faces.push({ cornerIds, area });
+					const roomId = "room-" + crypto.randomUUID();
+					const roomLabel = "Room " + (faces.length);
+					const centroid = computeRoomCentroid({ cornerIds }, corners);
+					faces.push({
+						roomId,
+						cornerIds,
+						area,
+						centroid,
+						label: roomLabel,
+					});
 				}
 			}
 		}

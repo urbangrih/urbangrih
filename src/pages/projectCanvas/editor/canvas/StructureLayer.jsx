@@ -23,9 +23,6 @@ const RENDERERS = {
     wall: (obj, corners, draggingCorner, events) => {
         const startCornerId = obj.startCornerId;
         const endCornerId = obj.endCornerId;
-
-        // const corners = useEditorStore((s) => s.corners);
-        // console.log("corners in wall renderer", corners);
         
         const startCorner = getCornerPosition(startCornerId, draggingCorner, corners);
         const endCorner = getCornerPosition(endCornerId, draggingCorner, corners);
@@ -63,10 +60,11 @@ function getCornerPosition(cornerId, draggingCorner, corners) {
 }
 
 
-export default function StructureLayer({walls, corners, draggingCorner=null, cornerEvents={}, events={} }) {
+export default function StructureLayer({walls, corners, draggingCorner=null, cornerEvents={}, events={}, rooms=[] }) {
     // console.log("Rendering structure layer", { walls, corners });
     const wallElements = walls.map((wall) => RENDERERS.wall(wall, corners, draggingCorner, events));
     const cornerElements = corners.map((corner) => RENDERERS.corner(corner, {...cornerEvents}));
+
     return (
         <Layer>
             {wallElements}

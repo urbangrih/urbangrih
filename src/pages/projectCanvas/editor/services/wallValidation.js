@@ -118,7 +118,7 @@ export function isPlacementValid (wall, existingWalls, corners) {
         const o3 = orientation(existingStart, existingEnd, startCorner);
         const o4 = orientation(existingStart, existingEnd, endCorner);
 
-        console.log("Orientation checks", { o1, o2, o3, o4 });
+        // console.log("Orientation checks", { o1, o2, o3, o4 });
 
         const intersectsByOrientation =
             (o1 !== o2 && o3 !== o4) ||
