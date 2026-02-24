@@ -63,9 +63,9 @@ export default function CanvasStage() {
     // });
 
     //temporary
-    // useEffect(() => {
-    //     console.log(selectedIds);
-    // }, [selectedIds]);
+    useEffect(() => {
+        recomputeRooms();
+    }, []);
 
     useEffect(() => {
         const c1 = createCorner(500,100);

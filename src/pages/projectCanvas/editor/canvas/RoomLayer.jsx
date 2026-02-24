@@ -10,7 +10,7 @@ export default function RoomLayer({ rooms=[], corners }) {
                     .map(cornerId => corners.find(c => c.id === cornerId))
                     .filter(Boolean);
                 const linePoints = roomCorners.flatMap(corner => [corner.x, corner.y]);
-                console.log("Rendering room", linePoints);
+                // console.log("Rendering room", linePoints);
                 return (
                     <Line 
                         key={room.roomId}
@@ -35,7 +35,8 @@ export default function RoomLayer({ rooms=[], corners }) {
                         key={`room-label-${room.roomId}`}
                         x={centerX}
                         y={centerY}
-                        text={room.label}
+                        // text={Math.abs(room.area).toFixed(2) + " sq units"}
+                        text={room.label || "Room"}
                         fontSize={16}
                         fill="blue"
                         listening={false}

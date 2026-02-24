@@ -86,7 +86,8 @@ export function computeFaceArea(face, corners) {
 		return 0;
 	}
 
-	return Math.abs(computeSignedArea(points));
+	// return Math.abs(computeSignedArea(points));
+	return computeSignedArea(points);
 }
 
 export function detectFaces(directedGraph, corners) {
@@ -128,24 +129,24 @@ export function detectFaces(directedGraph, corners) {
 				guard += 1;
 			}
 
-			if (cornerIds.length >= 4 && cornerIds[0] === cornerIds.at(-1)) {
+			if (cornerIds.length >= 3 && cornerIds[0] === cornerIds.at(-1)) {
 				cornerIds.pop();
 			}
 
 			if (cornerIds.length >= 3) {
 				const area = computeFaceArea({ cornerIds }, corners);
-				if (area > 0) {
-					const roomId = "room-" + crypto.randomUUID();
-					const roomLabel = "Room " + (faces.length);
-					const centroid = computeRoomCentroid({ cornerIds }, corners);
-					faces.push({
-						roomId,
-						cornerIds,
-						area,
-						centroid,
-						label: roomLabel,
-					});
-				}
+				// console.log("area of detected face", area);
+				const roomId = "room-" + crypto.randomUUID();
+				const roomLabel = "Room " + (faces.length + 1);
+				const centroid = computeRoomCentroid({ cornerIds }, corners);
+				faces.push({
+					roomId,
+					cornerIds,
+					area,
+					centroid,
+					label: roomLabel,
+				});
+				// console.log("Detected a face", faces);
 			}
 		}
 	}

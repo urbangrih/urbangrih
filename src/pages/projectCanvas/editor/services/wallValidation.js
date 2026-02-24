@@ -4,7 +4,7 @@ export function validateNewWall (wall, existingWalls, corners) {
     const startCorner = corners.find((corner) => corner.id === wall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === wall.endCornerId);
         if (!startCorner || !endCorner) {
-        console.log("Invalid wall corners", wall, startCorner, endCorner);
+        // console.log("Invalid wall corners", wall, startCorner, endCorner);
         return false; // Invalid corners
     }
 
@@ -12,7 +12,7 @@ export function validateNewWall (wall, existingWalls, corners) {
         const existingStart = corners.find((corner) => corner.id === existingWall.startCornerId);
         const existingEnd = corners.find((corner) => corner.id === existingWall.endCornerId);
         if (!existingStart || !existingEnd) {
-            console.log("Invalid existing wall corners");
+            // console.log("Invalid existing wall corners");
             return false; // Invalid existing wall
         }
         const sharesEndpoint =
@@ -27,7 +27,7 @@ export function validateNewWall (wall, existingWalls, corners) {
             isCollinear(startCorner, endCorner, existingEnd)
         ) {
             const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            console.log("Collinear overlap checks", { overlap });
+            // console.log("Collinear overlap checks", { overlap });
             if (overlap) {
                 return true; // Overlapping collinear walls are not allowed
             }
@@ -39,7 +39,7 @@ export function validateNewWall (wall, existingWalls, corners) {
         const o3 = orientation(existingStart, existingEnd, startCorner);
         const o4 = orientation(existingStart, existingEnd, endCorner);
 
-        console.log("Orientation checks", { o1, o2, o3, o4 });
+        // console.log("Orientation checks", { o1, o2, o3, o4 });
 
         const intersectsByOrientation =
             (o1 !== o2 && o3 !== o4) ||
@@ -83,7 +83,7 @@ export function isPlacementValid (wall, existingWalls, corners) {
     const startCorner = corners.find((corner) => corner.id === wall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === wall.endCornerId);
         if (!startCorner || !endCorner) {
-        console.log("Invalid wall corners", wall, startCorner, endCorner);
+        // console.log("Invalid wall corners", wall, startCorner, endCorner);
         return false; // Invalid corners
     }
 
@@ -91,7 +91,7 @@ export function isPlacementValid (wall, existingWalls, corners) {
         const existingStart = corners.find((corner) => corner.id === existingWall.startCornerId);
         const existingEnd = corners.find((corner) => corner.id === existingWall.endCornerId);
         if (!existingStart || !existingEnd) {
-            console.log("Invalid existing wall corners");
+            // console.log("Invalid existing wall corners");
             return false; // Invalid existing wall
         }
         const sharesEndpoint =
@@ -106,7 +106,7 @@ export function isPlacementValid (wall, existingWalls, corners) {
             isCollinear(startCorner, endCorner, existingEnd)
         ) {
             const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            console.log("Collinear overlap checks", { overlap });
+            // console.log("Collinear overlap checks", { overlap });
             if (overlap) {
                 return true; // Overlapping collinear walls are not allowed
             }

@@ -6,10 +6,13 @@ import { createWall, createCorner } from "../../services/objectFactory";
 import { isPlacementValid } from "../../services/wallValidation";
 
 export function useStageDnd(stageRef) {
+  const corners = useEditorStore((s) => s.corners);
+  const walls = useEditorStore((s) => s.walls);
+  // const rooms = useEditorStore((s) => s.rooms);
   const addObject = useEditorStore((s) => s.addObject);
   const addCorner = useEditorStore((s) => s.addCorner);
   const addWall = useEditorStore((s) => s.addWall);
-
+  const recomputeRooms = useEditorStore((s) => s.recomputeRooms); 
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -32,7 +35,6 @@ export function useStageDnd(stageRef) {
         console.log("couldn't parse the data transferred in canvasStage.");
         return;
       }
-    // console.log("Dropped item on stage", item);
 
 
       stage.setPointersPositions(e);
@@ -45,34 +47,82 @@ export function useStageDnd(stageRef) {
       if (item.type === "wall") {
         const LENGTH = 120;
 
-        const state = useEditorStore.getState();
+        // const state = useEditorStore.getState();
         const c1 = createCorner(pos.x, pos.y);
         const c2 = createCorner(pos.x + LENGTH, pos.y);
         const wall = createWall(c1.id, c2.id);
 
-        const tempCorners = [...state.corners, c1, c2];
+        const tempCorners = [...corners, c1, c2];
         const validPlacement = isPlacementValid(
           wall,
-          state.walls,
+          walls,
           tempCorners
         );
 
-        console.log("Wall drop candidate", {
-          label: "origin",
-          x: pos.x,
-          y: pos.y,
-          validPlacement,
-        });
+        // console.log("Wall drop candidate", {
+        //   label: "origin",
+        //   x: pos.x,
+        //   y: pos.y,
+        //   validPlacement,
+        // });
 
         if (!validPlacement) {
           console.warn("Wall drop failed: invalid placement");
           return;
         }
 
-        console.log("Wall placed", { label: "origin", x: pos.x, y: pos.y });
+        // console.log("Wall placed", { label: "origin", x: pos.x, y: pos.y });
         addCorner(c1);
         addCorner(c2);
         addWall(wall);
+        return;
+      }
+
+      if (item.type === "room"){
+        const SIZE = 250;
+
+        const c1 = createCorner(pos.x, pos.y);
+        const c2 = createCorner(pos.x + SIZE, pos.y);
+        const c3 = createCorner(pos.x + SIZE, pos.y + SIZE);
+        const c4 = createCorner(pos.x, pos.y + SIZE);
+        const wall1 = createWall(c1.id, c2.id);
+        const wall2 = createWall(c2.id, c3.id);
+        const wall3 = createWall(c3.id, c4.id);
+        const wall4 = createWall(c4.id, c1.id);
+
+        const tempCorners = [...corners, c1, c2, c3, c4];
+
+        let validPlacement = true;
+        for (let wall of [wall1, wall2, wall3, wall4]) {
+          let wallValid = isPlacementValid(wall, walls, tempCorners);
+          if (!wallValid) {
+            console.log("Room wall invalid", wall);
+            validPlacement = false;
+            break;
+          }
+        }
+
+        if (!validPlacement) {
+          console.warn("Room drop failed: invalid placement");
+          return;
+        }
+        // console.log("Room placed", { label: "origin", x: pos.x, y: pos.y });
+        // const room = {
+        //   roomId: `room-${crypto.randomUUID()}`,
+        //   cornerIds: [c1.id, c2.id, c3.id, c4.id],
+        //   area: SIZE * SIZE,
+        //   label: "dragged-room-" + Date.now(),
+        // };
+        // addRoom(room);
+        addCorner(c1);
+        addCorner(c2);
+        addCorner(c3);
+        addCorner(c4);
+        addWall(wall1);
+        addWall(wall2);
+        addWall(wall3);
+        addWall(wall4);
+        recomputeRooms();
         return;
       }
 
@@ -87,5 +137,5 @@ export function useStageDnd(stageRef) {
       container.removeEventListener("dragover", handleDragOver);
       container.removeEventListener("drop", handleDrop);
     };
-  }, [stageRef, addObject, addCorner, addWall]);
+  }, [stageRef, addObject, addCorner, addWall, walls, corners, recomputeRooms]);
 }

@@ -59,6 +59,16 @@
     transform: rotate(45deg);
 }
 
+.left-pane > .shape-room{
+    width: 100px;
+    height: 100px;
+    background: #cda75a;
+    border: hsl(40, 53%, 38%) dashed 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .canvas{
     width: 100%;
     height: 100%;

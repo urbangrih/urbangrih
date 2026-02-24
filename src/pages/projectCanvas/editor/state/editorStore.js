@@ -91,7 +91,6 @@ export const useEditorStore = create((set) => ({
     addWall: (wall) =>
         set((state) => {
             const validPlacement = isPlacementValid(wall, state.walls, state.corners);
-            console.log("Validating wall placement", validPlacement);
             if (!validPlacement) {
                 console.warn("Invalid wall placement", wall);
                 return state; // no change
@@ -141,12 +140,12 @@ export const useEditorStore = create((set) => ({
 
     clearGuides: () => set({ guides: [] }),
 
-    recomputeRooms: (rooms) => {
+    recomputeRooms: () => {
         const directedGraph = buildDirectedGraph(useEditorStore.getState().corners, useEditorStore.getState().walls);
         const detectedFaces = detectFaces(directedGraph, useEditorStore.getState().corners);
         const validRooms = removeOuterFace(detectedFaces);
         if (validRooms.length === 0) {
-            console.warn("No valid rooms detected");
+            console.info("No valid rooms detected so far");
         }
         else{
             console.log("Detected rooms", validRooms);
