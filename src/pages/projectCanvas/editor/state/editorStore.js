@@ -14,6 +14,8 @@ export const useEditorStore = create((set) => ({
     walls: [],
     guides: [],
     rooms: [],
+    roomLabels: {},
+    nextRoomIndex: 1,
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();
@@ -141,15 +143,33 @@ export const useEditorStore = create((set) => ({
     clearGuides: () => set({ guides: [] }),
 
     recomputeRooms: () => {
-        const directedGraph = buildDirectedGraph(useEditorStore.getState().corners, useEditorStore.getState().walls);
-        const detectedFaces = detectFaces(directedGraph, useEditorStore.getState().corners);
+        const state = useEditorStore.getState();
+        const directedGraph = buildDirectedGraph(state.corners, state.walls);
+        const detectedFaces = detectFaces(directedGraph, state.corners);
         const validRooms = removeOuterFace(detectedFaces);
         if (validRooms.length === 0) {
             console.info("No valid rooms detected so far");
-        }
-        else{
+        } else {
             console.log("Detected rooms", validRooms);
         }
-        set({ rooms: validRooms });
+
+        const updatedRoomLabels = { ...state.roomLabels };
+        let nextRoomIndex = state.nextRoomIndex ?? 1;
+
+        const labeledRooms = validRooms.map((room) => {
+            let label = updatedRoomLabels[room.roomId];
+            if (!label) {
+                label = `Room ${nextRoomIndex}`;
+                updatedRoomLabels[room.roomId] = label;
+                nextRoomIndex += 1;
+            }
+            return { ...room, label };
+        });
+
+        set({
+            rooms: labeledRooms,
+            roomLabels: updatedRoomLabels,
+            nextRoomIndex,
+        });
     }
 }));

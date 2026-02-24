@@ -59,19 +59,11 @@ export function useStageDnd(stageRef) {
           tempCorners
         );
 
-        // console.log("Wall drop candidate", {
-        //   label: "origin",
-        //   x: pos.x,
-        //   y: pos.y,
-        //   validPlacement,
-        // });
-
         if (!validPlacement) {
           console.warn("Wall drop failed: invalid placement");
           return;
         }
 
-        // console.log("Wall placed", { label: "origin", x: pos.x, y: pos.y });
         addCorner(c1);
         addCorner(c2);
         addWall(wall);
@@ -79,12 +71,12 @@ export function useStageDnd(stageRef) {
       }
 
       if (item.type === "room"){
-        const SIZE = 250;
+        const SIZE = 150;
 
         const c1 = createCorner(pos.x, pos.y);
-        const c2 = createCorner(pos.x + SIZE, pos.y);
+        const c2 = createCorner(pos.x, pos.y + SIZE);
         const c3 = createCorner(pos.x + SIZE, pos.y + SIZE);
-        const c4 = createCorner(pos.x, pos.y + SIZE);
+        const c4 = createCorner(pos.x + SIZE, pos.y);
         const wall1 = createWall(c1.id, c2.id);
         const wall2 = createWall(c2.id, c3.id);
         const wall3 = createWall(c3.id, c4.id);
