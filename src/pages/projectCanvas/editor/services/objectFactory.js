@@ -81,17 +81,6 @@ export function createWall(startCornerId, endCornerId, thickness=20){
         fill: "#f00",
         stroke: "#000",
         strokeWidth: 1,
-    }
-}
-
-export function createRoom(cornerIds) {
-    const id = crypto.randomUUID();
-    return {
-        id,
-        type: "room",
-        cornerIds,
-        fill: "#ff0",
-        stroke: "#000",
-        strokeWidth: 1,
+        draggable: true, 
     }
 }

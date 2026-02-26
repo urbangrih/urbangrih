@@ -16,9 +16,20 @@ import { useEditorStore } from "../state/editorStore";
 import { createWall, createCorner } from "../services/objectFactory";
 
 import { useStageDnd } from "./hooks/useStageDnd";
-import { getSnappedCornerPosition, detectOverlappingCorners } from "../services/snapEngine";
-import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
-import { isPlacementValid, isWallOverlapping } from "../services/wallValidation";
+import {
+    getSnappedCornerPosition,
+    detectOverlappingCorners,
+} from "../services/snapEngine";
+import {
+    getLineGuideStops,
+    drawGuides,
+    getGuides,
+    getObjectSnappingEdges,
+} from "../utils/objectSnap";
+import {
+    isPlacementValid,
+    isWallOverlapping,
+} from "../services/wallValidation";
 
 export default function CanvasStage() {
     const stageRef = useRef(null);
@@ -28,21 +39,21 @@ export default function CanvasStage() {
     const objects = useEditorStore((s) => s.objects);
     const corners = useEditorStore((s) => s.corners);
     const walls = useEditorStore((s) => s.walls);
-    
+
     const selectObject = useEditorStore((s) => s.selectObject);
     const addObject = useEditorStore((s) => s.addObject);
     const updateObject = useEditorStore((s) => s.updateObject);
-    
+
     const selectedIds = useEditorStore((s) => s.selectedIds);
     const removeSelection = useEditorStore((s) => s.removeSelection);
     const clearSelection = useEditorStore((s) => s.clearSelection);
-    
+
     const addCorner = useEditorStore((s) => s.addCorner);
     const moveCorner = useEditorStore((s) => s.moveCorner);
     const mergeCorners = useEditorStore((s) => s.mergeCorners);
-    
+
     const addWall = useEditorStore((s) => s.addWall);
-    
+
     const guides = useEditorStore((s) => s.guides);
     const setGuides = useEditorStore((s) => s.setGuides);
     const clearGuides = useEditorStore((s) => s.clearGuides);
@@ -53,6 +64,7 @@ export default function CanvasStage() {
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
     const [draggingCorner, setDraggingCorner] = useState(null);
+    // const [draggingWallCorners, setDraggingWallCorners] = useState(null);
 
     // const [selectionRect, setSelectionRect] = useState({
     //     visible: false,
@@ -68,13 +80,13 @@ export default function CanvasStage() {
     }, []);
 
     useEffect(() => {
-        const c1 = createCorner(500,100);
-        const c2 = createCorner(500,200);
+        const c1 = createCorner(500, 100);
+        const c2 = createCorner(500, 200);
         addCorner(c1);
         addCorner(c2);
         const w1 = createWall(c1.id, c2.id);
         addWall(w1);
-    },[])
+    }, []);
 
     const handleStageMouseClick = (e) => {
         e.cancelBubble = true;
@@ -113,7 +125,6 @@ export default function CanvasStage() {
         layer.find(".guid-line").forEach((line) => line.destroy());
         layer.batchDraw();
 
-
         let lineGuideStops = getLineGuideStops(node, stageRef.current);
         let itemBounds = getObjectSnappingEdges(node);
 
@@ -143,15 +154,61 @@ export default function CanvasStage() {
     };
 
     const handleStageDragEnd = (e) => {
-        // if (selectionRect.visible) return;
-
         const node = e.target;
 
         const layer = node.getLayer();
         layer.find(".guid-line").forEach((line) => line.destroy());
         layer.batchDraw();
-
     };
+
+    function attemptMoveCorners(cornersToMove, dx, dy) {
+        const tempCorners = corners.map((corner) => {
+            const toMove = cornersToMove.find((c) => c.id === corner.id);
+            if (toMove) {
+                return { ...corner, x: toMove.x + dx, y: toMove.y + dy };
+            }
+            return corner;
+        });
+        const wallsToCheck = walls.filter((w) =>
+            cornersToMove.some(
+                (c) => c.id === w.startCornerId || c.id === w.endCornerId,
+            ),
+        );
+
+        // console.log("Attempting to move corners", { "corners:": corners, "tempCorners:": tempCorners, "cornersToMove": cornersToMove });
+
+        let isDragValid = false;
+        let isOverlapping = false;
+        for (let wall of wallsToCheck) {
+            isDragValid = isPlacementValid(
+                wall,
+                walls.filter((w) => w.id !== wall.id),
+                tempCorners,
+            );
+            if (!isDragValid) {
+                isOverlapping = isWallOverlapping(
+                    wall,
+                    walls.filter((w) => w.id !== wall.id),
+                    tempCorners,
+                );
+                break;
+            }
+        }
+
+        if (isDragValid && !isOverlapping) {
+            return {
+                success: true,
+                reason: null,
+                tempCorners,
+            };
+        }
+
+        return {
+            success: false,
+            reason: isOverlapping ? "overlap" : "invalid",
+            tempCorners,
+        };
+    }
 
     const handleCornerDragStart = (e) => {
         const node = e.target;
@@ -160,92 +217,116 @@ export default function CanvasStage() {
             x: node.x(),
             y: node.y(),
         });
-    }
+    };
 
     const handleCornerDragMove = (e) => {
         const node = e.target;
 
-        // console.log("Corner drag move", node);
         const newX = node.attrs.x;
         const newY = node.attrs.y;
-        // console.log(newX, newY);
-        const {x, y, guides} = getSnappedCornerPosition(node.attrs.id, {x: newX, y: newY}, corners);
-        // console.log("Snapped position", x, y, guides);
+
+        const { x, y, guides } = getSnappedCornerPosition(
+            node.attrs.id,
+            { x: newX, y: newY },
+            corners,
+        );
         e.target.position({ x, y });
 
         setDraggingCorner((prev) =>
-            prev && prev.id === node.attrs.id ? { ...prev, x, y } : prev
+            prev && prev.id === node.attrs.id ? { ...prev, x, y } : prev,
         );
 
-        const tempCorners = corners.map((corner) =>
-            corner.id === node.attrs.id ? { ...corner, x, y } : corner
-        );
-
-        const wallsWithMovedCorner = walls.filter(
-            (w) => w.startCornerId === node.attrs.id || w.endCornerId === node.attrs.id
-        );
-
-        let validPlacement = true;
-        for (let wall of wallsWithMovedCorner) {
-            validPlacement = isPlacementValid(
-                wall,
-                walls.filter((w) => w.id !== wall.id),
-                tempCorners
-            );
-            if (!validPlacement) {
-                break;
-            }
-        }
+        // const validPlacement = attemptMoveCorners([{id: node.attrs.id, x, y}], dx, dy);
 
         setGuides(guides);
-
-    }
+    };
 
     const handleCornerDragEnd = (e) => {
         clearGuides();
         const node = e.target;
-        const tempCorners = corners.map((corner) =>
-            corner.id === node.attrs.id ? { ...corner, x: node.x(), y: node.y() } : corner
-        );
 
-        const wallsWithMovedCorner = walls.filter(
-            (w) => w.startCornerId === node.attrs.id || w.endCornerId === node.attrs.id
+        const { success, reason, tempCorners } = attemptMoveCorners(
+            [{ id: node.attrs.id, x: node.x(), y: node.y() }],
+            0,
+            0,
         );
-
-        let validPlacement = true;
-        let isOverlapping = false;
-        for (let wall of wallsWithMovedCorner) {
-            validPlacement = isPlacementValid(
-                wall,
-                walls.filter((w) => w.id !== wall.id),
-                tempCorners
+        console.log("Corner drag end", { success, reason });
+        if (
+            !success &&
+            reason !== "overlap" &&
+            draggingCorner &&
+            draggingCorner.id === node.attrs.id
+        ) {
+            const originalCornerPosition = corners.find(
+                (c) => c.id === node.attrs.id,
             );
-            if (!validPlacement) {
-                isOverlapping = isWallOverlapping(
-                    wall,
-                    walls.filter((w) => w.id !== wall.id),
-                    tempCorners
-                );
-                break;
-            }
-        }
-
-        if (!validPlacement && !isOverlapping && draggingCorner && draggingCorner.id === node.attrs.id) {
-            const originalCornerPosition = corners.find(c => c.id === node.attrs.id);
-            node.position({ x: originalCornerPosition.x, y: originalCornerPosition.y });
-            // setDraggingCorner(null);
+            node.position({
+                x: originalCornerPosition.x,
+                y: originalCornerPosition.y,
+            });
         }
 
         moveCorner(node.attrs.id, node.x(), node.y());
-        const overlappingNodeId = detectOverlappingCorners(node.attrs.id, {x: node.x(), y: node.y()}, tempCorners);
-        if (overlappingNodeId){
+        const overlappingNodeId = detectOverlappingCorners(
+            node.attrs.id,
+            { x: node.x(), y: node.y() },
+            tempCorners,
+        );
+        if (overlappingNodeId) {
             mergeCorners(overlappingNodeId, node.attrs.id);
             console.log("Merged corners", overlappingNodeId, node.attrs.id);
         }
         setDraggingCorner(null);
         recomputeRooms();
+    };
 
-    }
+    const handleWallDragStart = (e) => {};
+    const handleWallDragMove = (e) => {};
+    const handleWallDragEnd = (e) => {
+        const draggedWall = e.target;
+        const draggedWallId = draggedWall.attrs.id;
+        const draggedWallObject = walls.find((w) => w.id === draggedWallId);
+        const wallCorners = corners.filter(
+            (c) =>
+                c.id === draggedWallObject.startCornerId ||
+                c.id === draggedWallObject.endCornerId,
+        );
+
+        const newX_1 = draggedWall.attrs.points[0] + draggedWall.attrs.x;
+        const newY_1 = draggedWall.attrs.points[1] + draggedWall.attrs.y;
+        const newX_2 = draggedWall.attrs.points[2] + draggedWall.attrs.x;
+        const newY_2 = draggedWall.attrs.points[3] + draggedWall.attrs.y;
+
+        console.log("Wall new points", { newX_1, newY_1, newX_2, newY_2 });
+
+        const deltaX = newX_1 - wallCorners[0].x;
+        const deltaY = newY_1 - wallCorners[0].y;
+
+        const { success, reason, tempCorners } = attemptMoveCorners(
+            wallCorners,
+            deltaX,
+            deltaY,
+        );
+
+        if (!success && reason !== "overlap") {
+            const originalCornerPositions = wallCorners.map((c) =>
+                corners.find((corner) => corner.id === c.id),
+            );
+            draggedWall.points([
+                originalCornerPositions[0].x,
+                originalCornerPositions[0].y,
+                originalCornerPositions[1].x,
+                originalCornerPositions[1].y,
+            ]);
+            // return;
+        }
+
+        moveCorner(wallCorners[0].id, newX_1, newY_1);
+        moveCorner(wallCorners[1].id, newX_2, newY_2);
+        draggedWall.position({ x: 0, y: 0 });
+        // setDraggingWallCorners(null);
+        recomputeRooms();
+    };
 
     const events = {
         onClick: handleStageMouseClick,
@@ -257,7 +338,13 @@ export default function CanvasStage() {
         onDragStart: handleCornerDragStart,
         onDragMove: handleCornerDragMove,
         onDragEnd: handleCornerDragEnd,
-    }
+    };
+
+    const wallEvents = {
+        onDragStart: handleWallDragStart,
+        onDragMove: handleWallDragMove,
+        onDragEnd: handleWallDragEnd,
+    };
 
     useStageDnd(stageRef);
 
@@ -267,26 +354,22 @@ export default function CanvasStage() {
             width={window.innerWidth}
             height={window.innerHeight}
             onClick={handleStageMouseClick}
-            draggable
+            // draggable
         >
             <GuidesLayer
                 guideLayerRef={guideLayerRef}
                 guides={guides} // we will pass guides here later
             />
-            <RoomLayer 
-                rooms={rooms}
-                corners={corners} 
-            />
+            <RoomLayer rooms={rooms} corners={corners} />
             <StructureLayer
                 corners={corners}
                 walls={walls}
                 draggingCorner={draggingCorner}
                 cornerEvents={cornerEvents}
+                wallEvents={wallEvents}
                 rooms={rooms}
             />
-            <Layer
-                ref={objectLayerRef}
-            >
+            <Layer ref={objectLayerRef}>
                 {/* <GridLayer /> */}
                 <ObjectsLayer
                     objects={objects}
