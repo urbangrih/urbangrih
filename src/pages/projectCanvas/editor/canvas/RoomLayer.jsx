@@ -10,10 +10,11 @@ export default function RoomLayer({ rooms=[], corners }) {
                     .map(cornerId => corners.find(c => c.id === cornerId))
                     .filter(Boolean);
                 const linePoints = roomCorners.flatMap(corner => [corner.x, corner.y]);
+                const roomKey = room.roomId ?? `room-${points.join("-")}`;
                 // console.log("Rendering room", linePoints);
                 return (
                     <Line 
-                        key={room.roomId}
+                        key={roomKey}
                         points={linePoints}
                         closed={true}
                         fill="#a4b2cc"
@@ -28,19 +29,21 @@ export default function RoomLayer({ rooms=[], corners }) {
             {rooms.map((room) => {
                 const centerX = room.centroid?.x ?? 0;
                 const centerY = room.centroid?.y ?? 0;
-                const textWidth = room.label.length * 10; // rough estimate
+                const areaInSqFt = Math.abs(room.area) / (15 * 15);
+                const areaText = `${areaInSqFt.toFixed(2)} sq ft`;
+                const textWidth = areaText.length * 10; // rough estimate
                 const textHeight = 20; // rough estimate
+                const roomKey = room.roomId ?? `room-${room.cornerIds.join("-")}`;
                 return (
                     <Text 
-                        key={`room-label-${room.roomId}`}
+                        key={`room-area-${roomKey}`}
                         x={centerX}
                         y={centerY}
-                        // text={Math.abs(room.area).toFixed(2) + " sq units"}
-                        text={room.label || "Room"}
+                        text={areaText}
                         fontSize={16}
                         fill="blue"
                         listening={false}
-                        offsetX={textWidth / 2}
+                        offsetX={textWidth / 3}
                         offsetY={textHeight / 2}
                     />
                 );

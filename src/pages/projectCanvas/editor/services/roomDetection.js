@@ -13,65 +13,6 @@ function buildCornerMap(corners) {
 	return cornerById;
 }
 
-function rotateArray(values, startIndex) {
-	if (values.length === 0) {
-		return [];
-	}
-	return [...values.slice(startIndex), ...values.slice(0, startIndex)];
-}
-
-function compareIdSequences(a, b) {
-	const length = Math.min(a.length, b.length);
-	for (let i = 0; i < length; i += 1) {
-		if (a[i] < b[i]) return -1;
-		if (a[i] > b[i]) return 1;
-	}
-	return a.length - b.length;
-}
-
-function normalizeCornerCycle(cornerIds) {
-	if (!cornerIds || cornerIds.length === 0) {
-		return [];
-	}
-
-	const ids = cornerIds.slice();
-	const minId = ids.reduce((min, id) => (id < min ? id : min), ids[0]);
-	const minIndices = [];
-	for (let i = 0; i < ids.length; i += 1) {
-		if (ids[i] === minId) {
-			minIndices.push(i);
-		}
-	}
-
-	let best = null;
-	for (const index of minIndices) {
-		const rotated = rotateArray(ids, index);
-		if (!best || compareIdSequences(rotated, best) < 0) {
-			best = rotated;
-		}
-	}
-
-	const reversed = ids.slice().reverse();
-	const minIdReversed = reversed.reduce(
-		(min, id) => (id < min ? id : min),
-		reversed[0],
-	);
-	const minIndicesReversed = [];
-	for (let i = 0; i < reversed.length; i += 1) {
-		if (reversed[i] === minIdReversed) {
-			minIndicesReversed.push(i);
-		}
-	}
-
-	for (const index of minIndicesReversed) {
-		const rotated = rotateArray(reversed, index);
-		if (!best || compareIdSequences(rotated, best) < 0) {
-			best = rotated;
-		}
-	}
-
-	return best || ids;
-}
 
 export function computeRoomCentroid(face, corners) {
 	const cornerById = buildCornerMap(corners);
@@ -198,11 +139,8 @@ export function detectFaces(directedGraph, corners) {
 				if (Math.abs(area) < 1e-6) {
 					continue;
 				}
-				const normalizedCornerIds = normalizeCornerCycle(cornerIds);
-				const roomId = "room-" + normalizedCornerIds.join("-");
 				const centroid = computeRoomCentroid({ cornerIds }, corners);
 				faces.push({
-					roomId,
 					cornerIds,
 					area,
 					centroid,

@@ -14,8 +14,6 @@ export const useEditorStore = create((set) => ({
     walls: [],
     guides: [],
     rooms: [],
-    roomLabels: {},
-    nextRoomIndex: 1,
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();
@@ -153,23 +151,8 @@ export const useEditorStore = create((set) => ({
             console.log("Detected rooms", validRooms);
         }
 
-        const updatedRoomLabels = { ...state.roomLabels };
-        let nextRoomIndex = state.nextRoomIndex ?? 1;
-
-        const labeledRooms = validRooms.map((room) => {
-            let label = updatedRoomLabels[room.roomId];
-            if (!label) {
-                label = `Room ${nextRoomIndex}`;
-                updatedRoomLabels[room.roomId] = label;
-                nextRoomIndex += 1;
-            }
-            return { ...room, label };
-        });
-
         set({
-            rooms: labeledRooms,
-            roomLabels: updatedRoomLabels,
-            nextRoomIndex,
+            rooms: validRooms,
         });
     }
 }));

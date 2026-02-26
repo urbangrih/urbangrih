@@ -172,12 +172,6 @@ export function isWallOverlapping(movedWall, walls, corners){
         const existingEnd = corners.find((corner) => corner.id === wall.endCornerId);
         if (!existingStart || !existingEnd) continue;
 
-        const sharesEndpoint =
-            pointEquals(startCorner, existingStart) ||
-            pointEquals(startCorner, existingEnd) ||
-            pointEquals(endCorner, existingStart) ||
-            pointEquals(endCorner, existingEnd);
-
         if (
             isCollinear(startCorner, endCorner, existingStart) &&
             isCollinear(startCorner, endCorner, existingEnd)
@@ -187,40 +181,6 @@ export function isWallOverlapping(movedWall, walls, corners){
                 return true;
             }
             continue;
-        }
-
-        const o1 = orientation(startCorner, endCorner, existingStart);
-        const o2 = orientation(startCorner, endCorner, existingEnd);
-        const o3 = orientation(existingStart, existingEnd, startCorner);
-        const o4 = orientation(existingStart, existingEnd, endCorner);
-
-        const intersectsByOrientation =
-            (o1 !== o2 && o3 !== o4) ||
-            (o1 === 0 && onSegment(startCorner, existingStart, endCorner)) ||
-            (o2 === 0 && onSegment(startCorner, existingEnd, endCorner)) ||
-            (o3 === 0 && onSegment(existingStart, startCorner, existingEnd)) ||
-            (o4 === 0 && onSegment(existingStart, endCorner, existingEnd));
-
-        const intersection = intersectsByOrientation ||
-            segmentIntersection(startCorner, endCorner, existingStart, existingEnd);
-        if (intersection) {
-            if (sharesEndpoint) {
-                continue;
-            }
-            return true;
-        }
-
-        if (!sharesEndpoint) {
-            const minDistance = minimumDistanceBetweenSegments(
-                startCorner,
-                endCorner,
-                existingStart,
-                existingEnd
-            );
-            const thickness = movedWall.thickness ?? 0;
-            if (minDistance < thickness) {
-                return true;
-            }
         }
     }
 
