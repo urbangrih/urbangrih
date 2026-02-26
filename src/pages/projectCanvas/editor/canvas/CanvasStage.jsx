@@ -18,7 +18,7 @@ import { createWall, createCorner } from "../services/objectFactory";
 import { useStageDnd } from "./hooks/useStageDnd";
 import { getSnappedCornerPosition, detectOverlappingCorners } from "../services/snapEngine";
 import { getLineGuideStops, drawGuides, getGuides, getObjectSnappingEdges } from "../utils/objectSnap";
-import { isPlacementValid } from "../services/wallValidation";
+import { isPlacementValid, isWallOverlapping } from "../services/wallValidation";
 
 export default function CanvasStage() {
     const stageRef = useRef(null);
@@ -78,13 +78,6 @@ export default function CanvasStage() {
 
     const handleStageMouseClick = (e) => {
         e.cancelBubble = true;
-
-        // const selWidth = selectionRect.width;
-        // const selHeight = selectionRect.height;
-        // if (selectionRect.visible && selWidth > 0 && selHeight > 0) {
-        //     console.log("click not detected and treated as a rectangle");
-        //     return;
-        // }
 
         if (e.target === e.target.getStage()) {
             console.log("clicked on stage");
@@ -220,6 +213,7 @@ export default function CanvasStage() {
         );
 
         let validPlacement = true;
+        let isOverlapping = false;
         for (let wall of wallsWithMovedCorner) {
             validPlacement = isPlacementValid(
                 wall,
@@ -227,11 +221,16 @@ export default function CanvasStage() {
                 tempCorners
             );
             if (!validPlacement) {
+                isOverlapping = isWallOverlapping(
+                    wall,
+                    walls.filter((w) => w.id !== wall.id),
+                    tempCorners
+                );
                 break;
             }
         }
 
-        if (!validPlacement && draggingCorner && draggingCorner.id === node.attrs.id) {
+        if (!validPlacement && !isOverlapping && draggingCorner && draggingCorner.id === node.attrs.id) {
             const originalCornerPosition = corners.find(c => c.id === node.attrs.id);
             node.position({ x: originalCornerPosition.x, y: originalCornerPosition.y });
             // setDraggingCorner(null);
