@@ -67,6 +67,21 @@ export const useEditorStore = create((set) => ({
         });
     },
 
+    moveCornersBatch: (cornerUpdates) => {
+        set((state) => {
+            const cornerMap = new Map(state.corners.map((c) => [c.id, c]));
+            for (const { id, x, y } of cornerUpdates) {
+                if (cornerMap.has(id)) {
+                    cornerMap.set(id, { ...cornerMap.get(id), x, y });
+                }
+            }
+            return {
+                ...state,
+                corners: Array.from(cornerMap.values()),
+            };
+        });
+    },
+
     mergeCorners: (targetId, sourceId) =>
         set((state) => {
             const updatedWalls = state.walls.map((wall) => {

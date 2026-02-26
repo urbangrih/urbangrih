@@ -50,6 +50,7 @@ export default function CanvasStage() {
 
     const addCorner = useEditorStore((s) => s.addCorner);
     const moveCorner = useEditorStore((s) => s.moveCorner);
+    const moveCornersBatch = useEditorStore((s) => s.moveCornersBatch);
     const mergeCorners = useEditorStore((s) => s.mergeCorners);
 
     const addWall = useEditorStore((s) => s.addWall);
@@ -64,7 +65,7 @@ export default function CanvasStage() {
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
     const [draggingCorner, setDraggingCorner] = useState(null);
-    // const [draggingWallCorners, setDraggingWallCorners] = useState(null);
+    const [draggingWallCorners, setDraggingWallCorners] = useState(null);
 
     // const [selectionRect, setSelectionRect] = useState({
     //     visible: false,
@@ -280,7 +281,9 @@ export default function CanvasStage() {
         recomputeRooms();
     };
 
-    const handleWallDragStart = (e) => {};
+    const handleWallDragStart = (e) => {
+        const draggedWall = e.target;
+    };
     const handleWallDragMove = (e) => {};
     const handleWallDragEnd = (e) => {
         const draggedWall = e.target;
@@ -291,16 +294,11 @@ export default function CanvasStage() {
                 c.id === draggedWallObject.startCornerId ||
                 c.id === draggedWallObject.endCornerId,
         );
+        const startCornerId = draggedWallObject.startCornerId;
+        const endCornerId = draggedWallObject.endCornerId;
 
-        const newX_1 = draggedWall.attrs.points[0] + draggedWall.attrs.x;
-        const newY_1 = draggedWall.attrs.points[1] + draggedWall.attrs.y;
-        const newX_2 = draggedWall.attrs.points[2] + draggedWall.attrs.x;
-        const newY_2 = draggedWall.attrs.points[3] + draggedWall.attrs.y;
-
-        console.log("Wall new points", { newX_1, newY_1, newX_2, newY_2 });
-
-        const deltaX = newX_1 - wallCorners[0].x;
-        const deltaY = newY_1 - wallCorners[0].y;
+        const deltaX = draggedWall.attrs.x;
+        const deltaY = draggedWall.attrs.y;
 
         const { success, reason, tempCorners } = attemptMoveCorners(
             wallCorners,
@@ -318,13 +316,20 @@ export default function CanvasStage() {
                 originalCornerPositions[1].x,
                 originalCornerPositions[1].y,
             ]);
-            // return;
+            draggedWall.position({ x: 0, y: 0 });
+            return;
         }
 
-        moveCorner(wallCorners[0].id, newX_1, newY_1);
-        moveCorner(wallCorners[1].id, newX_2, newY_2);
+        const newX_1 = wallCorners.find((c) => c.id === startCornerId).x + deltaX;
+        const newY_1 = wallCorners.find((c) => c.id === startCornerId).y + deltaY;
+        const newX_2 = wallCorners.find((c) => c.id === endCornerId).x + deltaX;
+        const newY_2 = wallCorners.find((c) => c.id === endCornerId).y + deltaY;
+
+        const updatedCorners = [{id: wallCorners[0].id, x: newX_1, y: newY_1}, {id: wallCorners[1].id, x: newX_2, y: newY_2}];
+        moveCornersBatch(updatedCorners);
+
         draggedWall.position({ x: 0, y: 0 });
-        // setDraggingWallCorners(null);
+
         recomputeRooms();
     };
 
