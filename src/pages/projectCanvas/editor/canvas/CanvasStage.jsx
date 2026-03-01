@@ -289,13 +289,16 @@ export default function CanvasStage() {
         const draggedWall = e.target;
         const draggedWallId = draggedWall.attrs.id;
         const draggedWallObject = walls.find((w) => w.id === draggedWallId);
-        const wallCorners = corners.filter(
-            (c) =>
-                c.id === draggedWallObject.startCornerId ||
-                c.id === draggedWallObject.endCornerId,
-        );
         const startCornerId = draggedWallObject.startCornerId;
         const endCornerId = draggedWallObject.endCornerId;
+        const wallCorners = [startCornerId, endCornerId]
+            .map((id) => corners.find((c) => c.id === id))
+            .filter(Boolean);
+
+        if (wallCorners.length !== 2) {
+            draggedWall.position({ x: 0, y: 0 });
+            return;
+        }
 
         const deltaX = draggedWall.attrs.x;
         const deltaY = draggedWall.attrs.y;
@@ -320,12 +323,15 @@ export default function CanvasStage() {
             return;
         }
 
-        const newX_1 = wallCorners.find((c) => c.id === startCornerId).x + deltaX;
-        const newY_1 = wallCorners.find((c) => c.id === startCornerId).y + deltaY;
-        const newX_2 = wallCorners.find((c) => c.id === endCornerId).x + deltaX;
-        const newY_2 = wallCorners.find((c) => c.id === endCornerId).y + deltaY;
+        const newX_1 = wallCorners[0].x + deltaX;
+        const newY_1 = wallCorners[0].y + deltaY;
+        const newX_2 = wallCorners[1].x + deltaX;
+        const newY_2 = wallCorners[1].y + deltaY;
 
-        const updatedCorners = [{id: wallCorners[0].id, x: newX_1, y: newY_1}, {id: wallCorners[1].id, x: newX_2, y: newY_2}];
+        const updatedCorners = [
+            { id: wallCorners[0].id, x: newX_1, y: newY_1 },
+            { id: wallCorners[1].id, x: newX_2, y: newY_2 },
+        ];
         moveCornersBatch(updatedCorners);
 
         draggedWall.position({ x: 0, y: 0 });
