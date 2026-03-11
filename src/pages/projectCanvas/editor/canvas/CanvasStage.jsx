@@ -54,6 +54,7 @@ export default function CanvasStage() {
     const mergeCorners = useEditorStore((s) => s.mergeCorners);
 
     const addWall = useEditorStore((s) => s.addWall);
+    const cleanupWalls = useEditorStore((s) => s.cleanupWalls);
 
     const guides = useEditorStore((s) => s.guides);
     const setGuides = useEditorStore((s) => s.setGuides);
@@ -275,8 +276,9 @@ export default function CanvasStage() {
         );
         if (overlappingNodeId) {
             mergeCorners(overlappingNodeId, node.attrs.id);
-            console.log("Merged corners", overlappingNodeId, node.attrs.id);
+            cleanupWalls();
         }
+        console.log("corners after drag", corners);
         setDraggingCorner(null);
         recomputeRooms();
     };

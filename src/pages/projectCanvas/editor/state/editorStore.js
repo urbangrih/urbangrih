@@ -32,11 +32,6 @@ export const useEditorStore = create((set) => ({
 
     updateObject: (id, attrs) =>
         set((state) => {
-            // const x = attrs.x !== undefined ? attrs.x : state.objects.find((obj) => obj.id === id)?.x;
-            // const y = attrs.y !== undefined ? attrs.y : state.objects.find((obj) => obj.id === id)?.y;
-            // const snapped = snapPointToGrid({ x, y }, GRID_SIZE);
-            // attrs.x = snapped.x;
-            // attrs.y = snapped.y;
             return {
                 objects: state.objects.map((obj) =>
                     obj.id === id ? { ...obj, ...attrs } : obj,
@@ -93,13 +88,14 @@ export const useEditorStore = create((set) => ({
                 }
                 return wall;
             });
-            state.cleanupWalls();
+            const updatedCorners = state.corners.filter(
+                (corner) => corner.id !== sourceId,
+            );
+            // console.log("Updated corners", updatedCorners);
             return {
                 ...state,
                 walls: updatedWalls,
-                corners: state.corners.filter(
-                    (corner) => corner.id !== sourceId,
-                ),
+                corners: updatedCorners,
             };
         }),
 
@@ -130,13 +126,18 @@ export const useEditorStore = create((set) => ({
                     continue;
                 }
                 const wallKey = state.normalizeWall(wall);
+                // console.log("wall keys:", wallKey, "\n corners:", state.corners);
                 if (uniqueWalls.has(wallKey)) {
-                    console.warn("Removing duplicate wall", wall);
+                    // console.warn("Removing duplicate wall", wall);
                     updatedWalls = updatedWalls.filter((w) => w.id !== wall.id);
                 } else {
                     uniqueWalls.add(wallKey);
                 }
             }
+            const removedWalls = state.walls.filter(
+                (wall) => !updatedWalls.find((w) => w.id === wall.id)
+            );
+            // console.log("Removed walls:", removedWalls, uniqueWalls);
             return {
                 ...state,
                 walls: updatedWalls,
