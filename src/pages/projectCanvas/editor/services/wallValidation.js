@@ -1,4 +1,4 @@
-import { segmentIntersection, collinearOverlap, pointEquals, isCollinear, orientation, onSegment, minimumDistanceBetweenSegments } from "./geometry";
+import { segmentIntersection, collinearOverlap, boundingBoxOverlap, pointEquals, isCollinear, orientation, onSegment, minimumDistanceBetweenSegments } from "./geometry";
 
 export function validateNewWall (wall, existingWalls, corners) {
     const startCorner = corners.find((corner) => corner.id === wall.startCornerId);
@@ -101,12 +101,15 @@ export function isPlacementValid (wall, existingWalls, corners) {
             pointEquals(endCorner, existingEnd);
 
         // Collinear walls: allow only a single shared endpoint, reject any overlap
+        // console.log("collinearlity check for three points:",isCollinear(startCorner, endCorner, existingStart) &&
+        //     isCollinear(startCorner, endCorner, existingEnd))
         if (
             isCollinear(startCorner, endCorner, existingStart) &&
             isCollinear(startCorner, endCorner, existingEnd)
         ) {
+            // const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
             const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            // console.log("Collinear overlap checks", { overlap });
+            console.log("Collinear overlap checks", { overlap });
             if (overlap) {
                 return true; // Overlapping collinear walls are not allowed
             }
@@ -159,6 +162,7 @@ export function isPlacementValid (wall, existingWalls, corners) {
 }
 
 export function isWallOverlapping(movedWall, walls, corners){
+    console.log("isWallOverlapping running")
     const startCorner = corners.find((corner) => corner.id === movedWall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === movedWall.endCornerId);
     if (!startCorner || !endCorner) {
@@ -177,10 +181,12 @@ export function isWallOverlapping(movedWall, walls, corners){
             isCollinear(startCorner, endCorner, existingEnd)
         ) {
             const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            if (overlap) {
-                return true;
-            }
-            continue;
+            if (!overlap) return false;
+            return boundingBoxOverlap(startCorner, endCorner, existingStart, existingEnd);
+            // if (overlap) {
+            //     return true;
+            // }
+            // continue;
         }
     }
 

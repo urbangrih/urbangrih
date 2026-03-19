@@ -181,12 +181,14 @@ export default function CanvasStage() {
 
         let isDragValid = false;
         let isOverlapping = false;
+        console.log("Checking walls for validity", wallsToCheck);
         for (let wall of wallsToCheck) {
             isDragValid = isPlacementValid(
                 wall,
                 walls.filter((w) => w.id !== wall.id),
                 tempCorners,
             );
+            console.log("isPlacementValid for wall ", wall.id, ":", isDragValid);
             if (!isDragValid) {
                 isOverlapping = isWallOverlapping(
                     wall,
@@ -255,7 +257,7 @@ export default function CanvasStage() {
         console.log("Corner drag end", { success, reason });
         if (
             !success &&
-            reason !== "overlap" &&
+            // reason !== "overlap" &&
             draggingCorner &&
             draggingCorner.id === node.attrs.id
         ) {
@@ -266,14 +268,16 @@ export default function CanvasStage() {
                 x: originalCornerPosition.x,
                 y: originalCornerPosition.y,
             });
+            setDraggingCorner(null);
+            return;
         }
 
-        moveCorner(node.attrs.id, node.x(), node.y());
         const overlappingNodeId = detectOverlappingCorners(
             node.attrs.id,
             { x: node.x(), y: node.y() },
             tempCorners,
         );
+        moveCorner(node.attrs.id, node.x(), node.y());
         if (overlappingNodeId) {
             mergeCorners(overlappingNodeId, node.attrs.id);
             cleanupWalls();
@@ -310,8 +314,8 @@ export default function CanvasStage() {
             deltaX,
             deltaY,
         );
-
-        if (!success && reason !== "overlap") {
+        // if (!success && reason !== "overlap") {
+        if (!success) {
             const originalCornerPositions = wallCorners.map((c) =>
                 corners.find((corner) => corner.id === c.id),
             );

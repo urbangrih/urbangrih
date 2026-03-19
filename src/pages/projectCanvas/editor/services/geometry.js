@@ -1,4 +1,4 @@
-const EPSILON = 0.01;
+const EPSILON = 10;
 
 export function segmentIntersection(p1, p2, p3, p4) {
     const denominator =
@@ -51,7 +51,8 @@ export function collinearOverlap(a1, a2, b1, b2) {
     Math.max(Math.min(a1.y, a2.y), Math.min(b1.y, b2.y)) <=
     Math.min(Math.max(a1.y, a2.y), Math.max(b1.y, b2.y)) + EPSILON;
 
-  return overlapX || overlapY;
+  // return overlapX || overlapY;
+  return overlapX && overlapY;
 }
 
 export function boundingBoxOverlap(a1, a2, b1, b2) {
@@ -73,13 +74,26 @@ export function boundingBoxOverlap(a1, a2, b1, b2) {
 
 
 export function isCollinear(p1, p2, p3) {
-    const area =
-        0.5 *
-        (-p2.y * p3.x +
-            p1.y * (-p2.x + p3.x) +
-            p1.x * (p2.y - p3.y) +
-            p2.x * p3.y);
-    return Math.abs(area) < EPSILON; // Consider as collinear if area is very small
+    // const area =
+    //     0.5 *
+    //     (-p2.y * p3.x +
+    //         p1.y * (-p2.x + p3.x) +
+    //         p1.x * (p2.y - p3.y) +
+    //         p2.x * p3.y);
+    // const area = 0.5 * (p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y));
+    // console.log("Collinearity check", area);
+    // return Math.abs(area) < EPSILON; // Consider as collinear if area is very small
+    const twiceArea = Math.abs(
+        p1.x * (p2.y - p3.y) +
+        p2.x * (p3.y - p1.y) +
+        p3.x * (p1.y - p2.y)
+    );
+
+    const base = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+
+    const height = twiceArea / base;
+    // console.log("Collinearity check", height < EPSILON, { height, twiceArea, base });
+    return height < EPSILON;
 }
 
 export function distance(p1, p2) {
