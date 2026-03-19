@@ -82,54 +82,20 @@ function Header() {
                 setMenuOpen={setMenuOpen}
               />
             </li>
-            <li>
+            {/* <li>
               <Link to="/experts" onClick={() => setMenuOpen(false)} className = 'nav-button'>Experts</Link>
-              {/* <ul className="dropdown">
-                <li className='dropdown-item'>
-                  <Link to="/interior-designers" onClick={() => setMenuOpen(false)}>Interior Designers</Link>
-                </li>
-                <li className='dropdown-item'>
-                  <Link to="/architects" onClick={() => setMenuOpen(false)}>Architects</Link>
-                </li>
-                <li className='dropdown-item'>
-                  <Link to="/vastu-consultants" onClick={() => setMenuOpen(false)}>Vastu Consultants</Link>
-                </li>
-                <li className='dropdown-item'>
-                  <Link to="/contractors" onClick={() => setMenuOpen(false)}>Contractors</Link>
-                </li>
-              </ul> */}
               <Dropdown 
                 section = {NAV_DATA.experts}
                 setMenuOpen={setMenuOpen}
               />
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <Link to="/materials" onClick={() => setMenuOpen(false)} className='nav-button'>Material</Link>
-              {/* <ul className="dropdown">
-                <li className='dropdown-item'>
-                <Link to="/furniture" onClick={() => setMenuOpen(false)}>Furniture</Link>
-                </li>
-                <li className='dropdown-item'>
-                <Link to="/modular-kitchen" onClick={() => setMenuOpen(false)}>Modular Kitchen</Link>
-                </li>
-                <li className='dropdown-item'>
-                <Link to="/ligthing" onClick={() => setMenuOpen(false)}>Ligthing</Link>
-                </li>
-                <li className='dropdown-item'>
-                <Link to="/tiles-flooring" onClick={() => setMenuOpen(false)}>Tiles and Flooring</Link>
-                </li>
-                <li className='dropdown-item'>
-                <Link to="/paint-decor" onClick={() => setMenuOpen(false)}>Paint & Decor</Link>
-                </li>
-                <li className='dropdown-item'>
-                <Link to="/hardware" onClick={() => setMenuOpen(false)}>Hardware</Link>
-                </li>
-              </ul> */}
               <Dropdown 
                 section={NAV_DATA.materials}
                 setMenuOpen={setMenuOpen}
               />
-            </li>
+            </li> */}
             {/* <li><Link to="/about" onClick={() => setMenuOpen(false)}>About Us</Link></li> */}
             <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact Us</Link></li>
 
@@ -163,25 +129,6 @@ function Header() {
           </ul>
         </div>
       </header>
-
-      {/* Sub-nav bar ONLY in desktop */}
-      {/* {!isMobile && (
-        <div className="sub-nav-bar">
-          <nav className="sub-nav">
-            <ul>
-              <li><Link to="/team">Our Team</Link></li>
-              {isLoggedIn && (
-                <li><Link to="/dashboard">Dashboard</Link></li>
-              )}
-              <li>
-                <Link to="/login" onClick={() => setMenuOpen(false)}>
-                  <FaUserCircle size={22} color="rgba(255, 255, 255, 1)" />
-                </Link>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      )} */}
     </>
   );
 }

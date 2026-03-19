@@ -11,18 +11,19 @@ function SectionRouter() {
     const [params] = useSearchParams();
     const views = {
         design: Design,
-        experts: Experts,
-        materials: Materials,
+        //IMP: Disabled experts and materials sections for now, as they are not ready. Can be enabled later by uncommenting these lines and adding the corresponding components.
+        // experts: Experts,
+        // materials: Materials,
     };
 
     if (params.size === 0) {
         const View = views[section];
         return View ? <View /> : null;
     }
-    // Render Experts_options for experts section
-    if (section === "experts") {
-        return <Experts_options />;
-    }
+    //IMP: Render Experts_options for experts section disabled for now
+    // if (section === "experts") {
+    //     return <Experts_options />;
+    // }
 
     // Render Menu_options for design and materials sections
     return <Menu_options />;

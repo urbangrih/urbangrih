@@ -7,15 +7,23 @@ function Menu_options() {
     const [params] = useSearchParams();
     const category = params.get("category") || "design";
     const subCategory = params.get("type") || null;
-    console.log(section, category, subCategory);
+    // console.log(section, category, subCategory);
     let items = NAV_CATEGORIES[section][category] || [];
-    console.log(section, category, subCategory, items);
+    // console.log(section, category, subCategory, items);
     if (subCategory){
         items = items.filter(item => item.key === subCategory)[0]?.options || [];
     }
-    console.log(section, category, subCategory, items);
+    //IMP: Experts and materials sections are not ready, so just show placeholder content for now
+    if (section === "experts" || section === "materials") {
+        return (
+            <div className='content-2'>
+                <h2>{section.charAt(0).toUpperCase() + section.slice(1)} Options</h2>
+                <p>Content for {section} options will go here.</p>
+            </div>
+        );
+    }
     return (
-      <>
+    <>
         <div className='content-2'>
             <h2>Menu Options for {section}</h2>
             <ul className='wrapper'>
@@ -40,7 +48,7 @@ function Menu_options() {
                 ))}
             </ul>
         </div>
-      </>
+    </>
     );
 }
 
