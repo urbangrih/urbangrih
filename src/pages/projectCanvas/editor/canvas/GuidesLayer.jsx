@@ -4,7 +4,7 @@ export default function GuidesLayer({ guideLayerRef, guides }) {
     const stageWidth = guideLayerRef.current?.getStage().width() || 0;
     const stageHeight = guideLayerRef.current?.getStage().height() || 0;
     return (
-        <Layer ref={guideLayerRef}>
+        <Layer ref={guideLayerRef} listening={false}>
             {guides.map((guide, index) => {
                 if (guide.type === "vertical") {
                     return (

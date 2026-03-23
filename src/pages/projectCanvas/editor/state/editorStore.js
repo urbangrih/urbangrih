@@ -160,7 +160,10 @@ export const useEditorStore = create((set) => ({
         const state = useEditorStore.getState();
         const directedGraph = buildDirectedGraph(state.corners, state.walls);
         const detectedFaces = detectFaces(directedGraph, state.corners);
-        const validRooms = removeOuterFace(detectedFaces);
+        const validRooms = removeOuterFace(detectedFaces).map((room) => ({
+            ...room,
+            roomId: room.roomId ?? `room-${room.cornerIds.join("-")}`,
+        }));
         if (validRooms.length === 0) {
             console.info("No valid rooms detected so far");
         } else {

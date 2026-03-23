@@ -15,6 +15,11 @@ import { useNodeRegistry } from "./hooks/useNodeRegistry";
 import { useEditorStore } from "../state/editorStore";
 import { createWall, createCorner } from "../services/objectFactory";
 
+import {
+    attemptRoomMove,
+    validateRoomMove,
+} from "../services/roomDragEngine";
+
 import { useStageDnd } from "./hooks/useStageDnd";
 import {
     getSnappedCornerPosition,
@@ -67,6 +72,7 @@ export default function CanvasStage() {
 
     const [draggingCorner, setDraggingCorner] = useState(null);
     const [draggingWallCorners, setDraggingWallCorners] = useState(null);
+    const [invalidRoomId, setInvalidRoomId] = useState(null);
 
     // const [selectionRect, setSelectionRect] = useState({
     //     visible: false,
@@ -257,7 +263,7 @@ export default function CanvasStage() {
         console.log("Corner drag end", { success, reason });
         if (
             !success &&
-            // reason !== "overlap" &&
+            reason !== "overlap" &&
             draggingCorner &&
             draggingCorner.id === node.attrs.id
         ) {
@@ -345,6 +351,73 @@ export default function CanvasStage() {
         recomputeRooms();
     };
 
+    function handleRoomDragStart(e) {
+        const room = e.target;
+        const roomId = room.attrs.id;
+        if (!roomId) {
+            return;
+        }
+        setInvalidRoomId(null);
+    }
+
+    function handleRoomDragMove(e) {
+        const room = e.target;
+        const roomId = room.attrs.id;
+        if (!roomId) {
+            return;
+        }
+
+        const deltaX = room.x();
+        const deltaY = room.y();
+
+        const { success } = validateRoomMove(
+            roomId,
+            deltaX,
+            deltaY,
+            rooms,
+            walls,
+            corners,
+        );
+
+        setInvalidRoomId(success ? null : roomId);
+    }
+
+    function handleRoomDragEnd(e) {
+        const room = e.target;
+        const roomId = room.attrs.id;
+        if (!roomId) {
+            room.position({ x: 0, y: 0 });
+            return;
+        }
+        setInvalidRoomId(null);
+
+        const deltaX = room.x();
+        const deltaY = room.y();
+
+        const { success, roomCorners } = attemptRoomMove(
+            roomId,
+            deltaX,
+            deltaY,
+            rooms,
+            walls,
+            corners,
+        );
+
+        if (!success || !roomCorners?.length) {
+            room.position({ x: 0, y: 0 });
+            return;
+        }
+
+        const updatedCorners = roomCorners.map((corner) => ({
+            id: corner.id,
+            x: corner.x + deltaX,
+            y: corner.y + deltaY,
+        }));
+        moveCornersBatch(updatedCorners);
+        room.position({ x: 0, y: 0 });
+        recomputeRooms();
+    }
+
     const events = {
         onClick: handleStageMouseClick,
         onDragMove: handleObjectDragMove,
@@ -363,6 +436,12 @@ export default function CanvasStage() {
         onDragEnd: handleWallDragEnd,
     };
 
+    const roomEvents = {
+        onDragStart: handleRoomDragStart,
+        onDragMove: handleRoomDragMove,
+        onDragEnd: handleRoomDragEnd,
+    }
+
     useStageDnd(stageRef);
 
     return (
@@ -370,14 +449,18 @@ export default function CanvasStage() {
             ref={stageRef}
             width={window.innerWidth}
             height={window.innerHeight}
-            onClick={handleStageMouseClick}
             // draggable
         >
             <GuidesLayer
                 guideLayerRef={guideLayerRef}
                 guides={guides} // we will pass guides here later
             />
-            <RoomLayer rooms={rooms} corners={corners} />
+            <RoomLayer
+                rooms={rooms}
+                corners={corners}
+                roomEvents={roomEvents}
+                invalidRoomId={invalidRoomId}
+            />
             <StructureLayer
                 corners={corners}
                 walls={walls}

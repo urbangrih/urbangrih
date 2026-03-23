@@ -16,6 +16,7 @@ const RENDERERS = {
             radius={obj.radius}
             fill={obj.fill}
             draggable={obj.draggable}
+            listening={true}
             {...events}
         />
     ),
@@ -46,6 +47,7 @@ const RENDERERS = {
                 strokeWidth={obj.thickness ?? 20}
                 // width={obj.thickness}
                 draggable={obj.draggable}
+                listening={true}
                 // lineCap="round"
                 {...wallEvents}
             />
