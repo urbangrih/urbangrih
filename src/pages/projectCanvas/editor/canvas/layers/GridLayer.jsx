@@ -1,5 +1,5 @@
 import { Layer, Line } from "react-konva";
-import { GRID_SIZE } from "../state/editorStore";
+import { GRID_SIZE } from "../../state/editorStore";
 
 export default function GridLayer({ width, height }) {
     const lines = [];

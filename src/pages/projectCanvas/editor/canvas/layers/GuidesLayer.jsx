@@ -1,6 +1,8 @@
 import { Layer, Line } from "react-konva";
+import { useEditorStore } from "../../interactions/cornerDrag/useCornerDrag";
 
-export default function GuidesLayer({ guideLayerRef, guides }) {
+export default function GuidesLayer({ guideLayerRef }) {
+    const { guides } = useEditorStore((state) => state.guides);
     const stageWidth = guideLayerRef.current?.getStage().width() || 0;
     const stageHeight = guideLayerRef.current?.getStage().height() || 0;
     return (

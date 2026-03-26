@@ -5,10 +5,10 @@ import Konva from "konva";
 import { useRef, useState, useEffect } from "react";
 // import { createObject } from "../services/objectFactory";
 import ObjectsLayer from "./ObjectsLayer";
-import RoomLayer from "./RoomLayer";
-import StructureLayer from "./StructureLayer";
+import RoomLayer from "./layers/RoomLayer";
+import StructureLayer from "./layers/StructureLayer";
 import TransformerLayer from "./TransformerLayer";
-import GuidesLayer from "./GuidesLayer";
+import GuidesLayer from "./layers/GuidesLayer";
 // import GridLayer from "./GridLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
@@ -70,7 +70,6 @@ export default function CanvasStage() {
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
-    const [draggingCorner, setDraggingCorner] = useState(null);
     const [draggingWallCorners, setDraggingWallCorners] = useState(null);
     const [invalidRoomId, setInvalidRoomId] = useState(null);
 
@@ -424,24 +423,6 @@ export default function CanvasStage() {
         onDragEnd: handleStageDragEnd,
     };
 
-    const cornerEvents = {
-        onDragStart: handleCornerDragStart,
-        onDragMove: handleCornerDragMove,
-        onDragEnd: handleCornerDragEnd,
-    };
-
-    const wallEvents = {
-        onDragStart: handleWallDragStart,
-        onDragMove: handleWallDragMove,
-        onDragEnd: handleWallDragEnd,
-    };
-
-    const roomEvents = {
-        onDragStart: handleRoomDragStart,
-        onDragMove: handleRoomDragMove,
-        onDragEnd: handleRoomDragEnd,
-    }
-
     useStageDnd(stageRef);
 
     return (
@@ -456,18 +437,10 @@ export default function CanvasStage() {
                 guides={guides} // we will pass guides here later
             />
             <RoomLayer
-                rooms={rooms}
-                corners={corners}
-                roomEvents={roomEvents}
                 invalidRoomId={invalidRoomId}
             />
             <StructureLayer
-                corners={corners}
-                walls={walls}
                 draggingCorner={draggingCorner}
-                cornerEvents={cornerEvents}
-                wallEvents={wallEvents}
-                rooms={rooms}
             />
             <Layer ref={objectLayerRef}>
                 {/* <GridLayer /> */}
