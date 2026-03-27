@@ -1,4 +1,4 @@
-const EPSILON = 10;
+export const EPSILON = 10;
 
 export function segmentIntersection(p1, p2, p3, p4) {
     const denominator =
@@ -12,15 +12,8 @@ export function segmentIntersection(p1, p2, p3, p4) {
         (p2.x - p1.x) * (p1.y - p3.y) - (p2.y - p1.y) * (p1.x - p3.x);
     const ua = numeratorA / denominator;
     const ub = numeratorB / denominator;
-    // if (ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1) {
-    //     return {
-    //         x: p1.x + ua * (p2.x - p1.x),
-    //         y: p1.y + ua * (p2.y - p1.y)
-    //     };
-    // }
 
     return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
-    // return false; // No intersection within the segments
 }
 
 export function orientation(p, q, r) {

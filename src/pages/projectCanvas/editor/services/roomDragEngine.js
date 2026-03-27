@@ -9,7 +9,7 @@ function getRoomKey(room) {
     return null;
 }
 
-function findRoomById(roomId, rooms) {
+export function findRoomById(roomId, rooms) {
     return rooms.find((room) => getRoomKey(room) === roomId);
 }
 
