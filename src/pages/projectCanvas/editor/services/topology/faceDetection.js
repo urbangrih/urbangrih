@@ -1,5 +1,6 @@
 import { sortOutgoingEdgesByAngle } from "./halfEdgeBuilder";
-import { computeRoomCentroid, computeFaceArea } from "./roomDetection";
+import { computeFaceArea } from "../geometry/polygon";
+import { computeRoomCentroid } from "./roomGraph";
 
 export function detectFaces(directedGraph, corners) {
     const orderedGraph = sortOutgoingEdgesByAngle(directedGraph);

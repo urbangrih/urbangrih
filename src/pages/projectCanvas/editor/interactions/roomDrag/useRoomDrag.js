@@ -3,10 +3,11 @@ import {
     handleRoomDragMove,
     handleRoomDragEnd,
 } from "./roomDragHandlers";
-import { useEditorStore } from "../../state/editorStore";
+import { useEditorStore } from "../../store/editorStore";
 import { useState } from "react";
 
-import { validateRoomMove } from "../../services/roomDragEngine";
+// import { validateRoomMove } from "../../services/roomDragEngine";
+import { validateRoomMove } from "../../engines/roomEngine/roomValidation";
 import { attemptRoomMove } from "../../engine/roomEngine/simulateRoomMove";
 
 export default function useRoomDrag() {

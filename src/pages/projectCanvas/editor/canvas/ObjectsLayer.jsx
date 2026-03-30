@@ -1,6 +1,6 @@
 // Renders manually created shapes
 import { Line, Rect, Circle } from "react-konva";
-import { useEditorStore } from "../state/editorStore";
+// import { useEditorStore } from "../store/editorStore";
 
 const RENDERERS = {
     // corner: (obj, setNodeRef, events) => (

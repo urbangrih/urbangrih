@@ -1,8 +1,8 @@
-import { useEditorStore } from "../../state/editorStore";
+import { useEditorStore } from "../../store/editorStore";
 
 import { useRoomDrag } from "../../interactions/roomDrag/useRoomDrag";
 
-import { roomPolygon } from "../components/roomPolygon";
+// import { roomPolygon } from "../components/roomPolygon";
 
 import { Layer } from "react-konva";
 

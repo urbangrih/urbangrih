@@ -1,7 +1,7 @@
 import { Layer } from "react-konva";
 
-import { useEditorStore } from "../../state/editorStore";
-import { useState } from "react";
+import { useEditorStore } from "../../store/editorStore";
+// import { useState } from "react";
 
 import { cornerNode } from "../components/cornerNode";
 import { wallEdge } from "../components/wallEdge";

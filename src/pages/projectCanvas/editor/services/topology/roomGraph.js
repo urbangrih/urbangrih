@@ -1,4 +1,5 @@
 import { findRoomById } from "../roomDragEngine";
+import { computeCentroid } from "../geometry/centroid";
 
 export function getRoomCorners(roomId, rooms, corners) {
     const room = findRoomById(roomId, rooms);
@@ -31,3 +32,29 @@ function getRoomKey(room) {
     return null;
 }
 
+function buildCornerMap(corners) {
+	const cornerById = new Map();
+	for (const corner of corners || []) {
+		cornerById.set(corner.id, corner);
+	}
+	return cornerById;
+}
+
+
+export function computeRoomCentroid(face, corners) {
+    const cornerById = buildCornerMap(corners);
+    const cornerIds = Array.isArray(face) ? face : face.cornerIds;
+    if (!cornerIds || cornerIds.length < 3) {
+        return null;
+    }
+
+    const points = cornerIds
+        .map((cornerId) => cornerById.get(cornerId))
+        .filter(Boolean);
+
+    if (points.length < 3) {
+        return null;
+    }
+
+    return computeCentroid(points);
+}

@@ -1,3 +1,5 @@
+import { validateRoomMove } from "./roomValidation";
+
 export function attemptRoomMove(
     roomId,
     deltaX,

@@ -1,4 +1,4 @@
-import { EPSILON } from "../geometry";
+import { EPSILON } from "../../utils/epsilons";
 
 export function collinearOverlap(a1, a2, b1, b2) {
   const overlapX =

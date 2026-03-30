@@ -1,29 +1,29 @@
 import { Circle } from "react-konva";
 
-const RENDERERS = {
-    corner: (obj, events) => (
-        <Circle
-            // ref={setNodeRef}
-            key={obj.id}
-            name="object"
-            id={obj.id}
-            dataType={obj.type}
-            x={obj.x}
-            y={obj.y}
-            radius={obj.radius}
-            fill={obj.fill}
-            draggable={obj.draggable}
-            listening={true}
-            {...events}
-        />
-    ),
+// const RENDERERS = {
+//     corner: (obj, events) => (
+//         <Circle
+//             // ref={setNodeRef}
+//             key={obj.id}
+//             name="object"
+//             id={obj.id}
+//             dataType={obj.type}
+//             x={obj.x}
+//             y={obj.y}
+//             radius={obj.radius}
+//             fill={obj.fill}
+//             draggable={obj.draggable}
+//             listening={true}
+//             {...events}
+//         />
+//     ),
 
-    wall: (obj, corners, draggingCorner, wallEvents) => {
+//     wall: (obj, corners, draggingCorner, wallEvents) => {
         
 
         
-    },
-};
+//     },
+// };
 
 export default function cornerNode({cornerObj, events}) {
     return (

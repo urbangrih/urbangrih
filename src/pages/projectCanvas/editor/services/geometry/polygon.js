@@ -1,4 +1,4 @@
-import { orientation, onSegment } from "../geometry/intersection";
+import { orientation, onSegment } from "./intersection";
 
 export function computeSignedArea(points) {
   if (!points || points.length < 3) {

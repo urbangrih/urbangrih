@@ -1,4 +1,4 @@
-import { EPSILON } from "../geometry";
+import { EPSILON } from "../../utils/epsilons";
 
 export function getAngle(fromCorner, toCorner) {
   const dx = toCorner.x - fromCorner.x;

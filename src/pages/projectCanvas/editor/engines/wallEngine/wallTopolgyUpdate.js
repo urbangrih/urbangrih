@@ -1,5 +1,9 @@
+import { isCollinear, collinearOverlap } from "../../services/geometry/collinear";
+import { boundingBoxOverlap } from "../../services/geometry/intersection";
+
+
 export function isWallOverlapping(movedWall, walls, corners){
-    console.log("isWallOverlapping running")
+    // console.log("isWallOverlapping running")
     const startCorner = corners.find((corner) => corner.id === movedWall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === movedWall.endCornerId);
     if (!startCorner || !endCorner) {

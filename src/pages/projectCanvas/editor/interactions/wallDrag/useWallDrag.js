@@ -4,7 +4,7 @@ import {
     handleWallDragEnd,
 } from "./wallDragHandlers";
 
-import { useEditorStore } from "../../state/editorStore";
+import { useEditorStore } from "../../store/editorStore";
 import { attemptMoveCorners } from "../../engine/cornerEngine/simulateCornerMove";
 
 

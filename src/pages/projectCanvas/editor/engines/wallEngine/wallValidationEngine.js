@@ -1,3 +1,8 @@
+import { pointEquals } from "../../services/geometry";
+import { isCollinear, collinearOverlap } from "../../services/geometry/collinear";
+import { orientation, onSegment, segmentIntersection } from "../../services/geometry/intersection";
+import { minimumDistanceBetweenSegments } from "../../services/geometry/distance";
+
 export function isPlacementValid (wall, existingWalls, corners) {
     const startCorner = corners.find((corner) => corner.id === wall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === wall.endCornerId);

@@ -1,3 +1,7 @@
+import { getRoomCorners } from "../../services/topology/roomGraph";
+import { isPlacementValid } from "../wallEngine/wallValidationEngine";
+import { isWallOverlapping } from "../wallEngine/wallTopolgyUpdate";
+
 export function validateRoomMove(
     roomId,
     deltaX,

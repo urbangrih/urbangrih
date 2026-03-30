@@ -1,9 +1,9 @@
 // src/pages/projectCanvas/editor/canvas/useStageDnd.js
 import { useEffect } from "react";
 import { createObject } from "../../services/objectFactory";
-import { useEditorStore } from "../../state/editorStore";
+import { useEditorStore } from "../../store/editorStore";
 import { createWall, createCorner } from "../../services/objectFactory";
-import { isPlacementValid } from "../../services/wallValidation";
+import { isPlacementValid } from "../../engines/wallEngine/wallValidationEngine";
 
 export function useStageDnd(stageRef) {
   const corners = useEditorStore((s) => s.corners);
