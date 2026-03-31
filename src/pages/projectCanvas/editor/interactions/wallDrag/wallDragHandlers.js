@@ -7,6 +7,7 @@ export function handleWallDragEnd(e, context) {
         attemptMoveCorners,
         moveCornersBatch,
         recomputeRooms,
+        dragContext
     } = context;
     const draggedWall = e.target;
     const draggedWallId = draggedWall.attrs.id;
@@ -31,6 +32,7 @@ export function handleWallDragEnd(e, context) {
         deltaY,
         corners,
         walls,
+        dragContext
     );
     // if (!success && reason !== "overlap") {
     if (!success) {
@@ -60,5 +62,5 @@ export function handleWallDragEnd(e, context) {
 
     draggedWall.position({ x: 0, y: 0 });
 
-    recomputeRooms();
+    recomputeRooms(dragContext);
 }

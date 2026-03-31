@@ -6,6 +6,7 @@ import {
 
 import { useEditorStore } from "../../store/editorStore";
 import { attemptMoveCorners } from "../../engines/cornerEngine/moveCorner";
+import { ROOM_DRAG_EPSILON } from "../../utils/epsilons"
 
 
 export function useWallDrag() {
@@ -27,7 +28,8 @@ export function useWallDrag() {
                 walls,
                 attemptMoveCorners,
                 moveCornersBatch,
-                recomputeRooms
+                recomputeRooms,
+                dragContext: { EPSILON: ROOM_DRAG_EPSILON }
             });
         },
     };

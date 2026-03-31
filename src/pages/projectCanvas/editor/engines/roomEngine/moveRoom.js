@@ -7,6 +7,7 @@ export function attemptRoomMove(
     rooms,
     walls,
     corners,
+    dragContext
 ) {
-    return validateRoomMove(roomId, deltaX, deltaY, rooms, walls, corners);
+    return validateRoomMove(roomId, deltaX, deltaY, rooms, walls, corners, dragContext);
 }

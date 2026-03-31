@@ -9,6 +9,7 @@ export function validateRoomMove(
     rooms,
     walls,
     corners,
+    dragContext
 ) {
     const roomCorners = getRoomCorners(roomId, rooms, corners);
     if (roomCorners.length === 0) {
@@ -40,12 +41,14 @@ export function validateRoomMove(
             wall,
             walls.filter((w) => w.id !== wall.id),
             tempCorners,
+            dragContext
         );
         if (!isDragValid) {
             isOverlapping = isWallOverlapping(
                 wall,
                 walls.filter((w) => w.id !== wall.id),
                 tempCorners,
+                dragContext
             );
             break;
         }

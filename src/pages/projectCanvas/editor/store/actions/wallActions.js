@@ -2,8 +2,8 @@ import { isPlacementValid } from "../../engines/wallEngine/wallValidationEngine"
 
 export function createWallActions(set, get) {
     return {
-        addWall: (wall) => set((state) => {
-            const validPlacement = isPlacementValid(wall, state.walls, state.corners);
+        addWall: (wall, context) => set((state) => {
+            const validPlacement = isPlacementValid(wall, state.walls, state.corners, context);
             if (!validPlacement) {
                 console.warn("Invalid wall placement", wall);
                 return state; // no change

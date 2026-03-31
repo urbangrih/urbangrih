@@ -117,10 +117,10 @@
 // }
 
 import { distance } from "./geometry/distance";
-import { EPSILON } from "../utils/epsilons";
+// import { EPSILON } from "../utils/epsilons";
 
-export function pointEquals(p1, p2) {
-    return distance(p1, p2) < EPSILON;
+export function pointEquals(p1, p2, context) {
+    return distance(p1, p2) < context.EPSILON;
 }
 
 // export function getAngle(fromCorner, toCorner) {

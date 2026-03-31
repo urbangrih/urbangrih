@@ -8,7 +8,7 @@ export function handleRoomDragStart(e, context) {
     setInvalidRoomId(null);
 }
 export function handleRoomDragMove(e, context) {
-    const { rooms, walls, corners, validateRoomMove, setInvalidRoomId } = context;
+    const { rooms, walls, corners, validateRoomMove, setInvalidRoomId, dragContext } = context;
     const room = e.target;
     const roomId = room.attrs.id;
     if (!roomId) {
@@ -25,7 +25,9 @@ export function handleRoomDragMove(e, context) {
         rooms,
         walls,
         corners,
+        dragContext
     );
+    // console.log("Room drag move validation result for room ", roomId, ":", success);
 
     setInvalidRoomId(success ? null : roomId);
 }
@@ -38,6 +40,7 @@ export function handleRoomDragEnd(e, context) {
         moveCornersBatch,
         recomputeRooms,
         setInvalidRoomId,
+        dragContext
     } = context;
     const room = e.target;
     const roomId = room.attrs.id;
@@ -57,6 +60,7 @@ export function handleRoomDragEnd(e, context) {
         rooms,
         walls,
         corners,
+        dragContext
     );
 
     if (!success || !roomCorners?.length) {
@@ -71,5 +75,5 @@ export function handleRoomDragEnd(e, context) {
     }));
     moveCornersBatch(updatedCorners);
     room.position({ x: 0, y: 0 });
-    recomputeRooms();
+    recomputeRooms(dragContext);
 }

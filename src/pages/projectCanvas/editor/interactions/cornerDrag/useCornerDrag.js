@@ -9,10 +9,11 @@ import {
     handleCornerDragEnd,
 } from "./cornerDragHandlers";
 
+import { EPSILON } from '../../utils/epsilons';
+
 export function useCornerDrag() {
     const corners = useEditorStore((state) => state.corners);
     const walls = useEditorStore((state) => state.walls);
-    // const guides = useEditorStore((s) => s.guides);
     const setGuides = useEditorStore((s) => s.setGuides);
     const clearGuides = useEditorStore((s) => s.clearGuides);
     const recomputeRooms = useEditorStore((s) => s.recomputeRooms);
@@ -21,6 +22,10 @@ export function useCornerDrag() {
     const cleanupWalls = useEditorStore((s) => s.cleanupWalls);
 
     const [draggingCorner, setDraggingCorner] = useState(null);
+
+    const dragContext = {
+        EPSILON,
+    };
 
     return {
         onCornerDragStart: (e) =>
@@ -45,6 +50,7 @@ export function useCornerDrag() {
                 mergeCorners,
                 cleanupWalls,
                 recomputeRooms,
+                dragContext
             }),
         draggingCorner,
     };

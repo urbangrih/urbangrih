@@ -1,7 +1,7 @@
 import { isPlacementValid } from "../../engines/wallEngine/wallValidationEngine";
 import { isWallOverlapping } from "../../engines/wallEngine/wallTopolgyUpdate";
 
-export function attemptMoveCorners(cornersToMove, dx, dy, corners, walls) {
+export function attemptMoveCorners(cornersToMove, dx, dy, corners, walls, dragContext) {
     const tempCorners = corners.map((corner) => {
         const toMove = cornersToMove.find((c) => c.id === corner.id);
         if (toMove) {
@@ -19,19 +19,21 @@ export function attemptMoveCorners(cornersToMove, dx, dy, corners, walls) {
 
     let isDragValid = false;
     let isOverlapping = false;
-    console.log("Checking walls for validity", wallsToCheck);
+    // console.log("Checking walls for validity", wallsToCheck);
     for (let wall of wallsToCheck) {
         isDragValid = isPlacementValid(
             wall,
             walls.filter((w) => w.id !== wall.id),
             tempCorners,
+            dragContext
         );
-        console.log("isPlacementValid for wall ", wall.id, ":", isDragValid);
+        // console.log("isPlacementValid for wall ", wall.id, ":", isDragValid);
         if (!isDragValid) {
             isOverlapping = isWallOverlapping(
                 wall,
                 walls.filter((w) => w.id !== wall.id),
                 tempCorners,
+                dragContext
             );
             break;
         }

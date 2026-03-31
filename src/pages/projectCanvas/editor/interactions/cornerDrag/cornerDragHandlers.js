@@ -32,7 +32,6 @@ export function handleCornerDragMove(e, context) {
         prev && prev.id === node.attrs.id ? { ...prev, x, y } : prev,
     );
 
-    // const validPlacement = attemptMoveCorners([{id: node.attrs.id, x, y}], dx, dy);
 
     setGuides(guides);
 }
@@ -50,6 +49,7 @@ export function handleCornerDragEnd(e, context) {
         mergeCorners,
         cleanupWalls,
         recomputeRooms,
+        dragContext
     } = context;
     clearGuides();
     const node = e.target;
@@ -60,6 +60,7 @@ export function handleCornerDragEnd(e, context) {
         0,
         corners,
         walls,
+        dragContext
     );
     console.log("Corner drag end", { success, reason });
     if (
@@ -89,7 +90,7 @@ export function handleCornerDragEnd(e, context) {
         mergeCorners(overlappingNodeId, node.attrs.id);
         cleanupWalls();
     }
-    console.log("corners after drag", corners);
+    // console.log("corners after drag", corners);
     setDraggingCorner(null);
-    recomputeRooms();
+    recomputeRooms(dragContext);
 }

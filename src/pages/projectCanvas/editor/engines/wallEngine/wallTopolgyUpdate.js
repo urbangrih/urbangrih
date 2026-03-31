@@ -2,7 +2,7 @@ import { isCollinear, collinearOverlap } from "../../services/geometry/collinear
 import { boundingBoxOverlap } from "../../services/geometry/intersection";
 
 
-export function isWallOverlapping(movedWall, walls, corners){
+export function isWallOverlapping(movedWall, walls, corners, dragContext){
     // console.log("isWallOverlapping running")
     const startCorner = corners.find((corner) => corner.id === movedWall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === movedWall.endCornerId);
@@ -18,12 +18,12 @@ export function isWallOverlapping(movedWall, walls, corners){
         if (!existingStart || !existingEnd) continue;
 
         if (
-            isCollinear(startCorner, endCorner, existingStart) &&
-            isCollinear(startCorner, endCorner, existingEnd)
+            isCollinear(startCorner, endCorner, existingStart, dragContext) &&
+            isCollinear(startCorner, endCorner, existingEnd, dragContext)
         ) {
-            const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
+            const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd, dragContext);
             if (!overlap) return false;
-            return boundingBoxOverlap(startCorner, endCorner, existingStart, existingEnd);
+            return boundingBoxOverlap(startCorner, endCorner, existingStart, existingEnd, dragContext);
             // if (overlap) {
             //     return true;
             // }

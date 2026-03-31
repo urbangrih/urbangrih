@@ -1,19 +1,19 @@
 import { EPSILON } from "../../utils/epsilons";
 
-export function collinearOverlap(a1, a2, b1, b2) {
+export function collinearOverlap(a1, a2, b1, b2, context) {
   const overlapX =
     Math.max(Math.min(a1.x, a2.x), Math.min(b1.x, b2.x)) <=
-    Math.min(Math.max(a1.x, a2.x), Math.max(b1.x, b2.x)) + EPSILON;
+    Math.min(Math.max(a1.x, a2.x), Math.max(b1.x, b2.x)) + context.EPSILON;
 
   const overlapY =
     Math.max(Math.min(a1.y, a2.y), Math.min(b1.y, b2.y)) <=
-    Math.min(Math.max(a1.y, a2.y), Math.max(b1.y, b2.y)) + EPSILON;
+    Math.min(Math.max(a1.y, a2.y), Math.max(b1.y, b2.y)) + context.EPSILON;
 
   // return overlapX || overlapY;
   return overlapX && overlapY;
 }
 
-export function isCollinear(p1, p2, p3) {
+export function isCollinear(p1, p2, p3, context) {
     const twiceArea = Math.abs(
         p1.x * (p2.y - p3.y) +
         p2.x * (p3.y - p1.y) +
@@ -24,5 +24,5 @@ export function isCollinear(p1, p2, p3) {
 
     const height = twiceArea / base;
     // console.log("Collinearity check", height < EPSILON, { height, twiceArea, base });
-    return height < EPSILON;
+    return height < context.EPSILON;
 }

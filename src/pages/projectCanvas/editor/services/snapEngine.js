@@ -1,5 +1,4 @@
-const SNAP_THRESHOLD = 10;
-
+import { SNAP_EPSILON } from "../utils/epsilons";
 export function getSnappedCornerPosition(cornerId, rawPosition, corners){
     let snappedX = rawPosition.x;
     let snappedY = rawPosition.y;
@@ -12,7 +11,7 @@ export function getSnappedCornerPosition(cornerId, rawPosition, corners){
         const dy = corner.y - rawPosition.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < SNAP_THRESHOLD) {
+        if (distance < SNAP_EPSILON) {
             snappedX = corner.x;
             snappedY = corner.y;
             guides.push({type: 'point', x: corner.x, y: corner.y});
@@ -23,12 +22,12 @@ export function getSnappedCornerPosition(cornerId, rawPosition, corners){
     for(let corner of corners) {
         if (corner.id === cornerId) continue;
 
-        if (Math.abs(corner.x - rawPosition.x) < SNAP_THRESHOLD) {
+        if (Math.abs(corner.x - rawPosition.x) < SNAP_EPSILON) {
             snappedX = corner.x;
             guides.push({type: 'vertical', x: corner.x});
         }
 
-        if (Math.abs(corner.y - rawPosition.y) < SNAP_THRESHOLD) {
+        if (Math.abs(corner.y - rawPosition.y) < SNAP_EPSILON) {
             snappedY = corner.y;
             guides.push({type: 'horizontal', y: corner.y});
         }
@@ -50,7 +49,7 @@ export function detectOverlappingCorners(cornerId, position, corners ){
         const dy = corner.y - position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < SNAP_THRESHOLD) {
+        if (distance < SNAP_EPSILON) {
             return corner.id;
         }
     }

@@ -1,6 +1,6 @@
 import { getAngle } from "../geometry/angle";
 
-export function buildDirectedGraph(corners, walls) {
+export function buildDirectedGraph(corners, walls, context) {
     const directedGraph = new Map();
     const cornerById = new Map();
 
@@ -17,8 +17,8 @@ export function buildDirectedGraph(corners, walls) {
             continue;
         }
 
-        const forwardAngle = getAngle(startCorner, endCorner);
-        const backwardAngle = getAngle(endCorner, startCorner);
+        const forwardAngle = getAngle(startCorner, endCorner, context);
+        const backwardAngle = getAngle(endCorner, startCorner, context);
 
         directedGraph.get(startCorner.id).push({
             from: startCorner.id,

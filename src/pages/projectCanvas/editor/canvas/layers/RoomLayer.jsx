@@ -7,11 +7,11 @@ import { roomPolygon } from "../components/roomPolygon";
 
 
 
-export default function RoomLayer({ invalidRoomId = null }) {
+export default function RoomLayer() {
     const corners = useEditorStore((state) => state.corners);
     const rooms = useEditorStore((state) => state.rooms);
 
-    const { onRoomDragStart, onRoomDragMove, onRoomDragEnd } = useRoomDrag();
+    const { onRoomDragStart, onRoomDragMove, onRoomDragEnd, invalidRoomId } = useRoomDrag();
     const roomEvents = {
         onDragStart: onRoomDragStart,
         onDragMove: onRoomDragMove,
@@ -20,7 +20,6 @@ export default function RoomLayer({ invalidRoomId = null }) {
     return (
         <Layer listening={true}>
             {rooms.map((room) => {
-                
                 return roomPolygon({ roomObj: room, corners, events: roomEvents, invalidRoomId });
             })}
         </Layer>

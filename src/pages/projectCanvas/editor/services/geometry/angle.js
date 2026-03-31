@@ -1,9 +1,9 @@
 import { EPSILON } from "../../utils/epsilons";
 
-export function getAngle(fromCorner, toCorner) {
+export function getAngle(fromCorner, toCorner, context) {
   const dx = toCorner.x - fromCorner.x;
   const dy = toCorner.y - fromCorner.y;
-  if (Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON) {
+  if (Math.abs(dx) < context.EPSILON && Math.abs(dy) < context.EPSILON) {
     return 0;
   }
   const angle = Math.atan2(dy, dx);

@@ -5,6 +5,8 @@ import { useEditorStore } from "../../store/editorStore";
 import { createWall, createCorner } from "../../services/objectFactory";
 import { isPlacementValid } from "../../engines/wallEngine/wallValidationEngine";
 
+import { EPSILON } from "../../utils/epsilons";
+
 export function useStageDnd(stageRef) {
   const corners = useEditorStore((s) => s.corners);
   const walls = useEditorStore((s) => s.walls);
@@ -13,6 +15,15 @@ export function useStageDnd(stageRef) {
   const addCorner = useEditorStore((s) => s.addCorner);
   const addWall = useEditorStore((s) => s.addWall);
   const recomputeRooms = useEditorStore((s) => s.recomputeRooms); 
+
+  const wallContext = {
+    EPSILON,
+  };
+
+  const roomContext = {
+    EPSILON,
+  }
+
   useEffect(() => {
     const stage = stageRef.current;
     if (!stage) return;
@@ -56,7 +67,8 @@ export function useStageDnd(stageRef) {
         const validPlacement = isPlacementValid(
           wall,
           walls,
-          tempCorners
+          tempCorners,
+          wallContext
         );
 
         if (!validPlacement) {
@@ -66,7 +78,7 @@ export function useStageDnd(stageRef) {
 
         addCorner(c1);
         addCorner(c2);
-        addWall(wall);
+        addWall(wall, wallContext);
         return;
       }
 
@@ -86,7 +98,7 @@ export function useStageDnd(stageRef) {
 
         let validPlacement = true;
         for (let wall of [wall1, wall2, wall3, wall4]) {
-          let wallValid = isPlacementValid(wall, walls, tempCorners);
+          let wallValid = isPlacementValid(wall, walls, tempCorners, roomContext);
           if (!wallValid) {
             console.log("Room wall invalid", wall);
             validPlacement = false;
@@ -110,11 +122,11 @@ export function useStageDnd(stageRef) {
         addCorner(c2);
         addCorner(c3);
         addCorner(c4);
-        addWall(wall1);
-        addWall(wall2);
-        addWall(wall3);
-        addWall(wall4);
-        recomputeRooms();
+        addWall(wall1, roomContext);
+        addWall(wall2, roomContext);
+        addWall(wall3, roomContext);
+        addWall(wall4, roomContext);
+        recomputeRooms(roomContext);
         return;
       }
 
@@ -129,5 +141,5 @@ export function useStageDnd(stageRef) {
       container.removeEventListener("dragover", handleDragOver);
       container.removeEventListener("drop", handleDrop);
     };
-  }, [stageRef, addObject, addCorner, addWall, walls, corners, recomputeRooms]);
+  }, [stageRef, addObject, addCorner, addWall, walls, corners, recomputeRooms, wallContext, roomContext]);
 }

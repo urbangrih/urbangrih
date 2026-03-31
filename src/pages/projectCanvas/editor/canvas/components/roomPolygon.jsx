@@ -22,6 +22,7 @@ export function roomPolygon({ roomObj, corners, events, invalidRoomId }) {
     const textHeight = 20; // rough estimate
     const roomTextKey =
         roomObj.roomId ?? `room-${roomObj.cornerIds.join("-")}`;
+    // console.log("room drag valid:", { roomId: roomObj.roomId, isInvalid, invalidRoomId });
     return (
         <Group
             key= {roomKey}

@@ -3,7 +3,7 @@ import { isCollinear, collinearOverlap } from "../../services/geometry/collinear
 import { orientation, onSegment, segmentIntersection } from "../../services/geometry/intersection";
 import { minimumDistanceBetweenSegments } from "../../services/geometry/distance";
 
-export function isPlacementValid (wall, existingWalls, corners) {
+export function isPlacementValid (wall, existingWalls, corners, dragContext) {
     const startCorner = corners.find((corner) => corner.id === wall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === wall.endCornerId);
         if (!startCorner || !endCorner) {
@@ -19,44 +19,44 @@ export function isPlacementValid (wall, existingWalls, corners) {
             return false; // Invalid existing wall
         }
         const sharesEndpoint =
-            pointEquals(startCorner, existingStart) ||
-            pointEquals(startCorner, existingEnd) ||
-            pointEquals(endCorner, existingStart) ||
-            pointEquals(endCorner, existingEnd);
+            pointEquals(startCorner, existingStart, dragContext) ||
+            pointEquals(startCorner, existingEnd, dragContext) ||
+            pointEquals(endCorner, existingStart, dragContext) ||
+            pointEquals(endCorner, existingEnd, dragContext);
 
         // Collinear walls: allow only a single shared endpoint, reject any overlap
         // console.log("collinearlity check for three points:",isCollinear(startCorner, endCorner, existingStart) &&
         //     isCollinear(startCorner, endCorner, existingEnd))
         if (
-            isCollinear(startCorner, endCorner, existingStart) &&
-            isCollinear(startCorner, endCorner, existingEnd)
+            isCollinear(startCorner, endCorner, existingStart, dragContext) &&
+            isCollinear(startCorner, endCorner, existingEnd, dragContext)
         ) {
             // const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd);
-            console.log("Collinear overlap checks", { overlap });
+            const overlap = collinearOverlap(startCorner, endCorner, existingStart, existingEnd, dragContext);
+            // console.log("Collinear overlap checks", { overlap });
             if (overlap) {
                 return true; // Overlapping collinear walls are not allowed
             }
             return false; // Collinear but only touching at a point (or disjoint)
         }
 
-        const o1 = orientation(startCorner, endCorner, existingStart);
-        const o2 = orientation(startCorner, endCorner, existingEnd);
-        const o3 = orientation(existingStart, existingEnd, startCorner);
-        const o4 = orientation(existingStart, existingEnd, endCorner);
+        const o1 = orientation(startCorner, endCorner, existingStart, dragContext);
+        const o2 = orientation(startCorner, endCorner, existingEnd, dragContext);
+        const o3 = orientation(existingStart, existingEnd, startCorner, dragContext);
+        const o4 = orientation(existingStart, existingEnd, endCorner, dragContext);
 
         // console.log("Orientation checks", { o1, o2, o3, o4 });
 
         const intersectsByOrientation =
             (o1 !== o2 && o3 !== o4) ||
-            (o1 === 0 && onSegment(startCorner, existingStart, endCorner)) ||
-            (o2 === 0 && onSegment(startCorner, existingEnd, endCorner)) ||
-            (o3 === 0 && onSegment(existingStart, startCorner, existingEnd)) ||
-            (o4 === 0 && onSegment(existingStart, endCorner, existingEnd));
+            (o1 === 0 && onSegment(startCorner, existingStart, endCorner, dragContext)) ||
+            (o2 === 0 && onSegment(startCorner, existingEnd, endCorner, dragContext)) ||
+            (o3 === 0 && onSegment(existingStart, startCorner, existingEnd, dragContext)) ||
+            (o4 === 0 && onSegment(existingStart, endCorner, existingEnd, dragContext));
 
         // Check for intersection (orientation-based first, fallback to segmentIntersection)
         const intersection = intersectsByOrientation ||
-            segmentIntersection(startCorner, endCorner, existingStart, existingEnd);
+            segmentIntersection(startCorner, endCorner, existingStart, existingEnd, dragContext);
         if (intersection) {
             if (sharesEndpoint) {
                 return false; // Sharing a corner is allowed
@@ -69,7 +69,8 @@ export function isPlacementValid (wall, existingWalls, corners) {
                 startCorner,
                 endCorner,
                 existingStart,
-                existingEnd
+                existingEnd,
+                dragContext
             );
             const thickness = wall.thickness ?? 0;
             if (minDistance < thickness) {

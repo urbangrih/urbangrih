@@ -66,7 +66,7 @@ export default function CanvasStage() {
     // const clearGuides = useEditorStore((s) => s.clearGuides);
 
     // const rooms = useEditorStore((s) => s.rooms);
-    const recomputeRooms = useEditorStore((s) => s.recomputeRooms);
+    // const recomputeRooms = useEditorStore((s) => s.recomputeRooms);
 
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
@@ -83,9 +83,9 @@ export default function CanvasStage() {
     // });
 
     //temporary
-    useEffect(() => {
-        recomputeRooms();
-    }, []);
+    // useEffect(() => {
+    //     recomputeRooms();
+    // }, []);
 
     useEffect(() => {
         const c1 = createCorner(500, 100);
@@ -437,9 +437,7 @@ export default function CanvasStage() {
                 guideLayerRef={guideLayerRef}
                 guides={guides} // we will pass guides here later
             />
-            <RoomLayer
-                invalidRoomId={invalidRoomId}
-            />
+            <RoomLayer/>
             <StructureLayer
                 // draggingCorner={draggingCorner}
             />
