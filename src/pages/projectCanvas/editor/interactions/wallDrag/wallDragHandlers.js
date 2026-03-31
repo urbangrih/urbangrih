@@ -29,6 +29,8 @@ export function handleWallDragEnd(e, context) {
         wallCorners,
         deltaX,
         deltaY,
+        corners,
+        walls,
     );
     // if (!success && reason !== "overlap") {
     if (!success) {

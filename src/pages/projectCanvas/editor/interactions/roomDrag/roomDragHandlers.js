@@ -36,7 +36,8 @@ export function handleRoomDragEnd(e, context) {
         corners,
         attemptRoomMove,
         moveCornersBatch,
-        recomputeRooms
+        recomputeRooms,
+        setInvalidRoomId,
     } = context;
     const room = e.target;
     const roomId = room.attrs.id;

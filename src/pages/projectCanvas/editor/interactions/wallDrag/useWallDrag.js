@@ -5,10 +5,10 @@ import {
 } from "./wallDragHandlers";
 
 import { useEditorStore } from "../../store/editorStore";
-import { attemptMoveCorners } from "../../engine/cornerEngine/simulateCornerMove";
+import { attemptMoveCorners } from "../../engines/cornerEngine/moveCorner";
 
 
-export default function useWallDrag() {
+export function useWallDrag() {
     const corners = useEditorStore((state) => state.corners);
     const walls = useEditorStore((state) => state.walls);
     const moveCornersBatch = useEditorStore((state) => state.moveCornersBatch);

@@ -14,7 +14,7 @@ export default function StructureLayer() {
     const walls = useEditorStore((state) => state.walls);
 
 
-    const { onCornerDragStart, onCornerDragMove, onCornerDragEnd } = useCornerDrag();
+    const { onCornerDragStart, onCornerDragMove, onCornerDragEnd, draggingCorner } = useCornerDrag();
     const { onWallDragStart, onWallDragMove, onWallDragEnd } = useWallDrag();
     const wallEvents = {
         onDragStart: onWallDragStart,

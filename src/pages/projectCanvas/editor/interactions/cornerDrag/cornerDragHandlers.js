@@ -40,6 +40,7 @@ export function handleCornerDragMove(e, context) {
 export function handleCornerDragEnd(e, context) {
     const {
         corners,
+        walls,
         draggingCorner,
         setDraggingCorner,
         clearGuides,
@@ -57,6 +58,8 @@ export function handleCornerDragEnd(e, context) {
         [{ id: node.attrs.id, x: node.x(), y: node.y() }],
         0,
         0,
+        corners,
+        walls,
     );
     console.log("Corner drag end", { success, reason });
     if (

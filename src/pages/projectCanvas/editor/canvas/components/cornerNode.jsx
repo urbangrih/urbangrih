@@ -25,7 +25,7 @@ import { Circle } from "react-konva";
 //     },
 // };
 
-export default function cornerNode({cornerObj, events}) {
+export function cornerNode({cornerObj, events}) {
     return (
         <Circle
             key={cornerObj.id}

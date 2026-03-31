@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { isPlacementValid } from "../services/wallValidation";
-import { buildDirectedGraph } from "../services/halfEdgeBuilder";
-import { detectFaces, removeOuterFace } from "../services/roomDetection";
+// import { isPlacementValid } from "../services/wallValidation";
+// import { buildDirectedGraph } from "../services/halfEdgeBuilder";
+// import { detectFaces, removeOuterFace } from "../services/roomDetection";
 // import { snapPointToGrid } from "../utils/snap";
 import { createCornerActions } from "./actions/cornerActions";
 import { createWallActions } from "./actions/wallActions";
@@ -10,18 +10,18 @@ import { createRoomActions } from "./actions/roomActions";
 
 // export const GRID_SIZE = 20; // cm, inches, or logical units
 
-export const useEditorStore = create((set) => ({
+export const useEditorStore = create((set, get) => ({
     objects: [],
     selectedIds: [],
     isSelecting: false,
     corners: [],
     walls: [],
-    guides: [],
+    guides: [], 
     rooms: [],
 
-    ...createCornerActions(set, useEditorStore.getState),
-    ...createWallActions(set, useEditorStore.getState),
-    ...createRoomActions(set, useEditorStore.getState),
+    ...createCornerActions(set, get),
+    ...createWallActions(set, get),
+    ...createRoomActions(set, get),
 
     selectObject: (id) => {
         const { selectedIds } = useEditorStore.getState();

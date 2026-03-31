@@ -116,6 +116,9 @@
 //   return Math.min(d1, d2, d3, d4);
 // }
 
+import { distance } from "./geometry/distance";
+import { EPSILON } from "../utils/epsilons";
+
 export function pointEquals(p1, p2) {
     return distance(p1, p2) < EPSILON;
 }

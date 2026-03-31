@@ -9,7 +9,7 @@ function getCornerPosition(cornerId, draggingCorner, corners) {
     return { x: corner.x, y: corner.y };
 }
 
-export default function wallEdge({wallObj, corners, draggingCorner, wallEvents}) {
+export function wallEdge({wallObj, corners, draggingCorner, wallEvents}) {
     const startCornerId = wallObj.startCornerId;
     const endCornerId = wallObj.endCornerId;
 

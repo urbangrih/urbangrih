@@ -8,9 +8,9 @@ import { useState } from "react";
 
 // import { validateRoomMove } from "../../services/roomDragEngine";
 import { validateRoomMove } from "../../engines/roomEngine/roomValidation";
-import { attemptRoomMove } from "../../engine/roomEngine/simulateRoomMove";
+import { attemptRoomMove } from "../../engines/roomEngine/moveRoom";
 
-export default function useRoomDrag() {
+export function useRoomDrag() {
     const corners = useEditorStore((state) => state.corners);
     const walls = useEditorStore((state) => state.walls);
     const rooms = useEditorStore((state) => state.rooms);

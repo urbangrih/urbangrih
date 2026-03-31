@@ -12,7 +12,7 @@ import GuidesLayer from "./layers/GuidesLayer";
 // import GridLayer from "./GridLayer";
 
 import { useNodeRegistry } from "./hooks/useNodeRegistry";
-import { useEditorStore } from "../state/editorStore";
+import { useEditorStore } from "../store/editorStore";
 import { createWall, createCorner } from "../services/objectFactory";
 
 // import {
@@ -71,6 +71,7 @@ export default function CanvasStage() {
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
     // const [draggingWallCorners, setDraggingWallCorners] = useState(null);
+    // const [draggingCorner, setDraggingCorner] = useState(null);
     const [invalidRoomId, setInvalidRoomId] = useState(null);
 
     // const [selectionRect, setSelectionRect] = useState({
@@ -440,7 +441,7 @@ export default function CanvasStage() {
                 invalidRoomId={invalidRoomId}
             />
             <StructureLayer
-                draggingCorner={draggingCorner}
+                // draggingCorner={draggingCorner}
             />
             <Layer ref={objectLayerRef}>
                 {/* <GridLayer /> */}
