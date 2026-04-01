@@ -23,7 +23,7 @@ function findRoomById(roomId, rooms) {
     return rooms.find((room) => getRoomKey(room) === roomId);
 }
 
-function getRoomKey(room) {
+export function getRoomKey(room) {
     if (!room) return null;
     if (room.roomId) return room.roomId;
     if (Array.isArray(room.cornerIds) && room.cornerIds.length > 0) {

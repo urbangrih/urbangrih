@@ -1,0 +1,3 @@
+// findNearbyCorners()
+// mergeCorners()
+// removeDuplicateWalls()

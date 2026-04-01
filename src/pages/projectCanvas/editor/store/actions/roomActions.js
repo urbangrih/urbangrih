@@ -23,5 +23,8 @@ export function createRoomActions(set, get) {
                 rooms: validRooms,
             }
         }),
+//         startRoomDrag()
+// commitRoomDrag()
+// reconcileAfterRoomDrag()
     }
 }

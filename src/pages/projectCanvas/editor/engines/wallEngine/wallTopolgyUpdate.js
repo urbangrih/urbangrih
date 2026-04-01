@@ -3,7 +3,6 @@ import { boundingBoxOverlap } from "../../services/geometry/intersection";
 
 
 export function isWallOverlapping(movedWall, walls, corners, dragContext){
-    // console.log("isWallOverlapping running")
     const startCorner = corners.find((corner) => corner.id === movedWall.startCornerId);
     const endCorner = corners.find((corner) => corner.id === movedWall.endCornerId);
     if (!startCorner || !endCorner) {
