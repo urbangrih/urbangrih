@@ -1,4 +1,5 @@
 import { Line } from "react-konva";
+import { DEFAULT_WALL_UI_PROPERTIES } from "../../utils/constants";
 
 function getCornerPosition(cornerId, draggingCorner, corners) {
     const dragging = draggingCorner && draggingCorner.id === cornerId ? draggingCorner : null;
@@ -32,11 +33,11 @@ export function wallEdge({wallObj, corners, draggingCorner, wallEvents}) {
             name="object"
             dataType={wallObj.type}
             points={[startCorner.x, startCorner.y, endCorner.x, endCorner.y]}
-            fill={wallObj.fill ?? "red"}
-            stroke={wallObj.stroke ?? "black"}
-            strokeWidth={wallObj.thickness ?? 20}
+            fill={DEFAULT_WALL_UI_PROPERTIES.fill}
+            stroke={DEFAULT_WALL_UI_PROPERTIES.stroke}
+            strokeWidth={DEFAULT_WALL_UI_PROPERTIES.strokeWidth}
             // width={wallObj.thickness}
-            draggable={wallObj.draggable}
+            draggable={DEFAULT_WALL_UI_PROPERTIES.draggable}
             listening={true}
             // lineCap="round"
             {...wallEvents}

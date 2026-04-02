@@ -1,17 +1,17 @@
-// export function createRoomDragSession(){
+export function createRoomDragSession(){
 
-//    return {
+   return {
 
-//       dragCornerIds:[],
-//       dragWallIds:[],
+      dragCornerIds:[],
+      dragWallIds:[],
 
-//       cornerMap:{},
-//       wallMap:{},
+      cornerMap:{},
+      wallMap:{},
 
-//       startPositions:{},
+      startPositions:{},
 
-//       sessionId:null
+      sessionId:null
 
-//    };
+   };
 
-// }
+}

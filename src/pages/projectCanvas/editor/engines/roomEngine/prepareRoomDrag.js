@@ -20,6 +20,7 @@
 
 import { getRoomCorners } from "../../services/topology/roomGraph";
 import { getRoomWalls, getSharedCorners, getSharedWalls } from "./affectedRoomGeometry";
+import { cloneCorners, cloneWalls, buildCornerCloneMap } from "../../services/topology/topologyClone";
 
 export function prepareRoomDrag(roomId, state){
     const roomCorners = getRoomCorners(roomId, state.rooms, state.corners);
@@ -34,6 +35,17 @@ export function prepareRoomDrag(roomId, state){
     const cornerMap = cloneSharedCorners(dragCornerIds, sharedCornerIds, state.corners);
     const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls);
 
+    // {
+        // dragCornerIds:[],
+        // dragWallIds:[],
+
+        // cornerCloneMap:{},
+        // wallCloneMap:{},
+
+        // originalCornerPositions:{},
+
+        // affectedWalls:[]
+    // }
     const dragContext = {
         roomId,
         dragCornerIds,
@@ -50,37 +62,42 @@ export function prepareRoomDrag(roomId, state){
 }
 
 function cloneSharedCorners(dragCornerIds, sharedCornerIds, corners) {
-    const cornerMap = new Map();
+    const draggedCornerMap = new Map();
     for (const cornerId of dragCornerIds) {
         const corner = corners.find((c) => c.id === cornerId);
         if (corner) {
-            cornerMap.set(cornerId, { ...corner });
+            draggedCornerMap.set(cornerId, { ...corner });
         }
     }
+
+    const sharedCornerMap = new Map();
     for (const cornerId of sharedCornerIds) {
-        const corner = corners.find((c) => c.id === cornerId);
+        const corner = draggedCornerMap.get(cornerId);
         if (corner) {
-            cornerMap.set(cornerId, { ...corner });
+            sharedCornerMap.set(cornerId, { ...corner });
         }
     }
-    return cornerMap;
+    console.log(sharedCornerMap);
+    return cloneCorners(sharedCornerMap);
 }
 
 function cloneSharedWalls(dragWallIds, sharedWallIds, walls) {
-    const wallMap = new Map();
+    const draggedWallMap = new Map();
     for (const wallId of dragWallIds) {
         const wall = walls.find((w) => w.id === wallId);
         if (wall) {
-            wallMap.set(wallId, { ...wall });
+            draggedWallMap.set(wallId, { ...wall });
         }
     }
+
+    const sharedWallMap = new Map();
     for (const wallId of sharedWallIds) {
-        const wall = walls.find((w) => w.id === wallId);
+        const wall = draggedWallMap.get(wallId);
         if (wall) {
-            wallMap.set(wallId, { ...wall });
+            sharedWallMap.set(wallId, { ...wall });
         }
     }
-    return wallMap;
+    return cloneWalls(sharedWallMap);
 }
 
 function buildCornerMapping(dragCornerIds, sharedCornerIds) {}

@@ -1,4 +1,5 @@
 import { Circle } from "react-konva";
+import { DEFAULT_CORNER_UI_PROPERTIES } from "../../utils/constants";
 
 // const RENDERERS = {
 //     corner: (obj, events) => (
@@ -34,11 +35,12 @@ export function cornerNode({cornerObj, events}) {
             dataType={cornerObj.type}
             x={cornerObj.x}
             y={cornerObj.y}
-            radius={cornerObj.radius}
-            fill={cornerObj.fill}
-            draggable={cornerObj.draggable}
+            radius={DEFAULT_CORNER_UI_PROPERTIES.radius}
+            fill={DEFAULT_CORNER_UI_PROPERTIES.fill}
+            draggable={DEFAULT_CORNER_UI_PROPERTIES.draggable}
             listening={true}
             {...events}
+
         />
     );
 }

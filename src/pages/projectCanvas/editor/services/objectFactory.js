@@ -61,12 +61,9 @@ export function createCorner(x, y) {
     const id = crypto.randomUUID();
     return {
         id,
-        type: "corner",
         x,
         y,
-        radius: 5,
-        fill: "#0f0",
-        draggable: true,
+        type: "corner",
     }
 }
 
@@ -78,9 +75,5 @@ export function createWall(startCornerId, endCornerId, thickness=20){
         startCornerId,
         endCornerId,
         thickness,
-        fill: "#f00",
-        stroke: "#000",
-        strokeWidth: 1,
-        draggable: true, 
     }
 }
