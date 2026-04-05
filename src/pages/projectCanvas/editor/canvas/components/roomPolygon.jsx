@@ -1,9 +1,14 @@
-import { Group, Layer, Line, Text } from "react-konva";
+import { Group, Line, Text } from "react-konva";
 
-export function roomPolygon({ roomObj, corners, events, invalidRoomId }) {
+export function roomPolygon({ roomObj, corners, events, invalidRoomId, roomDragSession }) {
     const points = roomObj.cornerIds;
     const roomCorners = points
-        .map((cornerId) => corners.find((c) => c.id === cornerId))
+        .map((cornerId) => {
+            if (roomDragSession !== null && Object.hasOwn(roomDragSession.simulatedCornerPositions, cornerId)) {
+                return roomDragSession.simulatedCornerPositions[cornerId];
+            }
+            return corners.find((c) => c.id === cornerId);
+        })
         .filter(Boolean);
     const linePoints = roomCorners.flatMap((corner) => [
         corner.x,

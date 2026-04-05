@@ -9,6 +9,6 @@ export const DEFAULT_CORNER_UI_PROPERTIES = {
 export const DEFAULT_WALL_UI_PROPERTIES = {
     fill: "#f00",
     stroke: "#000",
-    strokeWidth: 1,
+    strokeWidth: 20,
     draggable: true,
 }

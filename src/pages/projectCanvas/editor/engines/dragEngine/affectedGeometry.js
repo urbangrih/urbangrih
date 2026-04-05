@@ -1,3 +1,4 @@
+
 export function getAffectedWalls(roomId, rooms, walls) {
     const room = findRoomById(roomId, rooms);
     if (!room) {
@@ -10,24 +11,6 @@ export function getAffectedWalls(roomId, rooms, walls) {
             roomCornerIds.has(wall.startCornerId) ||
             roomCornerIds.has(wall.endCornerId),
     );
-}
-
-export function getRoomCorners(roomId, rooms, corners) {
-    const room = findRoomById(roomId, rooms);
-    if (!room) {
-        console.warn("Could not find room for id", roomId);
-        return [];
-    }
-    const roomCorners = room.cornerIds
-        .map((cornerId) => {
-            const corner = corners.find((c) => c.id === cornerId);
-            if (!corner) {
-                console.warn("Could not find corner for id", cornerId);
-            }
-            return corner;
-        })
-        .filter(Boolean);
-    return roomCorners;
 }
 
 export function findRoomById(roomId, rooms) {

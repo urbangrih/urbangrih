@@ -13,8 +13,17 @@ export function createWallActions(set, get) {
                 walls: [...state.walls, wall]
             };
         }),
-        cleanupWalls: () =>
-        set((state) => {
+        addBatchWalls: (newWalls, context) => set((state) => {
+            const validWalls = newWalls.filter(wall => isPlacementValid(wall, state.walls, state.corners, context));
+            if (validWalls.length < newWalls.length) {
+                console.warn(`Some walls were invalid and not added. Valid count: ${validWalls.length}, Attempted: ${newWalls.length}`);
+            }
+            return {
+                ...state,
+                walls: [...state.walls, ...validWalls]
+            };
+        }),
+        cleanupWalls: () => set((state) => {
             const uniqueWalls = new Set();
             let updatedWalls = state.walls;
             for (let wall of state.walls) {

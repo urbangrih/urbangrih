@@ -4,51 +4,72 @@ import { isWallOverlapping } from "../wallEngine/wallTopolgyUpdate";
 
 export function validateRoomMove(
     roomId,
-    deltaX,
-    deltaY,
+    simulation,
     rooms,
     walls,
     corners,
-    dragContext
+    dragConstants,
+    roomDragSession
 ) {
-    const roomCorners = getRoomCorners(roomId, rooms, corners);
-    if (roomCorners.length === 0) {
-        return { success: false, reason: "missing-room", tempCorners: corners };
-    }
+    // const roomCorners = getRoomCorners(roomId, rooms, corners);
+    // if (roomCorners.length === 0) {
+    //     return { success: false, reason: "missing-room", tempCorners: corners };
+    // }
 
-    const roomCornerIds = new Set(roomCorners.map((corner) => corner.id));
+    // const roomCornerIds = new Set(roomCorners.map((corner) => corner.id));
+    // const tempCorners = corners.map((corner) => {
+    //     if (roomCornerIds.has(corner.id)) {
+    //         return {
+    //             ...corner,
+    //             x: corner.x + deltaX,
+    //             y: corner.y + deltaY,
+    //         };
+    //     }
+    //     return corner;
+    // });
+
+    // const affectedWalls = walls.filter(
+    //     (wall) =>
+    //         roomCornerIds.has(wall.startCornerId) ||
+    //         roomCornerIds.has(wall.endCornerId),
+    // );
+
+    const roomCorners = simulation.simulatedCornerPositions;
+    const roomWalls = roomDragSession.dragContext.dragWallIds.map((wallId) => {
+        if (roomDragSession.dragContext.clonedWallsMap.has(wallId)) {
+            return roomDragSession.dragContext.clonedWallsMap.get(wallId);
+        }
+        return walls.find((w) => w.id === wallId);
+    });
+    const affectedWalls = roomDragSession.dragContext.affectedWallIds.map((wallId) => walls.find((w) => w.id === wallId));
+
     const tempCorners = corners.map((corner) => {
-        if (roomCornerIds.has(corner.id)) {
+        if (Object.hasOwn(roomCorners, corner.id)) {
+            const simulatedCorner = roomCorners[corner.id];
             return {
                 ...corner,
-                x: corner.x + deltaX,
-                y: corner.y + deltaY,
+                x: simulatedCorner.x,
+                y: simulatedCorner.y,
             };
         }
         return corner;
-    });
-
-    const affectedWalls = walls.filter(
-        (wall) =>
-            roomCornerIds.has(wall.startCornerId) ||
-            roomCornerIds.has(wall.endCornerId),
-    );
+    })
 
     let isDragValid = false;
     let isOverlapping = false;
-    for (const wall of affectedWalls) {
+    for (const wall of roomWalls) {
         isDragValid = isPlacementValid(
             wall,
-            walls.filter((w) => w.id !== wall.id),
+            affectedWalls,
             tempCorners,
-            dragContext
+            dragConstants
         );
         if (!isDragValid) {
             isOverlapping = isWallOverlapping(
                 wall,
-                walls.filter((w) => w.id !== wall.id),
+                affectedWalls,
                 tempCorners,
-                dragContext
+                dragConstants
             );
             break;
         }
@@ -58,15 +79,15 @@ export function validateRoomMove(
         return {
             success: true,
             reason: null,
-            tempCorners,
-            roomCorners,
+            // tempCorners,
+            // roomCorners,
         };
     }
 
     return {
         success: false,
         reason: isOverlapping ? "overlap" : "invalid",
-        tempCorners,
-        roomCorners,
+        // tempCorners,
+        // roomCorners,
     };
 }

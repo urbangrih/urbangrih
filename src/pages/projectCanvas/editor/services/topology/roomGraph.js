@@ -16,7 +16,11 @@ export function getRoomCorners(roomId, rooms, corners) {
             return corner;
         })
         .filter(Boolean);
-    return roomCorners;
+    const roomCornerMap = new Map();
+    for (const corner of roomCorners) {
+        roomCornerMap.set(corner.id, corner);
+    }
+    return roomCornerMap;
 }
 
 function findRoomById(roomId, rooms) {

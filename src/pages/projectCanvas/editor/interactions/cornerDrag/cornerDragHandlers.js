@@ -62,7 +62,7 @@ export function handleCornerDragEnd(e, context) {
         walls,
         dragContext
     );
-    console.log("Corner drag end", { success, reason });
+    // console.log("Corner drag end", { success, reason });
     if (
         !success &&
         reason !== "overlap" &&

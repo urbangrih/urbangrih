@@ -1,16 +1,19 @@
-export function createRoomDragSession(){
+export function createRoomDragSession(roomId, dragContext){
 
    return {
+      roomId: roomId,
 
-      dragCornerIds:[],
-      dragWallIds:[],
+      dragContext,
 
-      cornerMap:{},
-      wallMap:{},
+      startPointer:null,   // pointer at drag start
+      currentPointer:null,
 
-      startPositions:{},
+      simulatedCornerPositions:{},
+      lastValidPositions:{},
 
-      sessionId:null
+      isValid:true,
+
+      sessionId:crypto.randomUUID(),
 
    };
 

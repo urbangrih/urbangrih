@@ -14,6 +14,8 @@ export function useStageDnd(stageRef) {
   const addObject = useEditorStore((s) => s.addObject);
   const addCorner = useEditorStore((s) => s.addCorner);
   const addWall = useEditorStore((s) => s.addWall);
+  const addBatchCorners = useEditorStore((s) => s.addBatchCorners);
+  const addBatchWalls = useEditorStore((s) => s.addBatchWalls);
   const recomputeRooms = useEditorStore((s) => s.recomputeRooms); 
 
   const wallContext = {
@@ -118,14 +120,16 @@ export function useStageDnd(stageRef) {
         //   label: "dragged-room-" + Date.now(),
         // };
         // addRoom(room);
-        addCorner(c1);
-        addCorner(c2);
-        addCorner(c3);
-        addCorner(c4);
-        addWall(wall1, roomContext);
-        addWall(wall2, roomContext);
-        addWall(wall3, roomContext);
-        addWall(wall4, roomContext);
+        // addCorner(c1);
+        // addCorner(c2);
+        // addCorner(c3);
+        // addCorner(c4);
+        // addWall(wall1, roomContext);
+        // addWall(wall2, roomContext);
+        // addWall(wall3, roomContext);
+        // addWall(wall4, roomContext);
+        addBatchCorners([c1, c2, c3, c4]);
+        addBatchWalls([wall1, wall2, wall3, wall4], roomContext);
         recomputeRooms(roomContext);
         return;
       }

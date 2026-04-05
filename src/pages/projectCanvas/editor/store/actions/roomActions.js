@@ -12,11 +12,11 @@ export function createRoomActions(set, get) {
                 ...room,
                 roomId: room.roomId ?? `room-${room.cornerIds.join("-")}`,
             }));
-            if (validRooms.length === 0) {
-                console.info("No valid rooms detected so far");
-            } else {
-                console.log("Detected rooms", validRooms);
-            }
+            // if (validRooms.length === 0) {
+            //     console.info("No valid rooms detected so far");
+            // } else {
+            //     console.log("Detected rooms", validRooms);
+            // }
     
             return {
                 ...state,

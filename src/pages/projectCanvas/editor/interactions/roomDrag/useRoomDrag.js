@@ -10,7 +10,7 @@ import { useState } from "react";
 import { validateRoomMove } from "../../engines/roomEngine/roomValidation";
 import { attemptRoomMove } from "../../engines/roomEngine/moveRoom";
 
-import { EPSILON, ROOM_DRAG_EPSILON } from "../../utils/epsilons"
+import { EPSILON, ROOM_DRAG_EPSILON } from "../../utils/epsilons";
 
 export function useRoomDrag() {
     const corners = useEditorStore((state) => state.corners);
@@ -20,21 +20,55 @@ export function useRoomDrag() {
     const recomputeRooms = useEditorStore((state) => state.recomputeRooms);
 
     const [invalidRoomId, setInvalidRoomId] = useState(null);
+    const [roomDragSession, setRoomDragSession] = useState(null);
 
-    const dragContext = {
+    const dragConstants = {
         EPSILON: ROOM_DRAG_EPSILON,
-    }
+    };
+
+    const clearSession = () => {
+        setRoomDragSession(null);
+        setInvalidRoomId(null);
+    };
 
     return {
         onRoomDragStart: (e) => {
-            handleRoomDragStart(e, { setInvalidRoomId });
+            handleRoomDragStart(e, {
+                corners,
+                walls,
+                rooms,
+                setInvalidRoomId,
+                setRoomDragSession,
+            });
         },
         onRoomDragMove: (e) => {
-            handleRoomDragMove(e, { rooms, walls, corners, validateRoomMove, setInvalidRoomId, dragContext });
+            handleRoomDragMove(e, {
+                rooms,
+                walls,
+                corners,
+                validateRoomMove,
+                setInvalidRoomId,
+                dragConstants,
+                roomDragSession,
+                setRoomDragSession,
+            });
         },
         onRoomDragEnd: (e) => {
-            handleRoomDragEnd(e, { rooms, walls, corners, attemptRoomMove, moveCornersBatch, recomputeRooms, setInvalidRoomId, dragContext });
+            handleRoomDragEnd(e, {
+                rooms,
+                walls,
+                corners,
+                attemptRoomMove,
+                moveCornersBatch,
+                recomputeRooms,
+                setInvalidRoomId,
+                dragConstants,
+                roomDragSession,
+                setRoomDragSession,
+                clearSession,
+            });
         },
-        invalidRoomId
+        invalidRoomId,
+        roomDragSession,
     };
 }

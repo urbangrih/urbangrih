@@ -5,6 +5,11 @@ export function createCornerActions(set, get){
                 corners: [...state.corners, corner],
             }));
         },
+        addBatchCorners: (newCorners) => {
+            set((state) => ({
+                corners: [...state.corners, ...newCorners],
+            }));
+        },
         moveCorner: (id, x, y) => {
         set((state) => {
             return {
