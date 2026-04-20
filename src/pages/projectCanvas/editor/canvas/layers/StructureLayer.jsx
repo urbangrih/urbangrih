@@ -9,9 +9,12 @@ import { wallEdge } from "../components/wallEdge";
 import { useCornerDrag } from "../../interactions/cornerDrag/useCornerDrag";
 import { useWallDrag } from "../../interactions/wallDrag/useWallDrag";
 
-export default function StructureLayer() {
-    const corners = useEditorStore((state) => state.corners);
-    const walls = useEditorStore((state) => state.walls);
+export default function StructureLayer({ corners: externalCorners, walls: externalWalls }) {
+    const storeCorners = useEditorStore((state) => state.corners);
+    const storeWalls = useEditorStore((state) => state.walls);
+
+    const corners = externalCorners ?? storeCorners;
+    const walls = externalWalls ?? storeWalls;
 
 
     const { onCornerDragStart, onCornerDragMove, onCornerDragEnd, draggingCorner } = useCornerDrag();

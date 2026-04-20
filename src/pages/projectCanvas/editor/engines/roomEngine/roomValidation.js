@@ -53,24 +53,93 @@ export function validateRoomMove(
             };
         }
         return corner;
-    })
+    });
+
+    const projectedClonedCorners = [];
+    roomDragSession.dragContext.activeToOriginalCornerId.forEach((originalId, activeId) => {
+        if (activeId === originalId) {
+            return;
+        }
+
+        const simulatedCorner = roomCorners[originalId];
+        const originalCorner =
+            simulatedCorner ||
+            corners.find((corner) => corner.id === originalId) ||
+            roomDragSession.dragContext.originalCornerPosition.get(originalId);
+
+        if (!originalCorner) {
+            console.warn("[roomDrag][validate] missing original corner for cloned corner projection", {
+                roomId,
+                activeCornerId: activeId,
+                originalId,
+            });
+            return;
+        }
+
+        projectedClonedCorners.push({
+            ...originalCorner,
+            id: activeId,
+        });
+    });
+
+    const tempCornersWithClones = [...tempCorners, ...projectedClonedCorners];
+
+    console.log("[roomDrag][validate] begin", {
+        roomId,
+        movedCornerCount: Object.keys(roomCorners).length,
+        dragWallCount: roomWalls.length,
+        affectedWallCount: affectedWalls.filter(Boolean).length,
+        hasSharedWalls: roomDragSession.dragContext.clonedWallsMap.size > 0,
+        projectedClonedCornerCount: projectedClonedCorners.length,
+    });
 
     let isDragValid = false;
     let isOverlapping = false;
+    let invalidReason = null;
     for (const wall of roomWalls) {
+        if (!wall) {
+            invalidReason = "missing-wall";
+            console.warn("[roomDrag][validate] wall lookup failed during validation", {
+                roomId,
+            });
+            break;
+        }
+
+        const startCorner = tempCornersWithClones.find((corner) => corner.id === wall.startCornerId);
+        const endCorner = tempCornersWithClones.find((corner) => corner.id === wall.endCornerId);
+        if (!startCorner || !endCorner) {
+            invalidReason = "missing-wall-corners";
+            console.warn("[roomDrag][validate] wall endpoints not resolvable in tempCorners", {
+                roomId,
+                wallId: wall.id,
+                wallStartCornerId: wall.startCornerId,
+                wallEndCornerId: wall.endCornerId,
+                hasStartCorner: Boolean(startCorner),
+                hasEndCorner: Boolean(endCorner),
+                tempCornerIdsSample: tempCornersWithClones.slice(0, 12).map((corner) => corner.id),
+            });
+            break;
+        }
+
         isDragValid = isPlacementValid(
             wall,
             affectedWalls,
-            tempCorners,
+            tempCornersWithClones,
             dragConstants
         );
         if (!isDragValid) {
             isOverlapping = isWallOverlapping(
                 wall,
                 affectedWalls,
-                tempCorners,
+                tempCornersWithClones,
                 dragConstants
             );
+            invalidReason = isOverlapping ? "overlap" : "invalid";
+            console.log("[roomDrag][validate] failed", {
+                roomId,
+                wallId: wall.id,
+                reason: invalidReason,
+            });
             break;
         }
     }
@@ -86,7 +155,7 @@ export function validateRoomMove(
 
     return {
         success: false,
-        reason: isOverlapping ? "overlap" : "invalid",
+        reason: isOverlapping ? "overlap" : (invalidReason ?? "invalid"),
         // tempCorners,
         // roomCorners,
     };

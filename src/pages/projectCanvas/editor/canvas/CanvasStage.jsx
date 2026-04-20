@@ -2,7 +2,7 @@ import { Stage, Layer, Rect } from "react-konva";
 
 // import Konva from "konva";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect } from "react";
 // import { createObject } from "../services/objectFactory";
 import ObjectsLayer from "./ObjectsLayer";
 import RoomLayer from "./layers/RoomLayer";
@@ -21,6 +21,8 @@ import { createWall, createCorner } from "../services/objectFactory";
 // } from "../services/roomDragEngine";
 
 import { useStageDnd } from "./hooks/useStageDnd";
+import { useRoomDrag } from "../interactions/roomDrag/useRoomDrag";
+import { buildRoomDragPreviewTopology } from "../engines/roomEngine/dragPreviewTopology";
 // import {
 //     getSnappedCornerPosition,
 //     detectOverlappingCorners,
@@ -42,8 +44,9 @@ export default function CanvasStage() {
     const guideLayerRef = useRef(null);
 
     const objects = useEditorStore((s) => s.objects);
-    // const corners = useEditorStore((s) => s.corners);
-    // const walls = useEditorStore((s) => s.walls);
+    const corners = useEditorStore((s) => s.corners);
+    const walls = useEditorStore((s) => s.walls);
+    const rooms = useEditorStore((s) => s.rooms);
 
     const selectObject = useEditorStore((s) => s.selectObject);
     // const addObject = useEditorStore((s) => s.addObject);
@@ -65,14 +68,24 @@ export default function CanvasStage() {
     // const setGuides = useEditorStore((s) => s.setGuides);
     // const clearGuides = useEditorStore((s) => s.clearGuides);
 
-    // const rooms = useEditorStore((s) => s.rooms);
-    // const recomputeRooms = useEditorStore((s) => s.recomputeRooms);
-
     const { nodesRef, getRefSetter } = useNodeRegistry();
 
-    // const [draggingWallCorners, setDraggingWallCorners] = useState(null);
-    // const [draggingCorner, setDraggingCorner] = useState(null);
-    const [invalidRoomId, setInvalidRoomId] = useState(null);
+    const {
+        onRoomDragStart,
+        onRoomDragMove,
+        onRoomDragEnd,
+        invalidRoomId,
+        roomDragSession,
+    } = useRoomDrag();
+
+    const roomEvents = {
+        onDragStart: onRoomDragStart,
+        onDragMove: onRoomDragMove,
+        onDragEnd: onRoomDragEnd,
+    };
+
+    const { previewCorners, previewWalls, previewRooms } =
+        buildRoomDragPreviewTopology(corners, walls, rooms, roomDragSession);
 
     // const [selectionRect, setSelectionRect] = useState({
     //     visible: false,
@@ -437,9 +450,15 @@ export default function CanvasStage() {
                 guideLayerRef={guideLayerRef}
                 guides={guides} // we will pass guides here later
             />
-            <RoomLayer/>
+            <RoomLayer
+                corners={previewCorners}
+                rooms={previewRooms}
+                roomEvents={roomEvents}
+                invalidRoomId={invalidRoomId}
+            />
             <StructureLayer
-                // draggingCorner={draggingCorner}
+                corners={previewCorners}
+                walls={previewWalls}
             />
             <Layer ref={objectLayerRef}>
                 {/* <GridLayer /> */}

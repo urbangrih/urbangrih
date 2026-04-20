@@ -11,11 +11,7 @@ export function handleRoomDragStart(e, context) {
     }
     const dragContext = prepareRoomDrag(roomId, { corners, walls, rooms });
     const session = createRoomDragSession(roomId, dragContext);
-    // setRoomDragSession(roomId, session);
-    setRoomDragSession((prev) => ({
-        ...prev,
-        ...session
-    }));
+    setRoomDragSession(session);
     setInvalidRoomId(null);
 }
 export function handleRoomDragMove(e, context) {
@@ -34,12 +30,17 @@ export function handleRoomDragMove(e, context) {
     if (!roomId) {
         return;
     }
+    if (!roomDragSession) {
+        room.position({ x: 0, y: 0 });
+        return;
+    }
 
     const deltaX = room.x();
     const deltaY = room.y();
-
+    // Preview layers consume simulated topology, so keep Group transform neutral.
+    room.position({ x: 0, y: 0 });
     const simulation = simulateRoomMove(
-        roomDragSession.dragContext,
+        roomDragSession,
         deltaX,
         deltaY,
     );
@@ -53,7 +54,6 @@ export function handleRoomDragMove(e, context) {
         dragConstants,
         roomDragSession,
     );
-
     setRoomDragSession((prev) => ({
         ...prev,
         simulatedCornerPositions: simulation.simulatedCornerPositions,
@@ -62,40 +62,85 @@ export function handleRoomDragMove(e, context) {
             : prev.lastValidPositions,
         isValid: success,
     }));
-    // console.log("Room drag move validation result for room ", roomId, ":", success);
-
+    console.log("Room drag move validation result for room ", roomId, ":", reason);
     setInvalidRoomId(success ? null : roomId);
 }
 export function handleRoomDragEnd(e, context) {
     const {
-        rooms,
-        walls,
-        corners,
-        attemptRoomMove,
+        addBatchCorners,
+        addBatchWalls,
         moveCornersBatch,
         recomputeRooms,
         setInvalidRoomId,
         dragConstants,
-        setRoomDragSession,
         roomDragSession,
         clearSession,
     } = context;
     const room = e.target;
     const roomId = room.attrs.id;
-    if (!roomId) {
+    if (!roomId || !roomDragSession) {
         room.position({ x: 0, y: 0 });
         return;
     }
+
+    const { dragContext } = roomDragSession;
+
     setInvalidRoomId(null);
-    const finalCornersObj = roomDragSession.dragContext.activeCornerIds.map((cornerId) => {
-        const cornerObj = roomDragSession.dragContext.clonedCornersMap.has(cornerId) ? roomDragSession.dragContext.clonedCornersMap.get(cornerId) : roomDragSession.dragContext.originalCornerPosition.get(cornerId);
-        console.log(cornerId, cornerObj.id, roomDragSession.dragContext.lastValidPositions, roomDragSession.dragContext.simulatedCornerPositions);
-        return {
-            ...cornerObj,
-            x: roomDragSession.dragContext.lastValidPositions[cornerObj.id].x,
-            y: roomDragSession.dragContext.lastValidPositions[cornerObj.id].y,
-        };
+    const movedOriginalCorners = [];
+    const clonedCornersToAdd = [];
+
+    dragContext.activeToOriginalCornerId.forEach((originalCornerId, activeCornerId) => {
+        const fallbackCorner = dragContext.originalCornerPosition.get(originalCornerId);
+        const finalCorner = roomDragSession.lastValidPositions[originalCornerId] || fallbackCorner;
+
+        if (!finalCorner) {
+            return;
+        }
+
+        if (activeCornerId === originalCornerId) {
+            movedOriginalCorners.push({
+                id: originalCornerId,
+                x: finalCorner.x,
+                y: finalCorner.y,
+            });
+            return;
+        }
+
+        const clonedCorner = dragContext.clonedCornersMap.get(originalCornerId);
+        clonedCornersToAdd.push({
+            ...(clonedCorner ?? { id: activeCornerId, type: "corner" }),
+            id: activeCornerId,
+            x: finalCorner.x,
+            y: finalCorner.y,
+        });
     });
+
+    const hasCornerMovement = dragContext.dragCornerIds.some((cornerId) => {
+        const initialCorner = dragContext.originalCornerPosition.get(cornerId);
+        const finalCorner = roomDragSession.lastValidPositions[cornerId] || initialCorner;
+
+        if (!initialCorner || !finalCorner) {
+            return false;
+        }
+
+        return (
+            Math.abs(finalCorner.x - initialCorner.x) > dragConstants.EPSILON ||
+            Math.abs(finalCorner.y - initialCorner.y) > dragConstants.EPSILON
+        );
+    });
+
+    if (movedOriginalCorners.length > 0) {
+        moveCornersBatch(movedOriginalCorners);
+    }
+
+    if (hasCornerMovement && clonedCornersToAdd.length > 0) {
+        addBatchCorners(clonedCornersToAdd);
+    }
+
+    if (hasCornerMovement && dragContext.clonedWallsMap.size > 0) {
+        const clonedWallsToAdd = Array.from(dragContext.clonedWallsMap.values());
+        addBatchWalls(clonedWallsToAdd, dragConstants);
+    }
 
     // const deltaX = room.x();
     // const deltaY = room.y();
@@ -122,7 +167,6 @@ export function handleRoomDragEnd(e, context) {
     //     x: corner.x + deltaX,
     //     y: corner.y + deltaY,
     // }));
-    moveCornersBatch(finalCornersObj);
     room.position({ x: 0, y: 0 });
     recomputeRooms(dragConstants);
     clearSession();

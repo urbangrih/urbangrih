@@ -8,32 +8,22 @@
 
 // No store updates.
 
-export function simulateRoomMove(dragContext, dx, dy) {
+export function simulateRoomMove(roomDragSession, dx, dy) {
     const simulatedCornerPositions = {};
 
-    dragContext.activeCornerIds.forEach((id) => {
-        const cornerObj = dragContext.clonedCornersMap.has(id) ? dragContext.clonedCornersMap.get(id) : dragContext.originalCornerPosition.get(id);
-        simulatedCornerPositions[id] = {
-            id,
-            x: cornerObj.x + dx,
-            y: cornerObj.y + dy,
+    roomDragSession.dragContext.activeCornerIds.forEach((activeId) => {
+        const originalId = roomDragSession.dragContext.activeToOriginalCornerId?.get(activeId) ?? activeId;
+        const baseCorner = roomDragSession.dragContext.originalCornerPosition.get(originalId);
+
+        if (!baseCorner) {
+            return;
+        }
+
+        simulatedCornerPositions[originalId] = {
+            id: originalId,
+            x: baseCorner.x + dx,
+            y: baseCorner.y + dy,
         };
-        // if (dragContext.clonedCornersMap.has(id)) {
-        //     const clonedCorner = dragContext.clonedCornersMap.get(id);
-        //     simulatedCornerPositions[id] = {
-        //         id: clonedCorner.id,
-        //         x: clonedCorner.x + dx,
-        //         y: clonedCorner.y + dy,
-        //     }
-        // }
-        // else{
-        //     const original = dragContext.originalCornerPosition.find(c => c.id === id);
-        //     simulatedCornerPositions[id] = {
-        //         id,
-        //         x: original.x + dx,
-        //         y: original.y + dy,
-        //     };
-        // }
     });
 
     return {

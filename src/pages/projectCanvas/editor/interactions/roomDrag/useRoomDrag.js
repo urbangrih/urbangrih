@@ -8,14 +8,15 @@ import { useState } from "react";
 
 // import { validateRoomMove } from "../../services/roomDragEngine";
 import { validateRoomMove } from "../../engines/roomEngine/roomValidation";
-import { attemptRoomMove } from "../../engines/roomEngine/moveRoom";
 
-import { EPSILON, ROOM_DRAG_EPSILON } from "../../utils/epsilons";
+import { ROOM_DRAG_EPSILON } from "../../utils/epsilons";
 
 export function useRoomDrag() {
     const corners = useEditorStore((state) => state.corners);
     const walls = useEditorStore((state) => state.walls);
     const rooms = useEditorStore((state) => state.rooms);
+    const addBatchCorners = useEditorStore((state) => state.addBatchCorners);
+    const addBatchWalls = useEditorStore((state) => state.addBatchWalls);
     const moveCornersBatch = useEditorStore((state) => state.moveCornersBatch);
     const recomputeRooms = useEditorStore((state) => state.recomputeRooms);
 
@@ -55,16 +56,13 @@ export function useRoomDrag() {
         },
         onRoomDragEnd: (e) => {
             handleRoomDragEnd(e, {
-                rooms,
-                walls,
-                corners,
-                attemptRoomMove,
+                addBatchCorners,
+                addBatchWalls,
                 moveCornersBatch,
                 recomputeRooms,
                 setInvalidRoomId,
                 dragConstants,
                 roomDragSession,
-                setRoomDragSession,
                 clearSession,
             });
         },

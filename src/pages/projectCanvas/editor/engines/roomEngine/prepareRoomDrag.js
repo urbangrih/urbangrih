@@ -20,7 +20,7 @@
 
 import { getRoomCorners } from "../../services/topology/roomGraph";
 import { getRoomWalls, getSharedCorners, getSharedWalls, getAffectedWallIds } from "./affectedRoomGeometry";
-import { cloneCorners, cloneWalls, buildCornerCloneMap } from "../../services/topology/topologyClone";
+import { cloneCorners, cloneWalls } from "../../services/topology/topologyClone";
 
 export function prepareRoomDrag(roomId, state){
     const roomCorners = getRoomCorners(roomId, state.rooms, state.corners);
@@ -31,13 +31,34 @@ export function prepareRoomDrag(roomId, state){
     const sharedCornerIds = getSharedCorners(roomId, dragCornerIds , state.walls, state.rooms);
     const sharedWallIds = getSharedWalls(roomId, dragCornerIds , state.rooms, state.walls);
     const cornerMap = cloneSharedCorners(dragCornerIds, sharedCornerIds, state.corners);
-    const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls);
+    const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls, cornerMap);
+    console.log("[roomDrag][prepare]", {
+        roomId,
+        dragCornerCount: dragCornerIds.length,
+        dragWallCount: dragWallIds.length,
+        sharedCornerCount: sharedCornerIds.length,
+        sharedWallCount: sharedWallIds.length,
+        clonedCornerCount: cornerMap.size,
+        clonedWallCount: wallMap.size,
+    });
+
+    if (sharedWallIds.length > 0) {
+        console.log("[roomDrag][prepare][shared]", {
+            roomId,
+            sharedCornerIds,
+            sharedWallIds,
+        });
+    }
     const activeCornerIds = dragCornerIds.map((id) => {
         if (cornerMap.has(id)){
             return cornerMap.get(id).id;
         }
         return id;
     })
+    const activeToOriginalCornerId = new Map();
+    activeCornerIds.forEach((activeId, index) => {
+        activeToOriginalCornerId.set(activeId, dragCornerIds[index]);
+    });
     const activeWallIds = dragWallIds.map((id) => {
         if (wallMap.has(id)){
             return wallMap.get(id).id;
@@ -62,6 +83,7 @@ export function prepareRoomDrag(roomId, state){
         clonedCornersMap: cornerMap,
         clonedWallsMap: wallMap,
         activeCornerIds,
+        activeToOriginalCornerId,
         activeWallIds,
         originalCornerPosition: roomCorners,
         affectedWallIds,
@@ -86,7 +108,21 @@ function cloneSharedCorners(dragCornerIds, sharedCornerIds, corners) {
             sharedCornerMap.set(cornerId, { ...corner });
         }
     }
-    return cloneCorners(sharedCornerMap);
+
+    const clonedCornerMap = cloneCorners(sharedCornerMap);
+    if (clonedCornerMap.size > 0) {
+        console.log("[roomDrag][cloneSharedCorners]", {
+            sharedCornerIds,
+            clonePairs: Array.from(clonedCornerMap.entries()).map(
+                ([originalCornerId, clonedCorner]) => ({
+                    originalCornerId,
+                    clonedCornerId: clonedCorner.id,
+                }),
+            ),
+        });
+    }
+
+    return clonedCornerMap;
 }
 
 function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap) {
@@ -106,7 +142,14 @@ function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap) {
         }
     }
 
-    return cloneWalls(sharedWallMap, cornerMap);
-}
+    
+    const clonedWallsMap = cloneWalls(sharedWallMap, cornerMap);
+    if (sharedWallMap.size > 0) {
+        console.log("[roomDrag][cloneSharedWalls]", {
+            sharedWallIds,
+            clonedWallIds: clonedWallsMap,
+        });
+    }
 
-function buildCornerMapping(dragCornerIds, sharedCornerIds) {}
+    return clonedWallsMap
+}
