@@ -32,15 +32,6 @@ export function prepareRoomDrag(roomId, state){
     const sharedWallIds = getSharedWalls(roomId, dragCornerIds , state.rooms, state.walls);
     const cornerMap = cloneSharedCorners(dragCornerIds, sharedCornerIds, state.corners);
     const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls, cornerMap);
-    console.log("[roomDrag][prepare]", {
-        roomId,
-        dragCornerCount: dragCornerIds.length,
-        dragWallCount: dragWallIds.length,
-        sharedCornerCount: sharedCornerIds.length,
-        sharedWallCount: sharedWallIds.length,
-        clonedCornerCount: cornerMap.size,
-        clonedWallCount: wallMap.size,
-    });
 
     if (sharedWallIds.length > 0) {
         console.log("[roomDrag][prepare][shared]", {
@@ -65,6 +56,17 @@ export function prepareRoomDrag(roomId, state){
         }
         return id;
     })
+    console.log("[roomDrag][prepare]", {
+        roomId,
+        dragCornerCount: dragCornerIds.length,
+        dragWallCount: dragWallIds.length,
+        affectedWallIds: affectedWallIds,
+        sharedCornerCount: sharedCornerIds.length,
+        sharedWallIds: sharedWallIds,
+        clonedCornerCount: cornerMap.size,
+        clonedWallCount: wallMap.size,
+        activeToOriginalCornerId
+    });
     // {
         // dragCornerIds:[],
         // dragWallIds:[],

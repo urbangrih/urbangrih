@@ -17,6 +17,7 @@ export function useRoomDrag() {
     const rooms = useEditorStore((state) => state.rooms);
     const addBatchCorners = useEditorStore((state) => state.addBatchCorners);
     const addBatchWalls = useEditorStore((state) => state.addBatchWalls);
+    const replaceWalls = useEditorStore((state) => state.replaceWalls);
     const moveCornersBatch = useEditorStore((state) => state.moveCornersBatch);
     const recomputeRooms = useEditorStore((state) => state.recomputeRooms);
 
@@ -56,8 +57,10 @@ export function useRoomDrag() {
         },
         onRoomDragEnd: (e) => {
             handleRoomDragEnd(e, {
+                walls,
                 addBatchCorners,
                 addBatchWalls,
+                replaceWalls,
                 moveCornersBatch,
                 recomputeRooms,
                 setInvalidRoomId,

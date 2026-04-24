@@ -23,6 +23,17 @@ export function createWallActions(set, get) {
                 walls: [...state.walls, ...validWalls]
             };
         }),
+        replaceWalls: (nextWalls) => set((state) => {
+            return {
+                ...state,
+                walls: state.walls.map((wall) => {
+                    if(nextWalls.find((w) => w.id === wall.id)){
+                        return nextWalls.find((w) => w.id === wall.id);
+                    }
+                    return wall;
+                })
+            }
+        }),
         cleanupWalls: () => set((state) => {
             const uniqueWalls = new Set();
             let updatedWalls = state.walls;

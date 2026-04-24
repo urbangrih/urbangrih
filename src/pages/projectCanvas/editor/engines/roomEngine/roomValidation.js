@@ -84,14 +84,14 @@ export function validateRoomMove(
 
     const tempCornersWithClones = [...tempCorners, ...projectedClonedCorners];
 
-    console.log("[roomDrag][validate] begin", {
-        roomId,
-        movedCornerCount: Object.keys(roomCorners).length,
-        dragWallCount: roomWalls.length,
-        affectedWallCount: affectedWalls.filter(Boolean).length,
-        hasSharedWalls: roomDragSession.dragContext.clonedWallsMap.size > 0,
-        projectedClonedCornerCount: projectedClonedCorners.length,
-    });
+    // console.log("[roomDrag][validate] begin", {
+    //     roomId,
+    //     movedCornerCount: Object.keys(roomCorners).length,
+    //     dragWallCount: roomWalls.length,
+    //     affectedWallCount: affectedWalls.filter(Boolean).length,
+    //     hasSharedWalls: roomDragSession.dragContext.clonedWallsMap.size > 0,
+    //     projectedClonedCornerCount: projectedClonedCorners.length,
+    // });
 
     let isDragValid = false;
     let isOverlapping = false;

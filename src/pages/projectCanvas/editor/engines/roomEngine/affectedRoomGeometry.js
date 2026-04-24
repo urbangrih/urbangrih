@@ -56,7 +56,7 @@ export function getSharedWalls(roomId, roomCornerIds, rooms, walls) {
         if (getRoomKey(room) === roomId) continue;
         const otherRoomCornerIds = new Set(room.cornerIds);
 
-        // A wall is truly shared only when both of its endpoints belong to both rooms.
+        // A wall is truly shared when one of its endpoints belong to both rooms.
         for (const wall of walls) {
             const inCurrentRoom =
                 roomCornerIdSet.has(wall.startCornerId) &&
@@ -66,7 +66,7 @@ export function getSharedWalls(roomId, roomCornerIds, rooms, walls) {
                 otherRoomCornerIds.has(wall.endCornerId);
 
             if (
-                inCurrentRoom &&
+                inCurrentRoom ||
                 inOtherRoom
             ) {
                 sharedWallIds.add(wall.id);

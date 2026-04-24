@@ -1,3 +1,4 @@
+import { getRoomWalls } from "../../engines/roomEngine/affectedRoomGeometry";
 import { prepareRoomDrag } from "../../engines/roomEngine/prepareRoomDrag";
 import { createRoomDragSession } from "../../engines/roomEngine/roomDragSession";
 import { simulateRoomMove } from "../../engines/roomEngine/simulateRoomMove";
@@ -62,13 +63,15 @@ export function handleRoomDragMove(e, context) {
             : prev.lastValidPositions,
         isValid: success,
     }));
-    console.log("Room drag move validation result for room ", roomId, ":", reason);
+    // console.log("Room drag move validation result for room ", roomId, ":", reason);
     setInvalidRoomId(success ? null : roomId);
 }
 export function handleRoomDragEnd(e, context) {
     const {
+        walls,
         addBatchCorners,
         addBatchWalls,
+        replaceWalls,
         moveCornersBatch,
         recomputeRooms,
         setInvalidRoomId,
@@ -88,6 +91,7 @@ export function handleRoomDragEnd(e, context) {
     setInvalidRoomId(null);
     const movedOriginalCorners = [];
     const clonedCornersToAdd = [];
+    
 
     dragContext.activeToOriginalCornerId.forEach((originalCornerId, activeCornerId) => {
         const fallbackCorner = dragContext.originalCornerPosition.get(originalCornerId);
@@ -115,10 +119,58 @@ export function handleRoomDragEnd(e, context) {
         });
     });
 
+    const movedOriginalWalls = walls.filter((wall) => dragContext.dragWallIds.includes(wall.id) && dragContext.activeWallIds.includes(wall.id));
+    const clonedWallsToAdd = [];
+
+    const movedOriginalWallsWithUpdatedCorners = movedOriginalWalls.map((wall) => {
+        let wallStartCornerId = wall.startCornerId;
+        let wallEndCornerId = wall.endCornerId;
+        if (dragContext.clonedCornersMap.has(wall.startCornerId)) {
+            wallStartCornerId = dragContext.clonedCornersMap.get(wall.startCornerId)?.id || wall.startCornerId;
+        }
+        if (dragContext.clonedCornersMap.has(wall.endCornerId)) {
+            wallEndCornerId = dragContext.clonedCornersMap.get(wall.endCornerId)?.id || wall.endCornerId;
+        }
+        if (wallStartCornerId === wall.startCornerId && wallEndCornerId === wall.endCornerId) {
+            return wall;
+        }
+        console.log("[roomDrag][handleRoomDragEnd] Moving original wall with updated corner references", {
+            wallId: wall.id,
+            originalStartCornerId: wall.startCornerId,
+            originalEndCornerId: wall.endCornerId,
+            updatedStartCornerId: wallStartCornerId,
+            updatedEndCornerId: wallEndCornerId,
+        });
+        return {
+            ...wall,
+            startCornerId: wallStartCornerId,
+            endCornerId: wallEndCornerId,
+        };
+    });
+    dragContext.activeWallIds.forEach((wallId) => {
+        if (dragContext.clonedWallsMap.has(wallId)) {
+            const clonedWall = dragContext.clonedWallsMap.get(wallId);
+            clonedWallsToAdd.push({
+                ...clonedWall,
+                startCornerId: clonedWall.startCornerId,
+                endCornerId: clonedWall.endCornerId,
+            });
+        }
+        else{
+            const wall = walls.find((w) => w.id === wallId);
+            if (!wall) {
+                return;
+            }
+            clonedWallsToAdd.push(wall);
+        }
+    })
+
+
     const hasCornerMovement = dragContext.dragCornerIds.some((cornerId) => {
         const initialCorner = dragContext.originalCornerPosition.get(cornerId);
         const finalCorner = roomDragSession.lastValidPositions[cornerId] || initialCorner;
 
+        
         if (!initialCorner || !finalCorner) {
             return false;
         }
@@ -137,36 +189,26 @@ export function handleRoomDragEnd(e, context) {
         addBatchCorners(clonedCornersToAdd);
     }
 
+    if (hasCornerMovement) {
+        replaceWalls(movedOriginalWallsWithUpdatedCorners);
+    }
+
+    console.log("[roomDrag][handleRoomDragEnd] Adding cloned walls for shared wall drag", {
+        roomId,
+        walls,
+        affectedWalls: walls.filter((wall) => dragContext.affectedWallIds.includes(wall.id)),
+        originalRoomCorners: dragContext.dragCornerIds,
+        newRoomCorners: dragContext.activeCornerIds,
+        newCornersAdded: clonedCornersToAdd,
+        newWallsAdded: clonedWallsToAdd,
+        hasSharedWalls: dragContext.clonedWallsMap.size > 0,
+        wallAffectedByClonedCorners: movedOriginalWallsWithUpdatedCorners,
+    });
     if (hasCornerMovement && dragContext.clonedWallsMap.size > 0) {
         const clonedWallsToAdd = Array.from(dragContext.clonedWallsMap.values());
         addBatchWalls(clonedWallsToAdd, dragConstants);
     }
 
-    // const deltaX = room.x();
-    // const deltaY = room.y();
-
-    // const { success, roomCorners } = attemptRoomMove(
-    //     roomId,
-    //     deltaX,
-    //     deltaY,
-    //     rooms,
-    //     walls,
-    //     corners,
-    //     dragConstants,
-    // );
-
-    // if (!success || !roomCorners?.length) {
-    //     room.position({ x: 0, y: 0 });
-    //     return;
-    // }
-    // room.position({ x: 0, y: 0 });
-
-
-    // const updatedCorners = roomCorners.map((corner) => ({
-    //     id: corner.id,
-    //     x: corner.x + deltaX,
-    //     y: corner.y + deltaY,
-    // }));
     room.position({ x: 0, y: 0 });
     recomputeRooms(dragConstants);
     clearSession();
