@@ -31,7 +31,7 @@ export function prepareRoomDrag(roomId, state){
     const sharedCornerIds = getSharedCorners(roomId, dragCornerIds , state.walls, state.rooms);
     const sharedWallIds = getSharedWalls(roomId, dragCornerIds , state.rooms, state.walls);
     const cornerMap = cloneSharedCorners(dragCornerIds, sharedCornerIds, state.corners);
-    const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls, cornerMap);
+    const wallMap = cloneSharedWalls(dragWallIds, sharedWallIds, state.walls, cornerMap, roomCorners);
 
     if (sharedWallIds.length > 0) {
         console.log("[roomDrag][prepare][shared]", {
@@ -127,7 +127,7 @@ function cloneSharedCorners(dragCornerIds, sharedCornerIds, corners) {
     return clonedCornerMap;
 }
 
-function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap) {
+function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap, roomCorners) {
     // const draggedWallMap = new Map();
     // for (const wallId of dragWallIds) {
     //     const wall = walls.find((w) => w.id === wallId);
@@ -144,8 +144,16 @@ function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap) {
         }
     }
 
+    const originalToClonedCornersMap = new Map();
+    roomCorners.forEach((corner) => {
+        if (cornerMap.has(corner.id)) {
+            originalToClonedCornersMap.set(corner.id, cornerMap.get(corner.id));
+        }
+        originalToClonedCornersMap.set(corner.id, corner.id);
+    })
+
     
-    const clonedWallsMap = cloneWalls(sharedWallMap, cornerMap);
+    const clonedWallsMap = cloneWalls(sharedWallMap, originalToClonedCornersMap);
     if (sharedWallMap.size > 0) {
         console.log("[roomDrag][cloneSharedWalls]", {
             sharedWallIds,

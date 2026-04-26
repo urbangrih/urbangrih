@@ -3,6 +3,10 @@ import { getRoomKey } from "../../services/topology/roomGraph";
 function resolvePreviewCorner(originalId, roomDragSession, storeCornerById) {
     const simulatedCorner = roomDragSession.simulatedCornerPositions?.[originalId];
     if (simulatedCorner) {
+        // console.log("[buildRoomDragPreviewTopology] Using simulated position for corner ", {
+        //     originalId,
+        //     simulatedCorner,
+        // });
         return simulatedCorner;
     }
 
@@ -30,6 +34,7 @@ export function buildRoomDragPreviewTopology(corners, walls, rooms, roomDragSess
 
     const cornerById = new Map(corners.map((corner) => [corner.id, corner]));
     const wallById = new Map(walls.map((wall) => [wall.id, wall]));
+    const clonedCornersMap = roomDragSession.dragContext.clonedCornersMap;
 
     roomDragSession.dragContext.activeToOriginalCornerId.forEach((originalId, activeId) => {
         const previewCorner = resolvePreviewCorner(originalId, roomDragSession, cornerById);
@@ -55,7 +60,47 @@ export function buildRoomDragPreviewTopology(corners, walls, rooms, roomDragSess
         });
     });
 
+    roomDragSession.dragContext.activeWallIds.forEach((activeWallId) => {
+        const wall = wallById.get(activeWallId);
+        if (!wall) {
+            return;
+        }
+        let wallStartCornerId = wall.startCornerId;
+        let wallEndCornerId = wall.endCornerId;
+
+        if (wallStartCornerId !== clonedCornersMap.get(wallStartCornerId)?.id) {
+            wallStartCornerId = clonedCornersMap.get(wallStartCornerId)?.id || wallStartCornerId;
+        }
+        if (wallEndCornerId !== clonedCornersMap.get(wallEndCornerId)?.id) {
+            wallEndCornerId = clonedCornersMap.get(wallEndCornerId)?.id || wallEndCornerId;
+        }
+        if (wallStartCornerId === wall.startCornerId && wallEndCornerId === wall.endCornerId) {
+            return;
+        } else {
+            // console.log("[buildRoomDragPreviewTopology] Updating wall topology for preview with active corner ids", {
+            //     wallId: wall.id,
+            //     originalStartCornerId: wall.startCornerId,
+            //     originalEndCornerId: wall.endCornerId,
+            //     activeStartCornerId: wallStartCornerId,
+            //     activeEndCornerId: wallEndCornerId,
+            // });
+            wallById.set(activeWallId, {
+                ...wall,
+                startCornerId: wallStartCornerId,
+                endCornerId: wallEndCornerId,
+            });
+        }
+    });
+
+
     roomDragSession.dragContext.clonedWallsMap.forEach((clonedWall) => {
+        // console.log("[buildRoomDragPreviewTopology] Adding cloned wall to preview topology", {
+        //     wallId: clonedWall.id,
+        //     originalWallId: roomDragSession.dragContext.dragWallIds.find((id) => {
+        //         const wall = walls.find((w) => w.id === id);
+        //         return wall && ((wall.startCornerId === clonedWall.startCornerId && wall.endCornerId === clonedWall.endCornerId) || (wall.startCornerId === clonedWall.endCornerId && wall.endCornerId === clonedWall.startCornerId));
+        //     })
+        // });
         wallById.set(clonedWall.id, clonedWall);
     });
 

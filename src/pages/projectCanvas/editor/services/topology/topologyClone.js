@@ -25,6 +25,7 @@ export function cloneWalls(wallsToClone, cornerMap) {
                 endCornerId: wall.endCornerId,
                 hasMappedStart: Boolean(mappedStartCorner),
                 hasMappedEnd: Boolean(mappedEndCorner),
+                cornerMap
             });
         }
 

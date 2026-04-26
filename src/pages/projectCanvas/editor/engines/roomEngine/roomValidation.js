@@ -11,29 +11,6 @@ export function validateRoomMove(
     dragConstants,
     roomDragSession
 ) {
-    // const roomCorners = getRoomCorners(roomId, rooms, corners);
-    // if (roomCorners.length === 0) {
-    //     return { success: false, reason: "missing-room", tempCorners: corners };
-    // }
-
-    // const roomCornerIds = new Set(roomCorners.map((corner) => corner.id));
-    // const tempCorners = corners.map((corner) => {
-    //     if (roomCornerIds.has(corner.id)) {
-    //         return {
-    //             ...corner,
-    //             x: corner.x + deltaX,
-    //             y: corner.y + deltaY,
-    //         };
-    //     }
-    //     return corner;
-    // });
-
-    // const affectedWalls = walls.filter(
-    //     (wall) =>
-    //         roomCornerIds.has(wall.startCornerId) ||
-    //         roomCornerIds.has(wall.endCornerId),
-    // );
-
     const roomCorners = simulation.simulatedCornerPositions;
     const roomWalls = roomDragSession.dragContext.dragWallIds.map((wallId) => {
         if (roomDragSession.dragContext.clonedWallsMap.has(wallId)) {

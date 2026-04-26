@@ -66,7 +66,7 @@ export function getSharedWalls(roomId, roomCornerIds, rooms, walls) {
                 otherRoomCornerIds.has(wall.endCornerId);
 
             if (
-                inCurrentRoom ||
+                inCurrentRoom &&
                 inOtherRoom
             ) {
                 sharedWallIds.add(wall.id);
