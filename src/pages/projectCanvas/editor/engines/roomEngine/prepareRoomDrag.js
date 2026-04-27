@@ -67,17 +67,6 @@ export function prepareRoomDrag(roomId, state){
         clonedWallCount: wallMap.size,
         activeToOriginalCornerId
     });
-    // {
-        // dragCornerIds:[],
-        // dragWallIds:[],
-
-        // cornerCloneMap:{},
-        // wallCloneMap:{},
-
-        // originalCornerPositions:{},
-
-        // affectedWalls:[]
-    // }
     const dragContext = {
         roomId,
         dragCornerIds,
@@ -148,8 +137,9 @@ function cloneSharedWalls(dragWallIds, sharedWallIds, walls, cornerMap, roomCorn
     roomCorners.forEach((corner) => {
         if (cornerMap.has(corner.id)) {
             originalToClonedCornersMap.set(corner.id, cornerMap.get(corner.id));
+            return;
         }
-        originalToClonedCornersMap.set(corner.id, corner.id);
+        originalToClonedCornersMap.set(corner.id, corner);
     })
 
     

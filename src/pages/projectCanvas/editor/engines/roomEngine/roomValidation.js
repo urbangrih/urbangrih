@@ -1,4 +1,3 @@
-import { getRoomCorners } from "../../services/topology/roomGraph";
 import { isPlacementValid } from "../wallEngine/wallValidationEngine";
 import { isWallOverlapping } from "../wallEngine/wallTopolgyUpdate";
 
@@ -13,53 +12,50 @@ export function validateRoomMove(
 ) {
     const roomCorners = simulation.simulatedCornerPositions;
     const roomWalls = roomDragSession.dragContext.dragWallIds.map((wallId) => {
-        if (roomDragSession.dragContext.clonedWallsMap.has(wallId)) {
-            return roomDragSession.dragContext.clonedWallsMap.get(wallId);
+        const baseWall =
+            roomDragSession.dragContext.clonedWallsMap.get(wallId) ||
+            walls.find((w) => w.id === wallId);
+
+        if (!baseWall) {
+            return null;
         }
-        return walls.find((w) => w.id === wallId);
+
+        const mappedStartCornerId =
+            roomDragSession.dragContext.clonedCornersMap.get(baseWall.startCornerId)?.id ||
+            baseWall.startCornerId;
+        const mappedEndCornerId =
+            roomDragSession.dragContext.clonedCornersMap.get(baseWall.endCornerId)?.id ||
+            baseWall.endCornerId;
+
+        if (
+            mappedStartCornerId === baseWall.startCornerId &&
+            mappedEndCornerId === baseWall.endCornerId
+        ) {
+            return baseWall;
+        }
+
+        return {
+            ...baseWall,
+            startCornerId: mappedStartCornerId,
+            endCornerId: mappedEndCornerId,
+        };
     });
-    const affectedWalls = roomDragSession.dragContext.affectedWallIds.map((wallId) => walls.find((w) => w.id === wallId));
+    const affectedWalls = roomDragSession.dragContext.affectedWallIds
+        .map((wallId) => walls.find((w) => w.id === wallId))
+        .filter(Boolean);
 
-    const tempCorners = corners.map((corner) => {
-        if (Object.hasOwn(roomCorners, corner.id)) {
-            const simulatedCorner = roomCorners[corner.id];
-            return {
-                ...corner,
-                x: simulatedCorner.x,
-                y: simulatedCorner.y,
-            };
-        }
-        return corner;
-    });
+    const tempCornerById = new Map(corners.map((corner) => [corner.id, corner]));
 
-    const projectedClonedCorners = [];
-    roomDragSession.dragContext.activeToOriginalCornerId.forEach((originalId, activeId) => {
-        if (activeId === originalId) {
-            return;
-        }
-
-        const simulatedCorner = roomCorners[originalId];
-        const originalCorner =
-            simulatedCorner ||
-            corners.find((corner) => corner.id === originalId) ||
-            roomDragSession.dragContext.originalCornerPosition.get(originalId);
-
-        if (!originalCorner) {
-            console.warn("[roomDrag][validate] missing original corner for cloned corner projection", {
-                roomId,
-                activeCornerId: activeId,
-                originalId,
-            });
-            return;
-        }
-
-        projectedClonedCorners.push({
-            ...originalCorner,
-            id: activeId,
+    Object.entries(roomCorners).forEach(([activeCornerId, simulatedCorner]) => {
+        const existingCorner = tempCornerById.get(activeCornerId);
+        tempCornerById.set(activeCornerId, {
+            ...(existingCorner ?? { id: activeCornerId, type: "corner" }),
+            x: simulatedCorner.x,
+            y: simulatedCorner.y,
         });
     });
 
-    const tempCornersWithClones = [...tempCorners, ...projectedClonedCorners];
+    const tempCornersWithClones = Array.from(tempCornerById.values());
 
     // console.log("[roomDrag][validate] begin", {
     //     roomId,

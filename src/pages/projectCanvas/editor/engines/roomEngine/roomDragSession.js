@@ -1,10 +1,11 @@
 export function createRoomDragSession(roomId, dragContext){
    const initialPositions = {};
-   for (const cornerId of dragContext.dragCornerIds) {
-      const corner = dragContext.originalCornerPosition.get(cornerId);
+   for (const activeCornerId of dragContext.activeCornerIds) {
+      const originalCornerId = dragContext.activeToOriginalCornerId?.get(activeCornerId) ?? activeCornerId;
+      const corner = dragContext.originalCornerPosition.get(originalCornerId);
       if (!corner) continue;
-      initialPositions[cornerId] = {
-         id: cornerId,
+      initialPositions[activeCornerId] = {
+         id: activeCornerId,
          x: corner.x,
          y: corner.y,
       };

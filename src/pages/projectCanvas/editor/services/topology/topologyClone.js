@@ -17,6 +17,14 @@ export function cloneWalls(wallsToClone, cornerMap) {
     for (const [wallId, wall] of wallsToClone.entries()) {
         const mappedStartCorner = cornerMap?.get(wall.startCornerId);
         const mappedEndCorner = cornerMap?.get(wall.endCornerId);
+        const mappedStartCornerId =
+            typeof mappedStartCorner === "string"
+                ? mappedStartCorner
+                : mappedStartCorner?.id;
+        const mappedEndCornerId =
+            typeof mappedEndCorner === "string"
+                ? mappedEndCorner
+                : mappedEndCorner?.id;
 
         if (!mappedStartCorner || !mappedEndCorner) {
             console.warn("[roomDrag][cloneWalls] missing cloned corner mapping for shared wall", {
@@ -30,8 +38,8 @@ export function cloneWalls(wallsToClone, cornerMap) {
         }
 
         const clonedWall = createWall(
-            mappedStartCorner?.id ?? wall.startCornerId,
-            mappedEndCorner?.id ?? wall.endCornerId,
+            mappedStartCornerId ?? wall.startCornerId,
+            mappedEndCornerId ?? wall.endCornerId,
             wall.thickness,
         );
 

@@ -1,4 +1,3 @@
-import { getRoomWalls } from "../../engines/roomEngine/affectedRoomGeometry";
 import { prepareRoomDrag } from "../../engines/roomEngine/prepareRoomDrag";
 import { createRoomDragSession } from "../../engines/roomEngine/roomDragSession";
 import { simulateRoomMove } from "../../engines/roomEngine/simulateRoomMove";
@@ -12,6 +11,17 @@ export function handleRoomDragStart(e, context) {
     }
     const dragContext = prepareRoomDrag(roomId, { corners, walls, rooms });
     const session = createRoomDragSession(roomId, dragContext);
+    const pointer = room.getStage()?.getPointerPosition();
+    if (pointer) {
+        session.startPointer = {
+            x: pointer.x,
+            y: pointer.y,
+        };
+        session.currentPointer = {
+            x: pointer.x,
+            y: pointer.y,
+        };
+    }
     setRoomDragSession(session);
     setInvalidRoomId(null);
 }
@@ -36,8 +46,15 @@ export function handleRoomDragMove(e, context) {
         return;
     }
 
-    const deltaX = room.x();
-    const deltaY = room.y();
+    const pointer = room.getStage()?.getPointerPosition();
+    let deltaX = room.x();
+    let deltaY = room.y();
+
+    if (pointer && roomDragSession.startPointer) {
+        deltaX = pointer.x - roomDragSession.startPointer.x;
+        deltaY = pointer.y - roomDragSession.startPointer.y;
+    }
+
     // Preview layers consume simulated topology, so keep Group transform neutral.
     room.position({ x: 0, y: 0 });
     const simulation = simulateRoomMove(
@@ -46,7 +63,7 @@ export function handleRoomDragMove(e, context) {
         deltaY,
     );
 
-    const { success, reason } = validateRoomMove(
+    const { success } = validateRoomMove(
         roomId,
         simulation,
         rooms,
@@ -57,6 +74,12 @@ export function handleRoomDragMove(e, context) {
     );
     setRoomDragSession((prev) => ({
         ...prev,
+        currentPointer: pointer
+            ? {
+                x: pointer.x,
+                y: pointer.y,
+            }
+            : prev.currentPointer,
         simulatedCornerPositions: simulation.simulatedCornerPositions,
         lastValidPositions: success
             ? simulation.simulatedCornerPositions
@@ -95,7 +118,7 @@ export function handleRoomDragEnd(e, context) {
 
     dragContext.activeToOriginalCornerId.forEach((originalCornerId, activeCornerId) => {
         const fallbackCorner = dragContext.originalCornerPosition.get(originalCornerId);
-        const finalCorner = roomDragSession.lastValidPositions[originalCornerId] || fallbackCorner;
+        const finalCorner = roomDragSession.lastValidPositions[activeCornerId] || fallbackCorner;
 
         if (!finalCorner) {
             return;
@@ -166,9 +189,10 @@ export function handleRoomDragEnd(e, context) {
     })
 
 
-    const hasCornerMovement = dragContext.dragCornerIds.some((cornerId) => {
-        const initialCorner = dragContext.originalCornerPosition.get(cornerId);
-        const finalCorner = roomDragSession.lastValidPositions[cornerId] || initialCorner;
+    const hasCornerMovement = dragContext.activeCornerIds.some((activeCornerId) => {
+        const originalCornerId = dragContext.activeToOriginalCornerId.get(activeCornerId) ?? activeCornerId;
+        const initialCorner = dragContext.originalCornerPosition.get(originalCornerId);
+        const finalCorner = roomDragSession.lastValidPositions[activeCornerId] || initialCorner;
 
         
         if (!initialCorner || !finalCorner) {
@@ -203,6 +227,7 @@ export function handleRoomDragEnd(e, context) {
         newWallsAdded: clonedWallsToAdd,
         hasSharedWalls: dragContext.clonedWallsMap.size > 0,
         wallAffectedByClonedCorners: movedOriginalWallsWithUpdatedCorners,
+        clonedWallsToAdd
     });
     if (hasCornerMovement && dragContext.clonedWallsMap.size > 0) {
         const clonedWallsToAdd = Array.from(dragContext.clonedWallsMap.values());

@@ -1,4 +1,6 @@
 import { Group, Line, Text } from "react-konva";
+import { computeCentroid } from "../../services/geometry/centroid";
+import { computeSignedArea } from "../../services/geometry/polygon";
 
 export function roomPolygon({ roomObj, corners, events, invalidRoomId }) {
     const points = roomObj.cornerIds;
@@ -14,9 +16,11 @@ export function roomPolygon({ roomObj, corners, events, invalidRoomId }) {
         invalidRoomId && roomObj.roomId
             ? invalidRoomId === roomObj.roomId
             : false;
-    const centerX = roomObj.centroid?.x ?? 0;
-    const centerY = roomObj.centroid?.y ?? 0;
-    const areaInSqFt = Math.abs(roomObj.area) / (15 * 15);
+    const liveCentroid = roomCorners.length >= 3 ? computeCentroid(roomCorners) : null;
+    const centerX = liveCentroid?.x ?? roomObj.centroid?.x ?? 0;
+    const centerY = liveCentroid?.y ?? roomObj.centroid?.y ?? 0;
+    const liveArea = roomCorners.length >= 3 ? computeSignedArea(roomCorners) : roomObj.area;
+    const areaInSqFt = Math.abs(liveArea ?? 0) / (15 * 15);
     const areaText = `${areaInSqFt.toFixed(2)} sq ft`;
     const textWidth = areaText.length*10; // rough estimate
     const textHeight = 20; // rough estimate

@@ -19,8 +19,8 @@ export function simulateRoomMove(roomDragSession, dx, dy) {
             return;
         }
 
-        simulatedCornerPositions[originalId] = {
-            id: originalId,
+        simulatedCornerPositions[activeId] = {
+            id: activeId,
             x: baseCorner.x + dx,
             y: baseCorner.y + dy,
         };

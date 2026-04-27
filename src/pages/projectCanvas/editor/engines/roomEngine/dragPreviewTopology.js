@@ -1,16 +1,16 @@
 import { getRoomKey } from "../../services/topology/roomGraph";
 
-function resolvePreviewCorner(originalId, roomDragSession, storeCornerById) {
-    const simulatedCorner = roomDragSession.simulatedCornerPositions?.[originalId];
+function resolvePreviewCorner(activeId, originalId, roomDragSession, storeCornerById) {
+    const simulatedCorner = roomDragSession.simulatedCornerPositions?.[activeId];
     if (simulatedCorner) {
         // console.log("[buildRoomDragPreviewTopology] Using simulated position for corner ", {
-        //     originalId,
+        //     activeId,
         //     simulatedCorner,
         // });
         return simulatedCorner;
     }
 
-    const lastValidCorner = roomDragSession.lastValidPositions?.[originalId];
+    const lastValidCorner = roomDragSession.lastValidPositions?.[activeId];
     if (lastValidCorner) {
         return lastValidCorner;
     }
@@ -20,7 +20,7 @@ function resolvePreviewCorner(originalId, roomDragSession, storeCornerById) {
         return originalCorner;
     }
 
-    return storeCornerById.get(originalId) ?? null;
+    return storeCornerById.get(activeId) ?? storeCornerById.get(originalId) ?? null;
 }
 
 export function buildRoomDragPreviewTopology(corners, walls, rooms, roomDragSession) {
@@ -37,7 +37,7 @@ export function buildRoomDragPreviewTopology(corners, walls, rooms, roomDragSess
     const clonedCornersMap = roomDragSession.dragContext.clonedCornersMap;
 
     roomDragSession.dragContext.activeToOriginalCornerId.forEach((originalId, activeId) => {
-        const previewCorner = resolvePreviewCorner(originalId, roomDragSession, cornerById);
+        const previewCorner = resolvePreviewCorner(activeId, originalId, roomDragSession, cornerById);
         if (!previewCorner) {
             return;
         }
